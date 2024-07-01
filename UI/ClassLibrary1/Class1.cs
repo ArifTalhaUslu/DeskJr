@@ -1,7 +1,9 @@
-﻿namespace ClassLibrary1
+﻿
+namespace ClassLibrary1
 {
     public class Class1
     {
+        //qqetwwqewqeqweqwtqw
 
     }
 }
