@@ -5,7 +5,7 @@ VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{CC38BB06-33DB-4B86-91F3-6A0EA6A3734B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeskJr", "DeskJr\DeskJr.csproj", "{D1BDB6FC-23DA-4560-A28A-AC97C7A5444A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeskJr", "Backend\DeskJr\DeskJr.csproj", "{F41DC08E-8360-45A2-BF96-66A29436F466}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,16 +13,16 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D1BDB6FC-23DA-4560-A28A-AC97C7A5444A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D1BDB6FC-23DA-4560-A28A-AC97C7A5444A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D1BDB6FC-23DA-4560-A28A-AC97C7A5444A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D1BDB6FC-23DA-4560-A28A-AC97C7A5444A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F41DC08E-8360-45A2-BF96-66A29436F466}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F41DC08E-8360-45A2-BF96-66A29436F466}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F41DC08E-8360-45A2-BF96-66A29436F466}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F41DC08E-8360-45A2-BF96-66A29436F466}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{D1BDB6FC-23DA-4560-A28A-AC97C7A5444A} = {CC38BB06-33DB-4B86-91F3-6A0EA6A3734B}
+		{F41DC08E-8360-45A2-BF96-66A29436F466} = {CC38BB06-33DB-4B86-91F3-6A0EA6A3734B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0B711533-CC3B-4A23-AEAF-FF777A213BF0}
