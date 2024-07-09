@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Abstract\" />
-    <Folder Include="Concrete\" />
+    <ProjectReference Include="..\DeskJr.Data\DeskJr.Data.csproj" />
+    <ProjectReference Include="..\DeskJr.Entity\DeskJr.Entity.csproj" />
   </ItemGroup>
 
 </Project>
