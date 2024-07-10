@@ -6,7 +6,9 @@ namespace DeskJr.Data
 {
     public class AppDbContext : DbContext
     {
-
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        {
+        }
 
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Team> Teams { get; set; }
@@ -16,11 +18,11 @@ namespace DeskJr.Data
         {
             modelBuilder.Entity<Employee>().Property(d => d.Name).HasColumnType("VARCHAR").HasMaxLength(150).IsRequired();
         }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("server=.;database=DeskJr;trusted_connection=true;encrypt=false;");
             optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 
-        }
+        }*/
     }
 }

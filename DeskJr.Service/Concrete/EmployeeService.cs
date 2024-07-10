@@ -51,5 +51,4 @@ namespace DeskJr.Service.Concrete
             return await _employeeRepository.UpdateAsync(employee);
         }
     }
-    }
 }
