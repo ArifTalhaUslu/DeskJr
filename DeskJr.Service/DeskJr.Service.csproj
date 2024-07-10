@@ -7,11 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Abstract\" />
-    <Folder Include="Concrete\" />
-    <Folder Include="Dto\EmployeeDtos\" />
     <Folder Include="Dto\EmployeeTitleDtos\" />
     <Folder Include="Dto\TeamDtos\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DeskJr.Entity\DeskJr.Entity.csproj" />
+    <ProjectReference Include="..\DeskJr.Repository\DeskJr.Repository.csproj" />
   </ItemGroup>
 
 </Project>
