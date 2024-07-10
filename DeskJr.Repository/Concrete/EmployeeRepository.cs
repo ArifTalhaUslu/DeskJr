@@ -41,29 +41,20 @@ namespace DeskJr.Repository.Concrete
         public async Task<Employee?> GetByIdAsync(Guid id)
         {
             var dbEmployee = await _context.Employees.FirstOrDefaultAsync(e => e.ID == id);
-            if (dbEmployee != null)
-            {
-                return dbEmployee;
-            }
-            return null;
+            return dbEmployee;
         }
 
         public async Task<bool> UpdateAsync(Employee request)
         {
+            var affectedRowCount = 0;
             var dbEmployee = await _context.Employees.FindAsync(request.ID);
             if (dbEmployee != null)
             {
-                dbEmployee.Name = request.Name;
-                dbEmployee.DayOfBirth = request.DayOfBirth;
-                dbEmployee.EmployeeRole = request.EmployeeRole;
-                dbEmployee.Gender = request.Gender;
-                dbEmployee.Title = request.Title;
-                dbEmployee.Team = request.Team;
+                _context.Entry(dbEmployee).CurrentValues.SetValues(request);
 
-                var affectedRowCount = await _context.SaveChangesAsync();
-                return affectedRowCount > 0;
+                affectedRowCount = await _context.SaveChangesAsync();
             }
-            return false;
+            return affectedRowCount > 0;
         }
     }
     
