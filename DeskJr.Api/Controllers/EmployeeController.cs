@@ -49,7 +49,11 @@ namespace DeskJr.Api.Controllers
         public async Task<ActionResult> GetEmployeeById(Guid id)
         {
             var employee = await _employeeService.GetEmployeeByIdAsync(id);
-            return Ok(employee);
+            if (employee != null)
+            {
+                return Ok(employee);
+            }
+            return BadRequest("Employee not found.");
         }
 
         [HttpPut]
