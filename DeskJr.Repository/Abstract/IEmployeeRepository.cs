@@ -9,5 +9,6 @@ public interface IEmployeeRepository
     public Task<bool> DeleteAsync(Guid id);
     public Task<List<Employee>> GetAllAsync();
     public Task<Employee?> GetByIdAsync(Guid id);
+    public Task<IEnumerable<Employee?>> GetEmployeesByTeamIdAsync(Guid teamId);
 
 }

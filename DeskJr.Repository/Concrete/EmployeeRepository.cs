@@ -56,6 +56,10 @@ namespace DeskJr.Repository.Concrete
             }
             return affectedRowCount > 0;
         }
+        public async Task<IEnumerable<Employee?>> GetEmployeesByTeamIdAsync(Guid teamId)
+        {
+            return await _context.Employees.Where(e => e.TeamId == teamId).ToListAsync();
+        }
     }
     
 }

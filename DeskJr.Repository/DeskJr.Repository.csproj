@@ -11,4 +11,7 @@
     <ProjectReference Include="..\DeskJr.Entity\DeskJr.Entity.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.31" />
+  </ItemGroup>
 </Project>

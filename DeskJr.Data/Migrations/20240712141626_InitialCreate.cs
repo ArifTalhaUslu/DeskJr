@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DeskJr.Data.Migrations
 {
-    public partial class CreateInitial : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,7 +14,7 @@ namespace DeskJr.Data.Migrations
                 columns: table => new
                 {
                     ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TitleName = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    TitleName = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -70,6 +70,12 @@ namespace DeskJr.Data.Migrations
                 name: "IX_Employees_TitleId",
                 table: "Employees",
                 column: "TitleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EmployeeTitles_TitleName",
+                table: "EmployeeTitles",
+                column: "TitleName",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

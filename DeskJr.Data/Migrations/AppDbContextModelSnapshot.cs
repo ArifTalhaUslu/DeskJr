@@ -65,9 +65,12 @@ namespace DeskJr.Data.Migrations
 
                     b.Property<string>("TitleName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("TitleName")
+                        .IsUnique();
 
                     b.ToTable("EmployeeTitles");
                 });
