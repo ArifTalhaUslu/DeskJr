@@ -56,7 +56,7 @@ namespace DeskJr.Api.Controllers
             return BadRequest("Employee not found.");
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<ActionResult> UpdateEmployee(UpdateEmployeeDto employeeDto)
         {
             var result = await _employeeService.UpdateEmployeeAsync(employeeDto);
@@ -65,6 +65,12 @@ namespace DeskJr.Api.Controllers
                 return Ok();
             }
             return BadRequest();
+        }
+        [HttpGet("teams/{teamId}/employees")]
+        public async Task<IActionResult> GetEmployeesByTeamId(Guid teamId)
+        {
+            var employees = await _employeeService.GetEmployeesByTeamIdAsync(teamId);
+            return Ok(employees);
         }
     }
 }

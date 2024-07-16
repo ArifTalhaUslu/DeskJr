@@ -45,10 +45,17 @@ namespace DeskJr.Service.Concrete
             return _mapper.Map<EmployeeDto>(employee);
         }
 
+        public async Task<IEnumerable<EmployeeDto>> GetEmployeesByTeamIdAsync(Guid teamId)
+        {
+            var employees = await _employeeRepository.GetEmployeesByTeamIdAsync(teamId);
+            return _mapper.Map<IEnumerable<EmployeeDto>>(employees);
+        }
+
         public async Task<bool> UpdateEmployeeAsync(UpdateEmployeeDto employeeDto)
         {
             var employee = _mapper.Map<Employee>(employeeDto);
             return await _employeeRepository.UpdateAsync(employee);
         }
     }
-}
+    }
+

@@ -9,11 +9,7 @@
   <ItemGroup>
     <Folder Include="Dto\EmployeeTitleDtos\" />
     <Folder Include="Dto\TeamDtos\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="12.0.1" />
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <Folder Include="Dto\LeaveDtos\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,4 +17,10 @@
     <ProjectReference Include="..\DeskJr.Repository\DeskJr.Repository.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Dto\LeaveDtos\" />
+  </ItemGroup>
 </Project>

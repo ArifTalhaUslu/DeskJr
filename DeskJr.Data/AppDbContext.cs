@@ -17,10 +17,15 @@ namespace DeskJr.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Employee>().Property(d => d.Name).HasColumnType("VARCHAR").HasMaxLength(150).IsRequired();
+            modelBuilder.Entity<EmployeeTitle>()
+          .HasIndex(t => t.TitleName)
+          .IsUnique();
+
+            
         }
         /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("server=.;database=DeskJr;trusted_connection=true;encrypt=false;");
+            optionsBuilder.UseSqlServer("Data Source=localhost;Initial Catalog=test1;User Id=SA;Password=Ncc-1701;Integrated Security=False;Encrypt=False");
             optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 
         }*/

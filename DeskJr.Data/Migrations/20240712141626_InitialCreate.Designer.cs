@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DeskJr.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240709120450_CreateInitial")]
-    partial class CreateInitial
+    [Migration("20240712141626_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -67,9 +67,12 @@ namespace DeskJr.Data.Migrations
 
                     b.Property<string>("TitleName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("TitleName")
+                        .IsUnique();
 
                     b.ToTable("EmployeeTitles");
                 });
