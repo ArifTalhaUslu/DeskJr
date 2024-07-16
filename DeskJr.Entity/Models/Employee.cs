@@ -19,6 +19,7 @@ namespace DeskJr.Entity.Models
         public Employee()
         {
             ID = Guid.NewGuid();
+            EmployeeRole = EnumRole.Employee;
         }
 
     }
