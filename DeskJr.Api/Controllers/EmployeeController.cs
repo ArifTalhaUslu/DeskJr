@@ -14,7 +14,6 @@ namespace DeskJr.Api.Controllers
         public EmployeeController(IEmployeeService employeService)
         {
             _employeeService = employeService;
-            //rfgjkfnjk
         }
 
         [HttpPost]
@@ -57,7 +56,7 @@ namespace DeskJr.Api.Controllers
             return BadRequest("Employee not found.");
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<ActionResult> UpdateEmployee(UpdateEmployeeDto employeeDto)
         {
             var result = await _employeeService.UpdateEmployeeAsync(employeeDto);

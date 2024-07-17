@@ -5,10 +5,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DeskJr.Entity.Models
 {
-    public class LeaveRequest
+    public class LeaveRequest: BaseEntity
     {
         [Key]
-        public Guid Id { get; set; }
+        
 
         public string RequestingEmployeeId { get; set; }
         public Employee RequestingEmployee { get; set; }
@@ -28,10 +28,7 @@ namespace DeskJr.Entity.Models
         public string ApprovedById { get; set; }
         public Employee ApprovedBy { get; set; }
 
-        public LeaveRequest()
-        {
-            Id = Guid.NewGuid();
-        }
+        
 
     }
 }
