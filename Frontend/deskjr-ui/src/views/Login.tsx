@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
+import Input from '../components/CommonComponents/Input';
+import Button from '../components/CommonComponents/Button';
+import DataTable from '../components/CommonComponents/DataTable';
+import Card from '../components/CommonComponents/Card';
  
-const Login: React.FC = () => {
+const Login: any = () => {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
  
@@ -10,41 +14,50 @@ const Login: React.FC = () => {
     console.log('Username:', username);
     console.log('Password:', password);
   };
- 
   return (
     <div className="container">
       <div className="row justify-content-center">
         <div className="col-md-6">
-          <div className="card mt-5">
-            <div className="card-body">
-              <h3 className="card-title text-center">Login</h3>
-              <form onSubmit={handleSubmit}>
+          <Card title="Login">
+          <form onSubmit={handleSubmit}>
                 <div className="form-group">
                   <label htmlFor="username">Username</label>
-                  <input
+                  <Input
                     type="text"
                     className="form-control"
                     id="username"
                     value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    onChange={setUsername}
                     required
                   />
                 </div>
                 <div className="form-group">
                   <label htmlFor="password">Password</label>
-                  <input
+                  <Input
                     type="password"
                     className="form-control"
                     id="password"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={setPassword}
                     required
                   />
                 </div>
-                <button type="submit" className="btn btn-primary btn-block">Login</button>
+                <Button type='submit' text={'Login'}></Button>
+                {/* <div className='px-2 py-4'>
+                <DataTable
+                  items={[{ id: '1', name: 'arf', age: 41, isBoss: true },
+                    { id: '2', name: 'qwe', age: 1, isBoss: false },
+                    { id: '3', name: 'asd', age: 23, isBoss: false }]}
+                  onEdit={()=>{}}
+                  onDelete={()=>{}}
+                  isEditable={false}
+                  isDeletable={false}
+                  hiddenColumns={['']}
+                />
+                </div>  */}
               </form>
-            </div>
-          </div>
+              {/* <Card title ="Deneme"></Card> */}
+          </Card>
         </div>
       </div>
     </div>
