@@ -3,10 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DeskJr.Entity.Models
 {
-    public class LeaveAllocation
+    public class LeaveAllocation: BaseEntity
     {
-        [Key]
-        public Guid Id { get; set; }
+       
         public int NumberOfDays { get; set; }
         public DateTime DateCreated { get; set; }
 
@@ -18,9 +17,6 @@ namespace DeskJr.Entity.Models
         public LeaveType LeaveType { get; set; }
 
         public int Period { get; set; }
-        public LeaveAllocation()
-        {
-            Id = Guid.NewGuid();
-        }
+       
     }
 }

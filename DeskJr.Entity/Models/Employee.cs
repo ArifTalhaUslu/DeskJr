@@ -2,9 +2,9 @@
 
 namespace DeskJr.Entity.Models
 {
-    public class Employee
+    public class Employee : BaseEntity
     {
-        public Guid ID { get; set; }
+        
         public string Name { get; set; }
         public DateTime DayOfBirth { get; set; }
         public EnumRole EmployeeRole { get; set; }
@@ -18,7 +18,7 @@ namespace DeskJr.Entity.Models
 
         public Employee()
         {
-            ID = Guid.NewGuid();
+           
             EmployeeRole = EnumRole.Employee;
         }
 

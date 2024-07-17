@@ -25,7 +25,6 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddControllers();
 
-
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<ITeamRepository, TeamRepository>();

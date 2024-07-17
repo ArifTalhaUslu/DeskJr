@@ -2,13 +2,9 @@
 
 namespace DeskJr.Repository.Abstract;
 
-public interface IEmployeeRepository
+public interface IEmployeeRepository: IGenericRepository<Employee>
 {
-    public Task<bool> AddAsync(Employee employee);
-    public Task<bool> UpdateAsync(Employee employee);
-    public Task<bool> DeleteAsync(Guid id);
-    public Task<List<Employee>> GetAllAsync();
-    public Task<Employee?> GetByIdAsync(Guid id);
+    
     public Task<IEnumerable<Employee?>> GetEmployeesByTeamIdAsync(Guid teamId);
 
 }
