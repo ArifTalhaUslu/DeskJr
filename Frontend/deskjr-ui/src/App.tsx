@@ -1,5 +1,5 @@
 import "./App.css";
-import Login from "./views/Login";
+import Login from "./components/views/Login";
 import NavigationBar from "./components/CommonComponents/NavigationBar";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
@@ -14,6 +14,7 @@ const navigation = {
     { name: "Development", to: "/dev" },
     { name: "Graphic Design", to: "/design" },
     { name: "Contact", to: "/contact" },
+    { name: "Login", to: "/login" },
   ],
 };
 
