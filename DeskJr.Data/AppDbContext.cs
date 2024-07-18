@@ -6,10 +6,6 @@ namespace DeskJr.Data
 {
     public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
-        {
-        }
-
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<EmployeeTitle> EmployeeTitles { get; set; }
@@ -23,11 +19,10 @@ namespace DeskJr.Data
 
             
         }
-        /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=localhost;Initial Catalog=test1;User Id=SA;Password=Ncc-1701;Integrated Security=False;Encrypt=False");
+            optionsBuilder.UseSqlServer("Data Source=ALI\\SQLEXPRESS;Initial Catalog=test1;Integrated Security=True;Encrypt=False");
             optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-
-        }*/
+        }
     }
 }
