@@ -1,13 +1,35 @@
-import './App.css';
-import Login from './views/Login';
+import "./App.css";
+import Login from "./views/Login";
+import NavigationBar from "./components/CommonComponents/NavigationBar";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
+// App.tsx
+import React from "react";
 
-function App() {
+const navigation = {
+  brand: { name: "NavigationBar", to: "/" },
+  links: [
+    { name: "About Me", to: "/about" },
+    { name: "Blog", to: "/blog" },
+    { name: "Development", to: "/dev" },
+    { name: "Graphic Design", to: "/design" },
+    { name: "Contact", to: "/contact" },
+  ],
+};
+
+const App: React.FC = () => {
+  const { brand, links } = navigation;
+
   return (
-    <div className="App">
-      <Login/>
-    </div>
+    <Router>
+      <div className="App">
+        <NavigationBar brand={navigation.brand} links={navigation.links} />
+        <Routes>
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </div>
+    </Router>
   );
-}
+};
 
 export default App;
