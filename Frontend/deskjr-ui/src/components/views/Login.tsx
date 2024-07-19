@@ -42,20 +42,9 @@ const Login: any = () => {
                 />
               </div>
               <Button type='submit' text={'Login'}></Button>
-              {/* <div className='px-2 py-4'>
-                <DataTable
-                  items={[{ id: '1', name: 'arf', age: 41, isBoss: true },
-                    { id: '2', name: 'qwe', age: 1, isBoss: false },
-                    { id: '3', name: 'asd', age: 23, isBoss: false }]}
-                  onEdit={()=>{}}
-                  onDelete={()=>{}}
-                  isEditable={false}
-                  isDeletable={false}
-                  hiddenColumns={['']}
-                />
-                </div>  */}
+              
             </form>
-            {/* <Card title ="Deneme"></Card> */}
+            
           </Card>
         </div>
       </div>
