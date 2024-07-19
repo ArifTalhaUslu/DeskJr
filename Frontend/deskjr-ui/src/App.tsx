@@ -26,7 +26,7 @@ const App: React.FC = () => {
       <div className="App">
         <NavigationBar brand={navigation.brand} links={navigation.links} />
         <Routes>
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login />} /><p>asdasd</p>
         </Routes>
       </div>
     </Router>
