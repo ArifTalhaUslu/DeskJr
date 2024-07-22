@@ -5,15 +5,17 @@ VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{CC38BB06-33DB-4B86-91F3-6A0EA6A3734B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeskJr.Api", "DeskJr.Api\DeskJr.Api.csproj", "{E28CF0DB-E9A5-493E-B431-E02042A65707}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeskJr.Api", "DeskJr.Api\DeskJr.Api.csproj", "{E28CF0DB-E9A5-493E-B431-E02042A65707}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeskJr.Data", "DeskJr.Data\DeskJr.Data.csproj", "{E914348B-4682-407C-8BE9-B63D203566A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeskJr.Data", "DeskJr.Data\DeskJr.Data.csproj", "{E914348B-4682-407C-8BE9-B63D203566A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeskJr.Service", "DeskJr.Service\DeskJr.Service.csproj", "{807125CC-2837-42E6-B227-101B7FF80C86}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeskJr.Service", "DeskJr.Service\DeskJr.Service.csproj", "{807125CC-2837-42E6-B227-101B7FF80C86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeskJr.Repository", "DeskJr.Repository\DeskJr.Repository.csproj", "{9BF788B6-9C79-4DE2-8788-29759CA068A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeskJr.Repository", "DeskJr.Repository\DeskJr.Repository.csproj", "{9BF788B6-9C79-4DE2-8788-29759CA068A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeskJr.Entity", "DeskJr.Entity\DeskJr.Entity.csproj", "{265F49F7-DAF6-42C1-AF1B-CFB2DA152F38}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeskJr.Entity", "DeskJr.Entity\DeskJr.Entity.csproj", "{265F49F7-DAF6-42C1-AF1B-CFB2DA152F38}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DeskJr.Common", "DeskJr.Common\DeskJr.Common.csproj", "{3E2AFACF-C1FE-497C-9150-FDC220BC553F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{265F49F7-DAF6-42C1-AF1B-CFB2DA152F38}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{265F49F7-DAF6-42C1-AF1B-CFB2DA152F38}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{265F49F7-DAF6-42C1-AF1B-CFB2DA152F38}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E2AFACF-C1FE-497C-9150-FDC220BC553F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E2AFACF-C1FE-497C-9150-FDC220BC553F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E2AFACF-C1FE-497C-9150-FDC220BC553F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E2AFACF-C1FE-497C-9150-FDC220BC553F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -51,6 +57,7 @@ Global
 		{807125CC-2837-42E6-B227-101B7FF80C86} = {CC38BB06-33DB-4B86-91F3-6A0EA6A3734B}
 		{9BF788B6-9C79-4DE2-8788-29759CA068A7} = {CC38BB06-33DB-4B86-91F3-6A0EA6A3734B}
 		{265F49F7-DAF6-42C1-AF1B-CFB2DA152F38} = {CC38BB06-33DB-4B86-91F3-6A0EA6A3734B}
+		{3E2AFACF-C1FE-497C-9150-FDC220BC553F} = {CC38BB06-33DB-4B86-91F3-6A0EA6A3734B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0B711533-CC3B-4A23-AEAF-FF777A213BF0}
