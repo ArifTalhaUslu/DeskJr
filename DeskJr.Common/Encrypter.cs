@@ -5,11 +5,11 @@ namespace DeskJr.Common
 {
     public class Encrypter
     {
-        public static string EncryptPass(string password)
+        public static string EncryptString(string stringToBeEncrypted)
         {
             using (var md5 = MD5.Create())
             {
-                byte[] inputBytes = Encoding.ASCII.GetBytes(password);
+                byte[] inputBytes = Encoding.ASCII.GetBytes(stringToBeEncrypted);
                 byte[] hashBytes = md5.ComputeHash(inputBytes);
 
                 StringBuilder sb = new StringBuilder();
