@@ -49,38 +49,23 @@ namespace DeskJr.Api.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateLeaveRequest( LeaveRequestUpdateDTO leaveRequestDTO)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            try
+            var result = await _leaveRequestService.UpdateLeaveRequestAsync(leaveRequestDTO);
+            if (result)
             {
-                var result = await _leaveRequestService.UpdateLeaveRequestAsync(leaveRequestDTO);
-                if (result)
-                    return NoContent();
-                else
-                    return NotFound();
+                return Ok();
             }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
+            return BadRequest();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLeaveRequest(Guid id)
         {
-            try
-            {
-                var result = await _leaveRequestService.DeleteLeaveRequestAsync(id);
+             var result = await _leaveRequestService.DeleteLeaveRequestAsync(id);
                 if (result)
-                    return NoContent();
-                else
-                    return NotFound();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
+                {
+                    return Ok();
+                }
+                return NotFound();
         }
         [HttpGet("employee/{employeeId}")]
         public async Task<ActionResult<IEnumerable<LeaveRequestDTO>>> GetLeaveRequestsByEmployeeId(Guid employeeId)
