@@ -17,5 +17,7 @@ namespace DeskJr.Service.Dto.EmployeeDtos
         public EnumGender Gender { get; set; }
         public Guid? TitleId { get; set; }
         public Guid? TeamId { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
     }
 }

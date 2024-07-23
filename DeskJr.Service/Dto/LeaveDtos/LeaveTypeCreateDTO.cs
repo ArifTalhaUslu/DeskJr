@@ -1,12 +1,10 @@
 ﻿using System;
 namespace DeskJr.Service.Dto.LeaveDtos
 {
-    public class LeaveTypeDTO
+    public class LeaveTypeCreateDTO
     {
-        public Guid ID { get; set; }
         public string Name { get; set; }
         public int DefaultDays { get; set; }
-        public DateTime DateCreated { get; set; }
     }
 }
 
