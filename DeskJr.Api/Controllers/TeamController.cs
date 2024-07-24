@@ -1,7 +1,5 @@
 ﻿using DeskJr.Service.Abstract;
-using DeskJr.Service.Dto.EmployeeDtos;
-using DeskJr.Service.Dto.TeamDtos;
-using Microsoft.AspNetCore.Http;
+using DeskJr.Service.Dto;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DeskJr.Api.Controllers

@@ -1,5 +1,5 @@
 ﻿using System;
-namespace DeskJr.Service.Dto.EmployeeTitleDtos
+namespace DeskJr.Service.Dto
 {
 	public class CreateEmployeeTitleDto
 	{

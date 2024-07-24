@@ -1,6 +1,5 @@
 ﻿using System;
-using DeskJr.Service.Dto.EmployeeDtos;
-using DeskJr.Service.Dto.TeamDtos;
+using DeskJr.Service.Dto;
 
 namespace DeskJr.Service.Abstract
 {

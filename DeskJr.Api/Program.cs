@@ -1,4 +1,5 @@
 using DeskJr.Data;
+using DeskJr.Middlewares;
 using DeskJr.Repository.Abstract;
 using DeskJr.Repository.Concrete;
 using DeskJr.Service.Abstract;
@@ -47,6 +48,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 app.UseCors("AllowSpecificOrigin");
 app.UseHttpsRedirection();
 

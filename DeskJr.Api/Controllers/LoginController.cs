@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using DeskJr.Service.Abstract;
-using System.Threading.Tasks;
-using System;
-using DeskJr.Service.Dto.LoginDtos;
-using DeskJr.Service.Dto.EmployeeDtos;
+﻿using DeskJr.Service.Abstract;
+using DeskJr.Service.Dto;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DeskJr.Api.Controllers
 {
