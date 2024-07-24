@@ -51,7 +51,7 @@ namespace DeskJr.Api.Controllers
             return Ok(employeeTitle);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<ActionResult> UpdateEmployeeTitle(UpdateEmployeeTitleDto employeeTitleDto)
         {
             var result = await _employeeTitleService.UpdateEmployeeTitleAsync(employeeTitleDto);

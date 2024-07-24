@@ -12,9 +12,6 @@ namespace DeskJr.Entity.Models
         public int DefaultDays { get; set; }
         public DateTime DateCreated { get; set; }
 
-        // Navigation properties
-        public ICollection<LeaveAllocation> LeaveAllocations { get; set; }
-        public ICollection<LeaveRequest> LeaveRequests { get; set; }
-      
+        
     }
 }

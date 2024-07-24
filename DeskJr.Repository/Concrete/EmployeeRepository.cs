@@ -1,6 +1,7 @@
-﻿using CoordinateApp.Repositories.Concrete;
+﻿
 using DeskJr.Data;
 using DeskJr.Entity.Models;
+using DeskJr.Repositories.Concrete;
 using DeskJr.Repository.Abstract;
 using Microsoft.EntityFrameworkCore;
 

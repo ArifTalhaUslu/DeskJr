@@ -30,10 +30,10 @@ namespace DeskJr.Api.Controllers
             return Ok();
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteEmployee(Guid id)
+        [HttpDelete]
+        public async Task<ActionResult> DeleteEmployee(DeleteEmployeeDto deleteEmployeeDto)
         {
-            var result = await _employeeService.DeleteEmployeeAsync(id);
+            var result = await _employeeService.DeleteEmployeeAsync(deleteEmployeeDto.Id);
             if (result)
             {
                 return Ok();

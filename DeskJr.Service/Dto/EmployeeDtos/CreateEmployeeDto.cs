@@ -13,6 +13,8 @@ namespace DeskJr.Service.Dto
         public string Name { get; set; }
         public DateTime DayOfBirth { get; set; }
         public EnumGender Gender { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
     }
     public class GuidFormatAttribute : ValidationAttribute
     {

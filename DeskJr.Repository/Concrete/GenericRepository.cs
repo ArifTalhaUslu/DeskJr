@@ -4,7 +4,7 @@ using DeskJr.Entity.Models;
 using DeskJr.Repository.Abstract;
 using Microsoft.EntityFrameworkCore;
 
-namespace CoordinateApp.Repositories.Concrete;
+namespace DeskJr.Repositories.Concrete;
 
 public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 {

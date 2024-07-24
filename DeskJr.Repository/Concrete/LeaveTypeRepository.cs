@@ -1,18 +1,16 @@
 ﻿using System;
-
 using DeskJr.Data;
 using DeskJr.Entity.Models;
 using DeskJr.Repositories.Concrete;
 using DeskJr.Repository.Abstract;
-using Microsoft.EntityFrameworkCore;
 
 namespace DeskJr.Repository.Concrete
 {
-	public class TeamRepository : GenericRepository<Team>, ITeamRepository
+	public class LeaveTypeRepository: GenericRepository<LeaveType>, ILeaveTypeRepository
     {
         private readonly AppDbContext _context;
 
-        public TeamRepository(AppDbContext context) : base(context)
+        public LeaveTypeRepository(AppDbContext context) : base(context)
         {
             _context = context;
         }

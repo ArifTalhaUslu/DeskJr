@@ -13,6 +13,9 @@ namespace DeskJr.Data
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<EmployeeTitle> EmployeeTitles { get; set; }
+        public DbSet<LeaveRequest> LeaveRequests { get; set; }
+
+        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -20,8 +23,10 @@ namespace DeskJr.Data
             modelBuilder.Entity<EmployeeTitle>()
           .HasIndex(t => t.TitleName)
           .IsUnique();
+           
 
-            
+
+
         }
         /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
