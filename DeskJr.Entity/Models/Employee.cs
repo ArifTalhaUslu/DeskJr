@@ -1,4 +1,5 @@
-﻿using DeskJr.Entity.Types;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using DeskJr.Entity.Types;
 
 namespace DeskJr.Entity.Models
 {
@@ -13,8 +14,15 @@ namespace DeskJr.Entity.Models
         public Guid? TitleId { get; set; }
         public EmployeeTitle Title { get; set; }
 
+
         public Guid? TeamId { get; set; }
         public Team Team { get; set; }
+        [InverseProperty("RequestingEmployee")]
+        public ICollection<LeaveRequest> LeaveRequests { get; set; } 
+        public ICollection<LeaveAllocation> LeaveAllocations { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+
 
         public Employee()
         {

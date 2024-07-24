@@ -3,6 +3,7 @@ using DeskJr.Entity.Models;
 using DeskJr.Repository.Abstract;
 using DeskJr.Service.Abstract;
 using DeskJr.Service.Dto.EmployeeDtos;
+using DeskJr.Service.Dto.LeaveDtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,9 @@ namespace DeskJr.Service.Concrete
             var employee = _mapper.Map<Employee>(employeeDto);
             return await _employeeRepository.AddAsync(employee);
         }
+
+       
+
 
         public async Task<bool> DeleteEmployeeAsync(Guid id)
         {
