@@ -1,5 +1,4 @@
-﻿using System;
-using DeskJr.Data;
+﻿using DeskJr.Data;
 using DeskJr.Entity.Models;
 using DeskJr.Repositories.Concrete;
 using DeskJr.Repository.Abstract;
@@ -40,9 +39,9 @@ namespace DeskJr.Repository.Concrete
 
         //public async Task<List<LeaveRequest>> GetLeaveRequestsByEmployeeIdAsync(Guid employeeId)
         //{
-            //return await _context.LeaveRequests
-            //     .Where(lr => lr.RequestingEmployeeId == employeeId)
-          //       .ToListAsync();
+        //return await _context.LeaveRequests
+        //     .Where(lr => lr.RequestingEmployeeId == employeeId)
+        //       .ToListAsync();
         //}
 
         public async Task<List<LeaveRequest>> GetPendingLeaveRequestsAsync()

@@ -1,6 +1,5 @@
 ﻿using DeskJr.Service.Abstract;
 using DeskJr.Service.Dto.EmployeeDtos;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DeskJr.Api.Controllers
@@ -60,7 +59,7 @@ namespace DeskJr.Api.Controllers
         public async Task<ActionResult> UpdateEmployee(UpdateEmployeeDto employeeDto)
         {
             var result = await _employeeService.UpdateEmployeeAsync(employeeDto);
-            if(result)
+            if (result)
             {
                 return Ok();
             }

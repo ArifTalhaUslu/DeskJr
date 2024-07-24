@@ -4,7 +4,6 @@ using DeskJr.Data;
 using DeskJr.Entity.Models;
 
 using DeskJr.Repository.Abstract;
-using DeskJr.Repository.Concrete;
 using DeskJr.Service.Dto.LeaveDtos;
 using DeskJr.Services.Interfaces;
 
@@ -28,7 +27,7 @@ namespace DeskJr.Services.Concrete
 
         public async Task<bool> CreateLeaveRequestAsync(LeaveRequestCreateDTO leaveRequestDTO)
         {
-         
+
             var leaveRequest = _mapper.Map<LeaveRequest>(leaveRequestDTO);
             var requestingEmployee = await _employeeRepository.GetByIdAsync(leaveRequestDTO.RequestingEmployeeId);
 

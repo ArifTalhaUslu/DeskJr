@@ -1,11 +1,10 @@
-﻿using System;
-using DeskJr.Entity.Models;
+﻿using DeskJr.Entity.Models;
 
 namespace DeskJr.Repository.Abstract
 {
-	public interface ILeaveRequestRepository: IGenericRepository<LeaveRequest>
-	{
-       // Task<List<LeaveRequest>> GetLeaveRequestsByEmployeeIdAsync(Guid employeeId);
+    public interface ILeaveRequestRepository : IGenericRepository<LeaveRequest>
+    {
+        // Task<List<LeaveRequest>> GetLeaveRequestsByEmployeeIdAsync(Guid employeeId);
         Task<List<LeaveRequest>> GetPendingLeaveRequestsAsync();
         Task<List<LeaveRequest>> GetApprovedLeaveRequestsAsync();
         Task<List<LeaveRequest>> GetCancelledLeaveRequestsAsync();
