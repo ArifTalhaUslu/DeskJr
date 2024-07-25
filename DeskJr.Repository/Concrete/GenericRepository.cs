@@ -1,4 +1,5 @@
 ﻿
+using DeskJr.Common.Exceptions;
 using DeskJr.Entity.Models;
 using DeskJr.Repository.Abstract;
 using Microsoft.EntityFrameworkCore;
@@ -17,34 +18,45 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 
     public async Task<bool> AddAsync(T entity)
     {
-        await _dbSet.AddAsync(entity);
-        var affectedRowCount = await _context.SaveChangesAsync();
-        return affectedRowCount > 0;
+        try
+        {
+            await _dbSet.AddAsync(entity);
+            var affectedRowCount = await _context.SaveChangesAsync();
+            return affectedRowCount > 0;
+        }
+        catch (Exception ex)
+        {
+
+            throw;
+        }
     }
 
     public async Task<bool> UpdateAsync(T entity)
     {
         var affectedRowCount = 0;
         var dbTeam = await _dbSet.FindAsync(entity.ID);
-        if (dbTeam != null)
-        {
-            _context.Entry(dbTeam).CurrentValues.SetValues(entity);
 
-            affectedRowCount = await _context.SaveChangesAsync();
+        if (dbTeam == null)
+        {
+            throw new NotFoundException($"Employee with ID {entity.ID} not found");
         }
+
+        _context.Entry(dbTeam).CurrentValues.SetValues(entity);
+        affectedRowCount = await _context.SaveChangesAsync();
+        
         return affectedRowCount > 0;
     }
 
     public async Task<bool> DeleteAsync(Guid id)
     {
         var dbTeam = await _dbSet.FirstOrDefaultAsync(e => e.ID == id);
-        if (dbTeam != null)
+        if (dbTeam == null)
         {
+            throw new NotFoundException($"Employee with ID {id} not found");
+        }
             _dbSet.Remove(dbTeam);
             await _context.SaveChangesAsync();
             return true;
-        }
-        return false;
     }
 
     public async Task<List<T>> GetAllAsync()
@@ -56,6 +68,10 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     public async Task<T?> GetByIdAsync(Guid id)
     {
         var dbTeam = await _dbSet.FirstOrDefaultAsync(e => e.ID == id);
+        if (dbTeam == null)
+        {
+            throw new NotFoundException($"Employee with ID {id} not found");
+        }
         return dbTeam;
     }
 }

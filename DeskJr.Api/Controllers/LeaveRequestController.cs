@@ -1,4 +1,4 @@
-﻿using DeskJr.Service.Dto.LeaveDtos;
+﻿using DeskJr.Service.Dto;
 using DeskJr.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 

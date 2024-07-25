@@ -1,6 +1,6 @@
 ﻿using DeskJr.Service.Abstract;
-using DeskJr.Service.Dto.LeaveDtos;
 using Microsoft.AspNetCore.Mvc;
+using DeskJr.Service.Dto;
 
 namespace DeskJr.Api.Controllers
 {

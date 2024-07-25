@@ -1,6 +1,11 @@
 ﻿using DeskJr.Entity.Types;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace DeskJr.Service.Dto.EmployeeDtos
+namespace DeskJr.Service.Dto
 {
     public class CreateEmployeeDto
     {
@@ -9,5 +14,17 @@ namespace DeskJr.Service.Dto.EmployeeDtos
         public EnumGender Gender { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+    }
+
+    public class GuidFormatAttribute : ValidationAttribute
+    {
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            if (value != null && Guid.TryParse(value.ToString(), out _))
+            {
+                return ValidationResult.Success;
+            }
+            return new ValidationResult("The field must be a valid GUID.");
+        }
     }
 }

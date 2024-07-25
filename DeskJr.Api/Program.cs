@@ -1,6 +1,6 @@
 using System.Text;
 using DeskJr.Data;
-using DeskJr.Entity.Models;
+using DeskJr.Middlewares;
 using DeskJr.Repository.Abstract;
 using DeskJr.Repository.Concrete;
 using DeskJr.Service.Abstract;
@@ -63,6 +63,25 @@ builder.Services.AddScoped<ILeaveTypeRepository, LeaveTypeRepository>();
 builder.Services.AddScoped<ILeaveTypeService, LeaveTypeService>();
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -76,6 +95,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 app.UseCors("AllowSpecificOrigin");
 app.UseHttpsRedirection();
 
