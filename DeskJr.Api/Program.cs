@@ -1,16 +1,17 @@
-using System.Text;
 using DeskJr.Data;
 using DeskJr.Middlewares;
 using DeskJr.Repository.Abstract;
 using DeskJr.Repository.Concrete;
 using DeskJr.Service.Abstract;
 using DeskJr.Service.Concrete;
+using DeskJr.Service.Dto;
 using DeskJr.Service.Mapping;
 using DeskJr.Services.Concrete;
 using DeskJr.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

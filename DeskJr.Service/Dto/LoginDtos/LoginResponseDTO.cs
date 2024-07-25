@@ -1,6 +1,4 @@
-﻿using DeskJr.Service.Dto.EmployeeDtos;
-
-namespace DeskJr.Service.Dto.LoginDtos
+﻿namespace DeskJr.Service.Dto
 {
     public class LoginResponseDTO
     {

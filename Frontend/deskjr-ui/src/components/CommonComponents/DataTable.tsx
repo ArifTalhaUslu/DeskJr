@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import Button from "./Button";
-import { Row } from "react-bootstrap";
 
 interface DataTableProps {
   items: any[];
