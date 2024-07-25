@@ -18,9 +18,17 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 
     public async Task<bool> AddAsync(T entity)
     {
-        await _dbSet.AddAsync(entity);
-        var affectedRowCount = await _context.SaveChangesAsync();
-        return affectedRowCount > 0;
+        try
+        {
+            await _dbSet.AddAsync(entity);
+            var affectedRowCount = await _context.SaveChangesAsync();
+            return affectedRowCount > 0;
+        }
+        catch (Exception ex)
+        {
+
+            throw;
+        }
     }
 
     public async Task<bool> UpdateAsync(T entity)

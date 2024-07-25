@@ -1,12 +1,7 @@
 ﻿using DeskJr.Entity.Types;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace DeskJr.Service.Dto  
+namespace DeskJr.Service.Dto
 {
     public class CreateEmployeeDto
     {
@@ -16,6 +11,7 @@ namespace DeskJr.Service.Dto
         public string Email { get; set; }
         public string Password { get; set; }
     }
+
     public class GuidFormatAttribute : ValidationAttribute
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)

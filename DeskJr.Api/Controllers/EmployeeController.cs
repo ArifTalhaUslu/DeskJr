@@ -1,7 +1,6 @@
 ﻿using DeskJr.Common.Exceptions;
 using DeskJr.Service.Abstract;
 using DeskJr.Service.Dto;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DeskJr.Api.Controllers
@@ -21,7 +20,7 @@ namespace DeskJr.Api.Controllers
         public async Task<ActionResult> CreateEmployee(CreateEmployeeDto employeeDto)
         {
             var result = await _employeeService.AddEmployeeAsync(employeeDto);
-            
+
             if (!result)
             {
                 throw new BadRequestException("Employee could not be created.");
@@ -60,7 +59,7 @@ namespace DeskJr.Api.Controllers
         public async Task<ActionResult> UpdateEmployee(UpdateEmployeeDto employeeDto)
         {
             var result = await _employeeService.UpdateEmployeeAsync(employeeDto);
-            if(result)
+            if (result)
             {
                 return Ok();
             }

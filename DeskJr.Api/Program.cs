@@ -23,7 +23,6 @@ builder.Services.AddCors(options =>
                           .AllowAnyMethod());
 });
 
-
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -38,11 +37,6 @@ builder.Services.AddScoped<ILeaveRequestRepository, LeaveRequestRepository>();
 builder.Services.AddScoped<ILeaveRequestService, LeaveRequestService>();
 builder.Services.AddScoped<ILeaveTypeRepository, LeaveTypeRepository>();
 builder.Services.AddScoped<ILeaveTypeService, LeaveTypeService>();
-
-
-
-
-
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

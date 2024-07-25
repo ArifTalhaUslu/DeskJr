@@ -1,5 +1,4 @@
-﻿using System;
-namespace DeskJr.Service.Dto.EmployeeDtos
+﻿namespace DeskJr.Service.Dto
 {
     public class DeleteEmployeeDto
     {
