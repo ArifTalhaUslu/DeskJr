@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DeskJr.Data\DeskJr.Data.csproj" />
+    <ProjectReference Include="..\DeskJr.Middlewares\DeskJr.Middlewares.csproj" />
     <ProjectReference Include="..\DeskJr.Service\DeskJr.Service.csproj" />
     <ProjectReference Include="..\DeskJr.Repository\DeskJr.Repository.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>

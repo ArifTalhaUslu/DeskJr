@@ -1,4 +1,4 @@
-﻿namespace DeskJr.Entity.Models
+﻿namespace DeskJr.Service.Dto
 {
     public class JwtSettings
     {

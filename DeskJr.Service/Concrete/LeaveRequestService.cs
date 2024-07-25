@@ -1,12 +1,9 @@
 ﻿using AutoMapper;
 using DeskJr.Data;
-
 using DeskJr.Entity.Models;
-
 using DeskJr.Repository.Abstract;
-using DeskJr.Service.Dto.LeaveDtos;
+using DeskJr.Service.Dto;
 using DeskJr.Services.Interfaces;
-
 
 namespace DeskJr.Services.Concrete
 {

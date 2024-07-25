@@ -2,7 +2,13 @@
 using DeskJr.Entity.Models;
 using DeskJr.Repository.Abstract;
 using DeskJr.Service.Abstract;
-using DeskJr.Service.Dto.EmployeeTitleDtos;
+using DeskJr.Service.Dto;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Threading.Tasks;
 
 namespace DeskJr.Service.Concrete
 {

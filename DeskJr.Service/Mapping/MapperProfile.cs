@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
 using DeskJr.Entity.Models;
-using DeskJr.Service.Dto.EmployeeDtos;
-using DeskJr.Service.Dto.EmployeeTitleDtos;
-using DeskJr.Service.Dto.LeaveDtos;
-using DeskJr.Service.Dto.TeamDtos;
+using DeskJr.Service.Dto;
 
 namespace DeskJr.Service.Mapping
 {

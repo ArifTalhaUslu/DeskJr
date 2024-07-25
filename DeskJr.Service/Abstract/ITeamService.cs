@@ -1,4 +1,5 @@
-﻿using DeskJr.Service.Dto.TeamDtos;
+﻿using System;
+using DeskJr.Service.Dto;
 
 namespace DeskJr.Service.Abstract
 {

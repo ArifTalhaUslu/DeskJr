@@ -1,14 +1,12 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using AutoMapper;
-using DeskJr.Entity.Models;
-using DeskJr.Repository.Abstract;
-using DeskJr.Service.Dto.EmployeeDtos;
-using DeskJr.Service.Dto.LoginDtos;
+﻿using AutoMapper;
+using DeskJr.Service.Abstract;
+using DeskJr.Service.Dto;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace DeskJr.Api.Controllers
 {
@@ -17,13 +15,13 @@ namespace DeskJr.Api.Controllers
     public class LoginController : ControllerBase
     {
         private readonly JwtSettings _jwtSettings;
-        private readonly IEmployeeRepository _employeeRepository;
+        private readonly IEmployeeService _employeeService;
         private readonly IMapper _mapper;
 
-        public LoginController(IOptions<JwtSettings> jwtSettings, IEmployeeRepository employeeRepository, IMapper mapper)
+        public LoginController(IOptions<JwtSettings> jwtSettings, IEmployeeService employeeService, IMapper mapper)
         {
             _jwtSettings = jwtSettings.Value;
-            _employeeRepository = employeeRepository;
+            _employeeService = employeeService;
             _mapper = mapper;
         }
 
@@ -62,7 +60,7 @@ namespace DeskJr.Api.Controllers
                 issuer: _jwtSettings.Issuer,
                 audience: _jwtSettings.Audience,
                 claims: claims,
-                expires: DateTime.Now.AddHours(2),
+                expires: DateTime.Now.AddDays(7),
                 signingCredentials: credentials
             );
 
@@ -71,12 +69,11 @@ namespace DeskJr.Api.Controllers
 
         private async Task<EmployeeDto?> AuthenticationControlAsync(LoginRequestDTO loginRequest)
         {
-            var employee = await _employeeRepository.GetEmployeeByEmailAsync(loginRequest.Email);
-            var employeeDto = _mapper.Map<EmployeeDto>(employee);
+            var employee = await _employeeService.GetEmployeeByEmailAsync(loginRequest.Email);
 
-            if (employeeDto != null && employeeDto.Password == loginRequest.Password)
+            if (employee != null && employee.Password == loginRequest.Password)
             {
-                return employeeDto;
+                return employee;
             }
 
             return null;

@@ -1,4 +1,4 @@
-﻿using DeskJr.Service.Dto.LeaveDtos;
+﻿using DeskJr.Service.Dto;
 
 namespace DeskJr.Service.Abstract
 {

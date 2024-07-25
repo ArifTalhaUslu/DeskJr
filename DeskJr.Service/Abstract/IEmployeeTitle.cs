@@ -1,4 +1,4 @@
-﻿using DeskJr.Service.Dto.EmployeeTitleDtos;
+﻿using DeskJr.Service.Dto;
 
 namespace DeskJr.Service.Abstract
 {
