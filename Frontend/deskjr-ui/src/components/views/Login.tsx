@@ -1,23 +1,31 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Input from "../CommonComponents/Input";
 import Button from "../CommonComponents/Button";
 import Card from "../CommonComponents/Card";
-import loginService from "../../services/LoginService";
+import { useDispatch, useSelector } from "react-redux";
+import { LoginForm } from "../../types/user";
+import { login } from "../../store/actions/userActions";
+import { AppState } from "../../store";
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
 
+    const dispatch = useDispatch();
+
+    const { data, loading, error } = useSelector((state: AppState) => state.user);
+
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
-        await loginService.login({ email, password })
-            .then((data: any) => {
-                console.log(data);
-            })
-            .catch((err: any) => {
-                console.log(err);
-            });
+        const formData: LoginForm = { email, password };
+        dispatch(login(formData));
     };
+
+    useEffect(() => {
+        if (data.email) {
+            console.log("Login Başarılı");
+        }
+    }, [data.email]);
 
     return (
         <div className="container">
@@ -34,6 +42,7 @@ const Login: React.FC = () => {
                                     value={email}
                                     onChange={setEmail}
                                     required
+                                    placeholder="Enter your email"
                                 />
                             </div>
                             <div className="form-group">
@@ -45,10 +54,13 @@ const Login: React.FC = () => {
                                     value={password}
                                     onChange={setPassword}
                                     required
+                                    placeholder="Enter your password"
                                 />
                             </div>
                             <Button type="submit" text="Login" />
                         </form>
+                        {loading && <p>Loading...</p>}
+                        {error && <p>{error}</p>}
                     </Card>
                 </div>
             </div>

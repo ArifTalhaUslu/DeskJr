@@ -6,7 +6,7 @@ export interface AppState {
     user: UserState;
 }
 
-const rootReducer = combineReducers<AppState>({
+const rootReducer = combineReducers({
     user: userReducer,
 });
 
