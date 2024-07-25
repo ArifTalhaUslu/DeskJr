@@ -1,4 +1,5 @@
-﻿namespace DeskJr.Service.Dto.LeaveDtos
+﻿using System;
+namespace DeskJr.Service.Dto
 {
     public class LeaveTypeUpdateDTO
     {

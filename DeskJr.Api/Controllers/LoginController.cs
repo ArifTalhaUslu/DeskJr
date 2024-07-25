@@ -1,14 +1,6 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using AutoMapper;
-using DeskJr.Entity.Models;
-using DeskJr.Repository.Abstract;
-using DeskJr.Service.Dto.EmployeeDtos;
-using DeskJr.Service.Dto.LoginDtos;
+﻿using DeskJr.Service.Abstract;
+using DeskJr.Service.Dto;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 
 namespace DeskJr.Api.Controllers
 {

@@ -2,7 +2,7 @@
 using DeskJr.Entity.Models;
 using DeskJr.Repository.Abstract;
 using DeskJr.Service.Abstract;
-using DeskJr.Service.Dto.LeaveDtos;
+using DeskJr.Service.Dto;
 
 namespace DeskJr.Service.Concrete
 {

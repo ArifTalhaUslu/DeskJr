@@ -1,6 +1,6 @@
 ﻿using DeskJr.Entity.Types;
 
-namespace DeskJr.Service.Dto.EmployeeDtos
+namespace DeskJr.Service.Dto
 {
     public class EmployeeDto
     {

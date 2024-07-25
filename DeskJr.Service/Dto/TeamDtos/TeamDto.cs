@@ -1,4 +1,5 @@
-﻿namespace DeskJr.Service.Dto.TeamDtos
+﻿using System;
+namespace DeskJr.Service.Dto
 {
     public class TeamDto
     {
