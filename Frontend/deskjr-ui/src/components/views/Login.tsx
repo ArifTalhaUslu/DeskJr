@@ -4,8 +4,8 @@ import Button from "../CommonComponents/Button";
 import Card from "../CommonComponents/Card";
 import { useDispatch, useSelector } from "react-redux";
 import { LoginForm } from "../../types/user";
-import { login } from "../../store/actions/userActions";
 import { AppState } from "../../store";
+import { login } from "../../store/actions/userActions";
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState<string>("");
@@ -59,8 +59,6 @@ const Login: React.FC = () => {
                             </div>
                             <Button type="submit" text="Login" />
                         </form>
-                        {loading && <p>Loading...</p>}
-                        {error && <p>{error}</p>}
                     </Card>
                 </div>
             </div>
