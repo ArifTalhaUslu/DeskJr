@@ -2,12 +2,7 @@
 using DeskJr.Entity.Models;
 using DeskJr.Repository.Abstract;
 using DeskJr.Service.Abstract;
-using DeskJr.Service.Dto.EmployeeDtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DeskJr.Service.Dto;
 
 namespace DeskJr.Service.Concrete
 {
@@ -22,12 +17,23 @@ namespace DeskJr.Service.Concrete
             _mapper = mapper;
         }
 
-        public async Task<bool> AddEmployeeAsync(CreateEmployeeDto employeeDto)
+        public async Task<bool> AddOrUpdateEmployeeAsync(UpdateEmployeeDto employeeDto)
         {
             var employee = _mapper.Map<Employee>(employeeDto);
-            return await _employeeRepository.AddAsync(employee);
+           
+            if (employeeDto.ID != null)
+            {
+                Console.WriteLine("UPDATE");
+                return await _employeeRepository.UpdateAsync(employee);
+            }
+            else
+            {
+                Console.WriteLine("create");
+                return await _employeeRepository.AddAsync(employee);
+            }
         }
 
+       
         public async Task<bool> DeleteEmployeeAsync(Guid id)
         {
             return await _employeeRepository.DeleteAsync(id);
@@ -56,6 +62,12 @@ namespace DeskJr.Service.Concrete
             var employee = _mapper.Map<Employee>(employeeDto);
             return await _employeeRepository.UpdateAsync(employee);
         }
+
+        public async Task<EmployeeDto?> GetEmployeeByEmailAsync(string email)
+        {
+            var employee = await _employeeRepository.GetEmployeeByEmailAsync(email);
+            return _mapper.Map<EmployeeDto>(employee);
+        }
     }
-    }
+}
 

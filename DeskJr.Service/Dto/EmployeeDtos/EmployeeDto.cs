@@ -1,12 +1,6 @@
-﻿using DeskJr.Entity.Models;
-using DeskJr.Entity.Types;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DeskJr.Entity.Types;
 
-namespace DeskJr.Service.Dto.EmployeeDtos
+namespace DeskJr.Service.Dto
 {
     public class EmployeeDto
     {
@@ -17,5 +11,7 @@ namespace DeskJr.Service.Dto.EmployeeDtos
         public EnumGender Gender { get; set; }
         public Guid? TitleId { get; set; }
         public Guid? TeamId { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
     }
 }

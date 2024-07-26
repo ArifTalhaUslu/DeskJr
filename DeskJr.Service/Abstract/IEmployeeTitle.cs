@@ -1,11 +1,4 @@
-﻿using DeskJr.Entity.Models;
-using DeskJr.Service.Dto.EmployeeDtos;
-using DeskJr.Service.Dto.EmployeeTitleDtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DeskJr.Service.Dto;
 
 namespace DeskJr.Service.Abstract
 {

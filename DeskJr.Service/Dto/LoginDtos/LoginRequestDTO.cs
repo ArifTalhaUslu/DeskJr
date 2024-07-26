@@ -1,8 +1,8 @@
-﻿namespace DeskJr.Service.Dto.LoginDtos
+﻿namespace DeskJr.Service.Dto
 {
     public class LoginRequestDTO
     {
-        public Guid Id { get; set; }
+        public string Email { get; set; }
         public string Password { get; set; }
 
     }

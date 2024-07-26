@@ -2,24 +2,21 @@ import React, { useState } from "react";
 import Input from "../CommonComponents/Input";
 import Button from "../CommonComponents/Button";
 import Card from "../CommonComponents/Card";
-import LoginService from "../../services/LoginService";
-
-// Yapıyı kullanmak için Kullanıcı adı: GUID ID ve password :"kullanıcı adı" consoleda bilgiler döner
+import loginService from "../../services/LoginService";
 
 const Login: React.FC = () => {
-    const [username, setUsername] = useState<string>("");
+    const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
-        try {
-            const response = await LoginService.login(username, password);
-            console.log(response);
-        } catch {
-            console.log(
-                "ID ve ya Şifre başarısız.. UserName: GUID ID password: Kullanıcı Adı"
-            );
-        }
+        await loginService.login({ email, password })
+            .then((data: any) => {
+                console.log(data);
+            })
+            .catch((err: any) => {
+                console.log(err);
+            });
     };
 
     return (
@@ -29,13 +26,13 @@ const Login: React.FC = () => {
                     <Card title="Login">
                         <form onSubmit={handleSubmit}>
                             <div className="form-group">
-                                <label htmlFor="username">Username</label>
+                                <label htmlFor="email">Email</label>
                                 <Input
                                     type="text"
                                     className="form-control"
-                                    id="username"
-                                    value={username}
-                                    onChange={setUsername}
+                                    id="email"
+                                    value={email}
+                                    onChange={setEmail}
                                     required
                                 />
                             </div>
