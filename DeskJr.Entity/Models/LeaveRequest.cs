@@ -1,4 +1,7 @@
-﻿namespace DeskJr.Entity.Models
+﻿using DeskJr.Entity.Types;
+
+namespace DeskJr.Entity.Models
+
 {
     public class LeaveRequest : BaseEntity
     {
@@ -19,6 +22,8 @@
         public DateTime DateActioned { get; set; }
         public bool? Approved { get; set; }
         public bool Cancelled { get; set; }
+        public  EnumStatusOfLeave StatusOfLeave { get; set; }
+
 
         public Guid? ApprovedById { get; set; }
         public Employee ApprovedBy { get; set; }

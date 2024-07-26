@@ -22,7 +22,7 @@ namespace DeskJr.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "LeaveType",
+                name: "LeaveTypes",
                 columns: table => new
                 {
                     ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -32,7 +32,7 @@ namespace DeskJr.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LeaveType", x => x.ID);
+                    table.PrimaryKey("PK_LeaveTypes", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -98,9 +98,9 @@ namespace DeskJr.Data.Migrations
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_LeaveAllocation_LeaveType_LeaveTypeId",
+                        name: "FK_LeaveAllocation_LeaveTypes_LeaveTypeId",
                         column: x => x.LeaveTypeId,
-                        principalTable: "LeaveType",
+                        principalTable: "LeaveTypes",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -119,6 +119,7 @@ namespace DeskJr.Data.Migrations
                     DateActioned = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Approved = table.Column<bool>(type: "bit", nullable: true),
                     Cancelled = table.Column<bool>(type: "bit", nullable: false),
+                    StatusOfLeave = table.Column<int>(type: "int", nullable: false),
                     ApprovedById = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
@@ -136,9 +137,9 @@ namespace DeskJr.Data.Migrations
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_LeaveRequests_LeaveType_LeaveTypeId",
+                        name: "FK_LeaveRequests_LeaveTypes_LeaveTypeId",
                         column: x => x.LeaveTypeId,
-                        principalTable: "LeaveType",
+                        principalTable: "LeaveTypes",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -197,7 +198,7 @@ namespace DeskJr.Data.Migrations
                 name: "Employees");
 
             migrationBuilder.DropTable(
-                name: "LeaveType");
+                name: "LeaveTypes");
 
             migrationBuilder.DropTable(
                 name: "EmployeeTitles");

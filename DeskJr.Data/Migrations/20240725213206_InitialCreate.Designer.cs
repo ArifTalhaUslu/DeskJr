@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DeskJr.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240722203136_InitialCreate")]
+    [Migration("20240725213206_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -152,6 +152,9 @@ namespace DeskJr.Data.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("StatusOfLeave")
+                        .HasColumnType("int");
+
                     b.HasKey("ID");
 
                     b.HasIndex("ApprovedById");
@@ -181,7 +184,7 @@ namespace DeskJr.Data.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("LeaveType");
+                    b.ToTable("LeaveTypes");
                 });
 
             modelBuilder.Entity("DeskJr.Entity.Models.Team", b =>
