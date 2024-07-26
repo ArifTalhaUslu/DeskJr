@@ -10,6 +10,8 @@ interface DataTableProps {
   isDeletable?: (item: any) => boolean;
   hiddenColumns?: string[];
   renderColumn?: (column: string, value: any) => JSX.Element | string;
+  dataTarget?:string;
+  columnNames?:{[key: string]: string};
 }
 
 function DataTable({
@@ -21,10 +23,11 @@ function DataTable({
   isDeletable,
   hiddenColumns = [],
   renderColumn,
+  dataTarget,
+  columnNames = {},
 }: DataTableProps) {
   const [records, setRecords] = useState<any>([]);
   const [columns, setColumns] = useState<string[]>([]);
-
   useEffect(() => {
     if (items && items.length > 0) {
       const firstItem = items[0];
@@ -48,6 +51,8 @@ function DataTable({
                 text="Edit"
                 className={"btn btn-warning mr-2"}
                 onClick={() => onEdit(record)}
+                isModalTrigger={true}
+                dataTarget={dataTarget}
               ></Button>
             )}
             {isDeletable && isDeletable(record) && onDelete && (
@@ -55,6 +60,8 @@ function DataTable({
                 text="Delete"
                 className={"btn btn-danger"}
                 onClick={() => onDelete(record)}
+                isModalTrigger={true}
+                dataTarget={"delete-confirm"}
               ></Button>
             )}
           </td>
@@ -81,7 +88,7 @@ function DataTable({
         <tr>
           {columns.map((column) => (
             <th className="text-center" key={column}>
-              {column}
+              {columnNames[column] || column}
             </th>
           ))}
         </tr>

@@ -17,11 +17,10 @@ namespace DeskJr.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateEmployee(CreateEmployeeDto employeeDto)
+        public async Task<ActionResult> CreateOrUpdateEmployee(UpdateEmployeeDto employeeDto)
         {
-            var result = await _employeeService.AddEmployeeAsync(employeeDto);
-
-            if (!result)
+            var result = await _employeeService.AddOrUpdateEmployeeAsync(employeeDto);
+            if (result)
             {
                 throw new BadRequestException("Employee could not be created.");
             }

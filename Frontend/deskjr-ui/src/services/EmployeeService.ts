@@ -14,14 +14,20 @@ class EmployeeService {
         return response.data;
     }
 
+    public async addOrUpdateEmployee(employee:any) {
+        const response = await axios.post(baseUrl, employee);
+        return response.data;
+    }
 
     public async updateEmployee(employee:any) {
         const response = await axios.put(baseUrl, employee);
         return response.data;
     }
 
-    public async deleteEmployee(id: any) {
-        const response = await axios.delete(`${baseUrl}/${id}`);
+    public async deleteEmployee(id:any) {
+        const response = await axios.delete(`${baseUrl}`, {
+            data: { id: id }
+        });
         return response.data;
     }
 }

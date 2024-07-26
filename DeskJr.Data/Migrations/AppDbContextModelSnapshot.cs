@@ -62,7 +62,7 @@ namespace DeskJr.Data.Migrations
 
                     b.HasIndex("TitleId");
 
-                    b.ToTable("Employees");
+                    b.ToTable("Employees", (string)null);
                 });
 
             modelBuilder.Entity("DeskJr.Entity.Models.EmployeeTitle", b =>
@@ -80,7 +80,7 @@ namespace DeskJr.Data.Migrations
                     b.HasIndex("TitleName")
                         .IsUnique();
 
-                    b.ToTable("EmployeeTitles");
+                    b.ToTable("EmployeeTitles", (string)null);
                 });
 
             modelBuilder.Entity("DeskJr.Entity.Models.LeaveAllocation", b =>
@@ -110,7 +110,7 @@ namespace DeskJr.Data.Migrations
 
                     b.HasIndex("LeaveTypeId");
 
-                    b.ToTable("LeaveAllocation");
+                    b.ToTable("LeaveAllocation", (string)null);
                 });
 
             modelBuilder.Entity("DeskJr.Entity.Models.LeaveRequest", b =>
@@ -161,7 +161,7 @@ namespace DeskJr.Data.Migrations
 
                     b.HasIndex("RequestingEmployeeId");
 
-                    b.ToTable("LeaveRequests");
+                    b.ToTable("LeaveRequests", (string)null);
                 });
 
             modelBuilder.Entity("DeskJr.Entity.Models.LeaveType", b =>
@@ -182,7 +182,11 @@ namespace DeskJr.Data.Migrations
 
                     b.HasKey("ID");
 
+<<<<<<< HEAD
                     b.ToTable("LeaveTypes");
+=======
+                    b.ToTable("LeaveType", (string)null);
+>>>>>>> master
                 });
 
             modelBuilder.Entity("DeskJr.Entity.Models.Team", b =>
@@ -200,7 +204,7 @@ namespace DeskJr.Data.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Teams");
+                    b.ToTable("Teams", (string)null);
                 });
 
             modelBuilder.Entity("DeskJr.Entity.Models.Employee", b =>
