@@ -40,7 +40,7 @@ const Employee: any = () => {
   };
 
   const handleEdit = (employee: any) => {
-    setSelectedItemId(employee.id);
+    if(employee.id)setSelectedItemId(employee.id);
     setModalModeName("Update");
   };
 

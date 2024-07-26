@@ -17,6 +17,7 @@ const EmployeeEditForm: any = (props: any) => {
 
   useEffect(() => {
     if (props.selectedItemId) {
+      alert(props.selectedItemId)
       employeeService.getEmployeeById(props.selectedItemId).then((data) => {
         props.setSelectedEmployee(data);
       });
@@ -41,9 +42,7 @@ const EmployeeEditForm: any = (props: any) => {
   const handleSubmit = (e: any) => {
     e.preventDefault();
     employeeService
-      .addOrUpdateEmployee({
-        ...props.selectedEmployee,
-      })
+      .addOrUpdateEmployee(props.selectedEmployee)
       .then(() => {
         alert("success");
       }).catch((err:any) => {
