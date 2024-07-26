@@ -1,12 +1,27 @@
-const Home = (props:any) => {
+import { useState, useEffect } from 'react';
+import EmployeeService from '../../services/EmployeeService';
 
+const Home = (props: any) => {
+    const id = 'guid-from-db'
+    const [employee, setEmployee] = useState<any>(null);
+    useEffect(() => {
+        const fetchedEmployee = async () => {
+            try {
+                const fetchedEmployeeData = await EmployeeService.getEmployeeById(id);
+                setEmployee(fetchedEmployeeData);
+            }
+            catch (error) {
+                console.error("Error fetching employee data: ", error);
+            }
+        };
+        fetchedEmployee();
+    }, [id]);
     return <>
         <div className="container">
             <div className="row">
                 <div className="col-12">
                     <div className="p-3 my-3 bg-primary text-white">
-                        <h1 className="mt-4">Employee.Name</h1>
-                        <h4>Employee.Title</h4>
+                        <h1 className="mt-4">{employee ? employee.name : 'Loading...'}</h1>
                     </div>
                 </div>
                 <div className="col-md-6">
