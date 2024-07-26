@@ -42,7 +42,6 @@ namespace DeskJr.Api.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<ActionResult> GetAllEmployee()
         {
             var employees = await _employeeService.GetAllEmployeesAsync();
