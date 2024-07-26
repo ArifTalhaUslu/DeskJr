@@ -1,6 +1,7 @@
 ﻿using DeskJr.Common.Exceptions;
 using DeskJr.Service.Abstract;
 using DeskJr.Service.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DeskJr.Api.Controllers
@@ -42,6 +43,7 @@ namespace DeskJr.Api.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult> GetAllEmployee()
         {
             var employees = await _employeeService.GetAllEmployeesAsync();

@@ -1,5 +1,4 @@
 import { ThunkDispatch } from "redux-thunk";
-
 export interface User {
     id: string;
     name: string;

@@ -17,5 +17,5 @@ export const login = (creds: LoginForm) => async (dispatch: UserDispatch) => {
         })
         .catch((err: any) => {
             dispatch({ type: "LOGIN_ERROR" });
-        });
+        }); 
 };

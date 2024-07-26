@@ -1,57 +1,33 @@
-import { useEffect, useState, createContext, useContext } from "react";
-import employeeService from "../../services/EmployeeService";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { GetEmployees} from "../../store/actions/employeeActions";
 import Card from "../CommonComponents/Card";
 import Board from "../CommonComponents/Board";
+import { AppState } from "../../store";
 
-
-const Employee: any = () => {
-  const [items, setItems] = useState([]);
+const Employee: React.FC = () => {
+  const dispatch = useDispatch();
+  const { data: employees, loading, error } = useSelector((state: AppState) => state.employee);
 
   useEffect(() => {
-    getList();
-  }, []);
+    dispatch(GetEmployees());
+  }, [dispatch]);
 
-  const getList = async () => {
-    employeeService.getAllEmployee().then((data) => {
-      setItems(data);
-    });
+
+
+  const isEditable = (employee: any) => {
+    return true; // Add your custom logic for editable condition
   };
 
-  const handleEdit = async (employee: any) => {
-    employeeService.updateEmployee(employee).then((data) => {});
-    //console.log("Edit item:", item);
-    //kullanım örneği :
-    //service.updateItem(item);
-  };
-
-  const handleDelete = async (id: any) => {
-    employeeService.deleteEmployee(id).then((data) => {});
-    //console.log("Delete item:", item);
-    //kullanım örneği :
-    //service.deleteItem(item.id);
-  };
-
-  const isEditable = (item: any) => {
-    
-    //kayıtlarda güncelleme yapılacak ise hangi şartı sağlaması gerektiğinin seçimidir. şart için true dönmek o durumu editable yapar
-    //örneğin:
-    //if (item.isBoss) return false; //bu durum için açıklama : isBoss özelliği true olan kayıtlar uneditable durumundadır.
-    return true;
-  };
-
-  const isDeletable = (item: any) => {
-    //kayıtlarda silme yapılacak ise hangi şartı sağlaması gerektiğinin seçimidir. şart için true dönmek o durumu editable yapar
-    return true;
+  const isDeletable = (employee: any) => {
+    return true; // Add your custom logic for deletable condition
   };
 
   const renderColumn = (column: string, value: any) => {
-    //bu ise column customize işlemi için
     if (typeof value === "boolean") {
-      // mesela bool değerler için custom cell body
       return value ? <b>Yes</b> : <b>No</b>;
     }
-    if (column == "age") {
-      //veya tasarımsal customization
+    if (column === "age") {
       return (
         value && (
           <i>
@@ -65,22 +41,26 @@ const Employee: any = () => {
     return value;
   };
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   return (
-    <>
-      <Card title={"Employee List"}>
-        <Board
-          items={items}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-          isEditable={isEditable}
-          isDeletable={isDeletable}
-          hiddenColumns={["id"]}
-          renderColumn={renderColumn}
-          hasNewRecordButton={true}
-          newRecordButtonOnClick={() => { }}
-        />
-      </Card>
-    </>
+    <Card title="Employee List">
+      <Board
+        items={employees}
+        isEditable={isEditable}
+        isDeletable={isDeletable}
+        hiddenColumns={["id"]}
+        renderColumn={renderColumn}
+        hasNewRecordButton={true}
+        newRecordButtonOnClick={() => { /* Add new record logic here */ }}
+      />
+    </Card>
   );
 };
 

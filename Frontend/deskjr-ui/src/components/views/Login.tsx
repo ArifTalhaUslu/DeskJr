@@ -6,11 +6,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { LoginForm } from "../../types/user";
 import { AppState } from "../../store";
 import { login } from "../../store/actions/userActions";
+import { useNavigate } from 'react-router-dom';
 
 const Login: React.FC = () => {
+    
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
 
+    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const { data, loading, error } = useSelector((state: AppState) => state.user);
@@ -26,6 +29,8 @@ const Login: React.FC = () => {
             console.log("Login Başarılı");
         }
     }, [data.email]);
+
+    
 
     return (
         <div className="container">
