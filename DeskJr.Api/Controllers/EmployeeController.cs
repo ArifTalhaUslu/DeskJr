@@ -1,6 +1,7 @@
 ﻿using DeskJr.Common.Exceptions;
 using DeskJr.Service.Abstract;
 using DeskJr.Service.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DeskJr.Api.Controllers

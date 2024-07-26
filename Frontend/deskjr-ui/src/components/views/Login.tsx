@@ -1,23 +1,36 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Input from "../CommonComponents/Input";
 import Button from "../CommonComponents/Button";
 import Card from "../CommonComponents/Card";
-import loginService from "../../services/LoginService";
+import { useDispatch, useSelector } from "react-redux";
+import { LoginForm } from "../../types/user";
+import { AppState } from "../../store";
+import { login } from "../../store/actions/userActions";
+import { useNavigate } from 'react-router-dom';
 
 const Login: React.FC = () => {
+    
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
 
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const { data, loading, error } = useSelector((state: AppState) => state.user);
+
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
-        await loginService.login({ email, password })
-            .then((data: any) => {
-                console.log(data);
-            })
-            .catch((err: any) => {
-                console.log(err);
-            });
+        const formData: LoginForm = { email, password };
+        dispatch(login(formData));
     };
+
+    useEffect(() => {
+        if (data.email) {
+            console.log("Login Başarılı");
+        }
+    }, [data.email]);
+
+    
 
     return (
         <div className="container">
@@ -34,6 +47,7 @@ const Login: React.FC = () => {
                                     value={email}
                                     onChange={setEmail}
                                     required
+                                    placeholder="Enter your email"
                                 />
                             </div>
                             <div className="form-group">
@@ -45,6 +59,7 @@ const Login: React.FC = () => {
                                     value={password}
                                     onChange={setPassword}
                                     required
+                                    placeholder="Enter your password"
                                 />
                             </div>
                             <Button type="submit" text="Login" />
