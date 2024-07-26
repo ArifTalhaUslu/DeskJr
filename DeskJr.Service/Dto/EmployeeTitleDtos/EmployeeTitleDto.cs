@@ -1,8 +1,7 @@
-﻿using System;
-namespace DeskJr.Service.Dto.EmployeeTitleDtos
+﻿namespace DeskJr.Service.Dto
 {
-	public class EmployeeTitleDto
-	{
+    public class EmployeeTitleDto
+    {
         public Guid ID { get; set; }
         public string TitleName { get; set; }
     }

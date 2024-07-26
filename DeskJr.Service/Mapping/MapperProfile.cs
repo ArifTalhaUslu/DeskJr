@@ -1,10 +1,6 @@
 ﻿using AutoMapper;
 using DeskJr.Entity.Models;
 using DeskJr.Service.Dto;
-using DeskJr.Service.Dto.EmployeeDtos;
-using DeskJr.Service.Dto.EmployeeTitleDtos;
-using DeskJr.Service.Dto.LeaveDtos;
-using DeskJr.Service.Dto.TeamDtos;
 
 namespace DeskJr.Service.Mapping
 {
@@ -27,8 +23,6 @@ namespace DeskJr.Service.Mapping
             CreateMap<LeaveRequest, LeaveRequestDTO>().ReverseMap();
             CreateMap<LeaveRequest, LeaveRequestCreateDTO>().ReverseMap();
             CreateMap<LeaveRequest, LeaveRequestUpdateDTO>().ReverseMap();
-
-
         }
     }
 }

@@ -1,9 +1,6 @@
-﻿using DeskJr.Service.Dto.EmployeeDtos;
-using DeskJr.Service.Dto.LeaveDtos;
+﻿using DeskJr.Service.Dto;
 using DeskJr.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
 
 namespace DeskJr.Api.Controllers
 {
@@ -47,7 +44,7 @@ namespace DeskJr.Api.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateLeaveRequest( LeaveRequestUpdateDTO leaveRequestDTO)
+        public async Task<IActionResult> UpdateLeaveRequest(LeaveRequestUpdateDTO leaveRequestDTO)
         {
             var result = await _leaveRequestService.UpdateLeaveRequestAsync(leaveRequestDTO);
             if (result)
@@ -60,12 +57,12 @@ namespace DeskJr.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLeaveRequest(Guid id)
         {
-             var result = await _leaveRequestService.DeleteLeaveRequestAsync(id);
-                if (result)
-                {
-                    return Ok();
-                }
-                return NotFound();
+            var result = await _leaveRequestService.DeleteLeaveRequestAsync(id);
+            if (result)
+            {
+                return Ok();
+            }
+            return NotFound();
         }
         [HttpGet("employee/{employeeId}")]
         public async Task<ActionResult<IEnumerable<LeaveRequestDTO>>> GetLeaveRequestsByEmployeeId(Guid employeeId)

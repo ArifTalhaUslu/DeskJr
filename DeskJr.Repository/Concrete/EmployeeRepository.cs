@@ -11,7 +11,7 @@ namespace DeskJr.Repository.Concrete
     {
         private readonly AppDbContext _context;
 
-        public EmployeeRepository(AppDbContext context): base(context)
+        public EmployeeRepository(AppDbContext context) : base(context)
         {
             _context = context;
         }
@@ -21,6 +21,10 @@ namespace DeskJr.Repository.Concrete
         {
             return await _context.Employees.Where(e => e.TeamId == teamId).ToListAsync();
         }
+        public async Task<Employee?> GetEmployeeByEmailAsync(string email)
+        {
+            return await _context.Employees.FirstOrDefaultAsync(e => e.Email == email);
+        }
     }
-    
+
 }

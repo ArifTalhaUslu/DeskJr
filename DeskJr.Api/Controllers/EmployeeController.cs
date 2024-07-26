@@ -1,12 +1,12 @@
-﻿using DeskJr.Service.Abstract;
-using DeskJr.Service.Dto.EmployeeDtos;
-using Microsoft.AspNetCore.Http;
+﻿using DeskJr.Common.Exceptions;
+using DeskJr.Service.Abstract;
+using DeskJr.Service.Dto;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DeskJr.Api.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class EmployeeController : ControllerBase
     {
         private readonly IEmployeeService _employeeService;
@@ -19,13 +19,13 @@ namespace DeskJr.Api.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateOrUpdateEmployee(UpdateEmployeeDto employeeDto)
         {
-            Console.WriteLine(employeeDto);
             var result = await _employeeService.AddOrUpdateEmployeeAsync(employeeDto);
             if (result)
             {
-                return Ok();
+                throw new BadRequestException("Employee could not be created.");
             }
-            return BadRequest();
+
+            return Ok();
         }
 
         [HttpDelete]
@@ -36,6 +36,7 @@ namespace DeskJr.Api.Controllers
             {
                 return Ok();
             }
+
             return NotFound();
         }
 
@@ -50,21 +51,18 @@ namespace DeskJr.Api.Controllers
         public async Task<ActionResult> GetEmployeeById(Guid id)
         {
             var employee = await _employeeService.GetEmployeeByIdAsync(id);
-            if (employee != null)
-            {
-                return Ok(employee);
-            }
-            return BadRequest("Employee not found.");
+            return Ok(employee);
         }
 
         [HttpPut]
         public async Task<ActionResult> UpdateEmployee(UpdateEmployeeDto employeeDto)
         {
             var result = await _employeeService.UpdateEmployeeAsync(employeeDto);
-            if(result)
+            if (result)
             {
                 return Ok();
             }
+
             return BadRequest();
         }
         [HttpGet("teams/{teamId}/employees")]

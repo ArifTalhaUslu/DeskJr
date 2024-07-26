@@ -1,8 +1,8 @@
 ﻿using System;
-namespace DeskJr.Service.Dto.LeaveDtos
+namespace DeskJr.Service.Dto
 {
-	public class LeaveRequestDTO
-	{
+    public class LeaveRequestDTO
+    {
         public Guid ID { get; set; }
         public Guid RequestingEmployeeId { get; set; }
         public DateTime StartDate { get; set; }

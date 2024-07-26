@@ -1,5 +1,5 @@
 ﻿using System;
-namespace DeskJr.Service.Dto.TeamDtos
+namespace DeskJr.Service.Dto
 {
 	public class UpdateTeamDto
 	{

@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.31" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.31">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -16,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DeskJr.Data\DeskJr.Data.csproj" />
+    <ProjectReference Include="..\DeskJr.Middlewares\DeskJr.Middlewares.csproj" />
     <ProjectReference Include="..\DeskJr.Service\DeskJr.Service.csproj" />
     <ProjectReference Include="..\DeskJr.Repository\DeskJr.Repository.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>

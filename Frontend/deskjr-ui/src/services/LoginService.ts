@@ -3,11 +3,8 @@ import axios from 'axios';
 const baseUrl = 'https://localhost:7187/api/Login';
 
 class LoginService {
-  public async login(id: string, password: string) {
-    const response = await axios.post(`${baseUrl}/login`, {
-      id,
-      password,
-    });
+    public async login(body: any) {
+        const response = await axios.post(`${baseUrl}`, body);
     return response.data;
   }
 }

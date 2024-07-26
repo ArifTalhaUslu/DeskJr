@@ -1,6 +1,4 @@
-﻿using DeskJr.Entity.Models;
-using DeskJr.Service.Dto.EmployeeDtos;
-using DeskJr.Service.Dto.LeaveDtos;
+﻿using DeskJr.Service.Dto;
 
 namespace DeskJr.Service.Abstract
 {
@@ -12,8 +10,9 @@ namespace DeskJr.Service.Abstract
         public Task<List<EmployeeDto>> GetAllEmployeesAsync();
         public Task<EmployeeDto?> GetEmployeeByIdAsync(Guid id);
         public Task<IEnumerable<EmployeeDto>> GetEmployeesByTeamIdAsync(Guid teamId);
-       
-        
+        public Task<EmployeeDto?> GetEmployeeByEmailAsync(string email);
 
-        }
+
+
+    }
 }

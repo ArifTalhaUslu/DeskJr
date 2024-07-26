@@ -1,14 +1,9 @@
-﻿using System;
-
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace DeskJr.Entity.Models
+﻿namespace DeskJr.Entity.Models
 {
-    public class LeaveRequest: BaseEntity
+    public class LeaveRequest : BaseEntity
     {
-       
-       
+
+
 
         public Guid RequestingEmployeeId { get; set; }
         public Employee RequestingEmployee { get; set; }
@@ -24,11 +19,11 @@ namespace DeskJr.Entity.Models
         public DateTime DateActioned { get; set; }
         public bool? Approved { get; set; }
         public bool Cancelled { get; set; }
-        
+
         public Guid? ApprovedById { get; set; }
         public Employee ApprovedBy { get; set; }
 
-        
+
 
     }
 }

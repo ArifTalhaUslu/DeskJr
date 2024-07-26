@@ -1,11 +1,11 @@
 ﻿using System;
-namespace DeskJr.Service.Dto.LeaveDtos
+namespace DeskJr.Service.Dto
 {
-	public class LeaveAllocationDTO
-	{
-		public LeaveAllocationDTO()
-		{
-		}
-	}
+    public class LeaveAllocationDTO
+    {
+        public LeaveAllocationDTO()
+        {
+        }
+    }
 }
 
