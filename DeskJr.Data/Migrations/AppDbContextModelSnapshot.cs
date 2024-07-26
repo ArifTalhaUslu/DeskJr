@@ -182,11 +182,11 @@ namespace DeskJr.Data.Migrations
 
                     b.HasKey("ID");
 
-<<<<<<< HEAD
+
                     b.ToTable("LeaveTypes");
-=======
+
                     b.ToTable("LeaveType", (string)null);
->>>>>>> master
+
                 });
 
             modelBuilder.Entity("DeskJr.Entity.Models.Team", b =>
