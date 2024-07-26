@@ -4,7 +4,7 @@ namespace DeskJr.Service.Abstract
 {
     public interface IEmployeeService
     {
-        public Task<bool> AddEmployeeAsync(CreateEmployeeDto employeeDto);
+        public Task<bool> AddOrUpdateEmployeeAsync(UpdateEmployeeDto employeeDto);
         public Task<bool> UpdateEmployeeAsync(UpdateEmployeeDto employeeDto);
         public Task<bool> DeleteEmployeeAsync(Guid id);
         public Task<List<EmployeeDto>> GetAllEmployeesAsync();

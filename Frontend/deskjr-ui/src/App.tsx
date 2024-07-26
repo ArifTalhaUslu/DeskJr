@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import React from "react";
 import MyInfo from "./components/views/MyInfo";
 import Contacts from "./components/views/Contacts";
-import Employee from "./components/views/Employee";
+import Employee from "./components/views/Employee/Employee";
 import Leaves from "./components/views/Leave";
 import PendingLeaveRequests from "./components/views/PendingLeaveRequest";
 import Holidays from "./components/views/Holiday";

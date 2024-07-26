@@ -3,6 +3,7 @@ import Button from "./Button";
 interface TopContentProps {
   hasNewRecordButton?: boolean;
   newRecordButtonOnClick?: () => void;
+  dataTarget?:string;
 }
 
 function TopContents(props: TopContentProps) {
@@ -13,6 +14,9 @@ function TopContents(props: TopContentProps) {
           <Button
             className={"btn btn-success mb-2 mr-5"}
             text={"Add New Employee"}
+            isModalTrigger={true}
+            dataTarget={props.dataTarget}
+            onClick={props.newRecordButtonOnClick}
           />
         </div>
       )}
