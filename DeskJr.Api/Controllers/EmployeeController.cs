@@ -17,9 +17,10 @@ namespace DeskJr.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateEmployee(CreateEmployeeDto employeeDto)
+        public async Task<ActionResult> CreateOrUpdateEmployee(UpdateEmployeeDto employeeDto)
         {
-            var result = await _employeeService.AddEmployeeAsync(employeeDto);
+            Console.WriteLine(employeeDto);
+            var result = await _employeeService.AddOrUpdateEmployeeAsync(employeeDto);
             if (result)
             {
                 return Ok();
