@@ -5,17 +5,11 @@ export const login = (creds: LoginForm) => async (dispatch: UserDispatch) => {
     dispatch({ type: "LOGIN_START" });
 
     await api
-        .post<{
-            token: string;
-            employee: User;
-        }>("/api/login", creds)
-        .then((data: any) => {
-            const { token, employee } = data.data;
-            localStorage.setItem("token", token);
-            localStorage.setItem("employee", JSON.stringify(employee));
-            dispatch({ type: "LOGIN_SUCCESS", payload: data.data });
+        .post("/api/login", creds)
+        .then((response) => {
+            dispatch({ type: "LOGIN_SUCCESS", payload: response.data });
         })
-        .catch((err: any) => {
+        .catch((err) => {
             dispatch({ type: "LOGIN_ERROR" });
-        }); 
+        });
 };

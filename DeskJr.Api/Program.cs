@@ -8,6 +8,7 @@ using DeskJr.Service.Dto;
 using DeskJr.Service.Mapping;
 using DeskJr.Services.Concrete;
 using DeskJr.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -22,10 +23,23 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin",
-        builder => builder.AllowAnyOrigin() // Update this with your frontend URL
+        builder => builder.AllowAnyOrigin()
                           .AllowAnyHeader()
                           .AllowAnyMethod());
 });
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        options.Cookie.SameSite = SameSiteMode.Strict;
+        options.Cookie.Name = "AuthCookie";
+        options.LoginPath = "/api/login";
+        options.LogoutPath = "/api/logout";
+    });
+
+
 
 //Authentication Authorazation 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

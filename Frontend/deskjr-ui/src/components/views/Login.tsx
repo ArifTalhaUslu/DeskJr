@@ -45,7 +45,7 @@ const Login: React.FC = () => {
                                     className="form-control"
                                     id="email"
                                     value={email}
-                                    onChange={setEmail}
+                                    onChange={( e ) => setEmail( e . target . value )}
                                     required
                                     placeholder="Enter your email"
                                 />
@@ -57,7 +57,7 @@ const Login: React.FC = () => {
                                     className="form-control"
                                     id="password"
                                     value={password}
-                                    onChange={setPassword}
+                                    onChange={( e ) => setPassword( e . target . value )}
                                     required
                                     placeholder="Enter your password"
                                 />

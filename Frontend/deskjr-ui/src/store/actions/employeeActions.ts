@@ -1,5 +1,5 @@
 import { Employee, EmployeeDispatch } from "../../types/employee";
-import api from "../../utils/api";
+import api from "../../utils/axiosConfig";
 
 export const GetEmployees = () => async (dispatch : EmployeeDispatch) =>{
     dispatch ({type: "GET_EMPLOYEES_START"});

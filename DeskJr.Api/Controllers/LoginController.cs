@@ -38,6 +38,15 @@ namespace DeskJr.Api.Controllers
                 Token = token,
                 Employee = employee
             };
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = DateTime.UtcNow.AddDays(1),
+                Secure = true, // Set to true if using HTTPS
+                SameSite = SameSiteMode.Strict
+            };
+
+            Response.Cookies.Append("jwt", token, cookieOptions);
 
             return Ok(response);
         }
