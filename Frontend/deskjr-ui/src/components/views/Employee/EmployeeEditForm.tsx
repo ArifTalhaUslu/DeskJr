@@ -5,14 +5,16 @@ import employeeService from "../../../services/EmployeeService";
 
 const EmployeeEditForm: any = (props: any) => {
   const [genderOptions] = useState([
+    { value: ""},
     { value: 1, label: "Female" },
     { value: 0, label: "Male" },
   ]);
 
   const [roleOptions] = useState([
-    { value: 0, label: "Admin" },
-    { value: 1, label: "Manager" },
+    { value: ""},
     { value: 2, label: "Employee" },
+    { value: 1, label: "Manager" },
+    { value: 0, label: "Admin" },
   ]);
 
   useEffect(() => {
@@ -46,11 +48,11 @@ const EmployeeEditForm: any = (props: any) => {
       })
       .then(() => {
         alert("success");
-      }).catch((err:any) => {
-        console.log(err);
-      })
-      .finally(() => {
+        props.getList();
         props.onClose();
+      })
+      .catch((err: any) => {
+        console.log(err);
       });
   };
 
@@ -65,7 +67,7 @@ const EmployeeEditForm: any = (props: any) => {
 
   return (
     <>
-      <div className="modal fade" id="employeeAddModal" role="dialog">
+      <div className="modal fade" id="employeeAddModal" role="dialog" data-backdrop="static">
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-header">
@@ -121,6 +123,7 @@ const EmployeeEditForm: any = (props: any) => {
 
                   <label className="col-form-label">Role:</label>
                   <select
+                    required
                     name="employeeRole"
                     className="form-control"
                     value={
@@ -128,10 +131,9 @@ const EmployeeEditForm: any = (props: any) => {
                       props.selectedEmployee.employeeRole
                     }
                     onChange={(e: any) => handleChange(e)}
-                    required
                   >
                     {roleOptions.map((option: any) => (
-                      <option key={option.value} value={option.value}>
+                      <option key={option.value} value={option.value} hidden={option.value === ""}>
                         {option.label}
                       </option>
                     ))}
@@ -139,21 +141,22 @@ const EmployeeEditForm: any = (props: any) => {
 
                   <label className="col-form-label">Gender:</label>
                   <select
+                    required
                     name="gender"
                     className="form-control"
                     value={
                       props.selectedEmployee && props.selectedEmployee.gender
                     }
                     onChange={(e: any) => handleChange(e)}
-                    required
                   >
                     {genderOptions.map((option: any) => (
-                      <option key={option.value} value={option.value}>
+                      
+                      <option key={option.value} value={option.value} hidden={option.value === ""}>
                         {option.label}
                       </option>
                     ))}
                   </select>
-                  {props.modalModeName == "Add" ? (
+                  {props.modalModeName === "Add" ? (
                     <></>
                   ) : (
                     <>
@@ -169,7 +172,7 @@ const EmployeeEditForm: any = (props: any) => {
                     </>
                   )}
 
-                  {props.modalModeName == "Add" ? (
+                  {props.modalModeName === "Add" ? (
                     <></>
                   ) : (
                     <>
@@ -194,16 +197,23 @@ const EmployeeEditForm: any = (props: any) => {
                     onChange={(e: any) => handleChange(e)}
                     required
                   />
-                  <label className="col-form-label">Password:</label>
-                  <Input
-                    type="password"
-                    name="password"
-                    value={
-                      props.selectedEmployee && props.selectedEmployee.password
-                    }
-                    onChange={(e: any) => handleChange(e)}
-                    required
-                  />
+                  {props.modalModeName === "Add" ? (
+                    <>
+                      <label className="col-form-label">Password:</label>
+                      <Input
+                        type="password"
+                        name="password"
+                        value={
+                          props.selectedEmployee &&
+                          props.selectedEmployee.password
+                        }
+                        onChange={(e: any) => handleChange(e)}
+                        required
+                      />
+                    </>
+                  ) : (
+                    <></>
+                  )}
                 </div>
               </div>
               <div className="modal-footer">

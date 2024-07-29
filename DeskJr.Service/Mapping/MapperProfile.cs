@@ -9,7 +9,7 @@ namespace DeskJr.Service.Mapping
         public MapperProfile()
         {
             CreateMap<Employee, EmployeeDto>().ReverseMap();
-            CreateMap<Employee, UpdateEmployeeDto>().ReverseMap();
+            CreateMap<Employee, AddOrUpdateEmployeeDto>().ReverseMap();
             CreateMap<Employee, CreateEmployeeDto>().ReverseMap();
             CreateMap<Team, TeamDto>().ReverseMap();
             CreateMap<Team, UpdateTeamDto>().ReverseMap();
