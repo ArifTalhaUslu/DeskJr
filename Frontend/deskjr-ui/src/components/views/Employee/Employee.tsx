@@ -111,7 +111,7 @@ const Employee: any = () => {
           onDelete={handleDelete}
           isEditable={isEditable}
           isDeletable={isDeletable}
-          hiddenColumns={["id","password"]}
+          hiddenColumns={["id", "password"]}
           renderColumn={renderColumn}
           columnNames={columnNames}
           hasNewRecordButton={true}

@@ -22,7 +22,7 @@ namespace DeskJr.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "LeaveType",
+                name: "LeaveTypes",
                 columns: table => new
                 {
                     ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -32,7 +32,7 @@ namespace DeskJr.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LeaveType", x => x.ID);
+                    table.PrimaryKey("PK_LeaveTypes", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -78,35 +78,7 @@ namespace DeskJr.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "LeaveAllocation",
-                columns: table => new
-                {
-                    ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    NumberOfDays = table.Column<int>(type: "int", nullable: false),
-                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EmployeeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LeaveTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Period = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_LeaveAllocation", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_LeaveAllocation_Employees_EmployeeId",
-                        column: x => x.EmployeeId,
-                        principalTable: "Employees",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_LeaveAllocation_LeaveType_LeaveTypeId",
-                        column: x => x.LeaveTypeId,
-                        principalTable: "LeaveType",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "LeaveRequests",
+                name: "Leaves",
                 columns: table => new
                 {
                     ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -117,28 +89,27 @@ namespace DeskJr.Data.Migrations
                     DateRequested = table.Column<DateTime>(type: "datetime2", nullable: false),
                     RequestComments = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateActioned = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Approved = table.Column<bool>(type: "bit", nullable: true),
-                    Cancelled = table.Column<bool>(type: "bit", nullable: false),
+                    StatusOfLeave = table.Column<int>(type: "int", nullable: false),
                     ApprovedById = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LeaveRequests", x => x.ID);
+                    table.PrimaryKey("PK_Leaves", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_LeaveRequests_Employees_ApprovedById",
+                        name: "FK_Leaves_Employees_ApprovedById",
                         column: x => x.ApprovedById,
                         principalTable: "Employees",
                         principalColumn: "ID");
                     table.ForeignKey(
-                        name: "FK_LeaveRequests_Employees_RequestingEmployeeId",
+                        name: "FK_Leaves_Employees_RequestingEmployeeId",
                         column: x => x.RequestingEmployeeId,
                         principalTable: "Employees",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_LeaveRequests_LeaveType_LeaveTypeId",
+                        name: "FK_Leaves_LeaveTypes_LeaveTypeId",
                         column: x => x.LeaveTypeId,
-                        principalTable: "LeaveType",
+                        principalTable: "LeaveTypes",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -160,44 +131,31 @@ namespace DeskJr.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_LeaveAllocation_EmployeeId",
-                table: "LeaveAllocation",
-                column: "EmployeeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_LeaveAllocation_LeaveTypeId",
-                table: "LeaveAllocation",
-                column: "LeaveTypeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_LeaveRequests_ApprovedById",
-                table: "LeaveRequests",
+                name: "IX_Leaves_ApprovedById",
+                table: "Leaves",
                 column: "ApprovedById");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LeaveRequests_LeaveTypeId",
-                table: "LeaveRequests",
+                name: "IX_Leaves_LeaveTypeId",
+                table: "Leaves",
                 column: "LeaveTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_LeaveRequests_RequestingEmployeeId",
-                table: "LeaveRequests",
+                name: "IX_Leaves_RequestingEmployeeId",
+                table: "Leaves",
                 column: "RequestingEmployeeId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "LeaveAllocation");
-
-            migrationBuilder.DropTable(
-                name: "LeaveRequests");
+                name: "Leaves");
 
             migrationBuilder.DropTable(
                 name: "Employees");
 
             migrationBuilder.DropTable(
-                name: "LeaveType");
+                name: "LeaveTypes");
 
             migrationBuilder.DropTable(
                 name: "EmployeeTitles");

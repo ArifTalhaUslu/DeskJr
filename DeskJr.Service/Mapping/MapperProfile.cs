@@ -20,9 +20,9 @@ namespace DeskJr.Service.Mapping
             CreateMap<LeaveType, LeaveTypeDTO>().ReverseMap();
             CreateMap<LeaveType, LeaveTypeCreateDTO>().ReverseMap();
             CreateMap<LeaveType, LeaveTypeUpdateDTO>().ReverseMap();
-            CreateMap<LeaveRequest, LeaveRequestDTO>().ReverseMap();
-            CreateMap<LeaveRequest, LeaveRequestCreateDTO>().ReverseMap();
-            CreateMap<LeaveRequest, LeaveRequestUpdateDTO>().ReverseMap();
+            CreateMap<Leave, LeaveDTO>().ReverseMap();
+            CreateMap<Leave, LeaveCreateDTO>().ReverseMap();
+            CreateMap<Leave, LeaveUpdateDTO>().ReverseMap();
         }
     }
 }
