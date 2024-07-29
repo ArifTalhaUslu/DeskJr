@@ -13,6 +13,7 @@ namespace DeskJr.Repository.Concrete
         {
             _context = context;
         }
+
     }
 }
 

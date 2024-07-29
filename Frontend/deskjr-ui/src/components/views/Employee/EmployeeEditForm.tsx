@@ -5,13 +5,13 @@ import employeeService from "../../../services/EmployeeService";
 
 const EmployeeEditForm: any = (props: any) => {
   const [genderOptions] = useState([
-    { value: ""},
+    { value: "" },
     { value: 1, label: "Female" },
     { value: 0, label: "Male" },
   ]);
 
   const [roleOptions] = useState([
-    { value: ""},
+    { value: "" },
     { value: 2, label: "Employee" },
     { value: 1, label: "Manager" },
     { value: 0, label: "Admin" },
@@ -67,7 +67,12 @@ const EmployeeEditForm: any = (props: any) => {
 
   return (
     <>
-      <div className="modal fade" id="employeeAddModal" role="dialog" data-backdrop="static">
+      <div
+        className="modal fade"
+        id="employeeAddModal"
+        role="dialog"
+        data-backdrop="static"
+      >
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-header">
@@ -133,7 +138,11 @@ const EmployeeEditForm: any = (props: any) => {
                     onChange={(e: any) => handleChange(e)}
                   >
                     {roleOptions.map((option: any) => (
-                      <option key={option.value} value={option.value} hidden={option.value === ""}>
+                      <option
+                        key={option.value}
+                        value={option.value}
+                        hidden={option.value === ""}
+                      >
                         {option.label}
                       </option>
                     ))}
@@ -150,8 +159,11 @@ const EmployeeEditForm: any = (props: any) => {
                     onChange={(e: any) => handleChange(e)}
                   >
                     {genderOptions.map((option: any) => (
-                      
-                      <option key={option.value} value={option.value} hidden={option.value === ""}>
+                      <option
+                        key={option.value}
+                        value={option.value}
+                        hidden={option.value === ""}
+                      >
                         {option.label}
                       </option>
                     ))}
