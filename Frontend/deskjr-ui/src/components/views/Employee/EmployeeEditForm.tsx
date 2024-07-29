@@ -46,7 +46,8 @@ const EmployeeEditForm: any = (props: any) => {
       })
       .then(() => {
         alert("success");
-      }).catch((err:any) => {
+      })
+      .catch((err: any) => {
         console.log(err);
       })
       .finally(() => {
@@ -130,6 +131,14 @@ const EmployeeEditForm: any = (props: any) => {
                     onChange={(e: any) => handleChange(e)}
                     required
                   >
+                    <option
+                      value=""
+                      disabled
+                      selected={!props.selectedEmployee}
+                    >
+                      {" "}
+                      Select role...
+                    </option>
                     {roleOptions.map((option: any) => (
                       <option key={option.value} value={option.value}>
                         {option.label}
@@ -147,6 +156,14 @@ const EmployeeEditForm: any = (props: any) => {
                     onChange={(e: any) => handleChange(e)}
                     required
                   >
+                    <option
+                      value=""
+                      disabled
+                      selected={!props.selectedEmployee}
+                    >
+                      {" "}
+                      Select gender...
+                    </option>
                     {genderOptions.map((option: any) => (
                       <option key={option.value} value={option.value}>
                         {option.label}

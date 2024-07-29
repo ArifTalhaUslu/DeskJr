@@ -3,7 +3,7 @@
 namespace DeskJr.Entity.Models
 
 {
-    public class LeaveRequest : BaseEntity
+    public class Leave : BaseEntity
     {
 
 
@@ -20,8 +20,7 @@ namespace DeskJr.Entity.Models
         public DateTime DateRequested { get; set; }
         public string RequestComments { get; set; }
         public DateTime DateActioned { get; set; }
-        public bool? Approved { get; set; }
-        public bool Cancelled { get; set; }
+       
         public  EnumStatusOfLeave StatusOfLeave { get; set; }
 
 

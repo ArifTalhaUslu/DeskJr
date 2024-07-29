@@ -13,7 +13,7 @@ namespace DeskJr.Data
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<EmployeeTitle> EmployeeTitles { get; set; }
-        public DbSet<LeaveRequest> LeaveRequests { get; set; }
+        public DbSet<Leave> Leaves { get; set; }
         public DbSet<LeaveType> LeaveTypes { get; set; }
 
 

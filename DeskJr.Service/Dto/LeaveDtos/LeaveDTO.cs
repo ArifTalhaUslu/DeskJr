@@ -3,7 +3,7 @@ using DeskJr.Entity.Types;
 
 namespace DeskJr.Service.Dto
 {
-    public class LeaveRequestDTO
+    public class LeaveDTO
     {
         public Guid ID { get; set; }
         public Guid RequestingEmployeeId { get; set; }

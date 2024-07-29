@@ -12,8 +12,11 @@ const Employee: any = () => {
   const [selectedEmployee, setSelectedEmployee] = useState("");
   const [modalModeName, setModalModeName] = useState("");
   const [modalDataTarget] = useState("employeeAddModal");
+  const [shouldRefresh, setShouldRefresh] = useState(false);
 
-  useEffect(() => {getList()}, []);
+  useEffect(() => {
+    getList();
+  }, [selectedEmployee, shouldRefresh]);
 
   const getList = async () => {
     employeeService.getAllEmployee().then((data) => {
@@ -21,19 +24,20 @@ const Employee: any = () => {
     });
   };
 
-  const onConfirmDelete = async (e:any) => {
+  const onConfirmDelete = async (e: any) => {
     e.preventDefault();
 
     if (selectedItemId) {
-      employeeService.deleteEmployee(selectedItemId)
-      .then(() => {
-        alert("Success")
-      })
-      .catch((err:any) => {
-        console.log(err);
-      });
+      employeeService
+        .deleteEmployee(selectedItemId)
+        .then(() => {
+          alert("Success");
+        })
+        .catch((err: any) => {
+          console.log(err);
+        });
     }
-    
+
     const close_button = document.getElementById("confirm-delete-close");
     close_button?.click();
     onModalClose();
@@ -73,9 +77,9 @@ const Employee: any = () => {
     setSelectedItemId("");
     setSelectedEmployee("");
     setModalModeName("");
-    window.location.reload(); //gecici cozum
+    //window.location.reload(); //gecici cozum
   };
-  
+
   const columnNames = {
     name: "Employee Name",
     dayOfBirth: "BirthDay",
@@ -112,8 +116,13 @@ const Employee: any = () => {
         selectedEmployee={selectedEmployee}
         setSelectedEmployee={setSelectedEmployee}
         onClose={onModalClose}
+        setShouldRefresh={setShouldRefresh}
       />
-      <ConfirmDelete onConfirm={(e) => onConfirmDelete(e)} selectedItemId={selectedItemId} onClose={onModalClose} />
+      <ConfirmDelete
+        onConfirm={(e) => onConfirmDelete(e)}
+        selectedItemId={selectedItemId}
+        onClose={onModalClose}
+      />
     </>
   );
 };

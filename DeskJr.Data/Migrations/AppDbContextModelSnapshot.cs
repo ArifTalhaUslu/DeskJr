@@ -62,7 +62,7 @@ namespace DeskJr.Data.Migrations
 
                     b.HasIndex("TitleId");
 
-                    b.ToTable("Employees", (string)null);
+                    b.ToTable("Employees");
                 });
 
             modelBuilder.Entity("DeskJr.Entity.Models.EmployeeTitle", b =>
@@ -80,53 +80,17 @@ namespace DeskJr.Data.Migrations
                     b.HasIndex("TitleName")
                         .IsUnique();
 
-                    b.ToTable("EmployeeTitles", (string)null);
+                    b.ToTable("EmployeeTitles");
                 });
 
-            modelBuilder.Entity("DeskJr.Entity.Models.LeaveAllocation", b =>
+            modelBuilder.Entity("DeskJr.Entity.Models.Leave", b =>
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("EmployeeId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("LeaveTypeId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("NumberOfDays")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Period")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("EmployeeId");
-
-                    b.HasIndex("LeaveTypeId");
-
-                    b.ToTable("LeaveAllocation", (string)null);
-                });
-
-            modelBuilder.Entity("DeskJr.Entity.Models.LeaveRequest", b =>
-                {
-                    b.Property<Guid>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool?>("Approved")
-                        .HasColumnType("bit");
 
                     b.Property<Guid?>("ApprovedById")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("Cancelled")
-                        .HasColumnType("bit");
 
                     b.Property<DateTime>("DateActioned")
                         .HasColumnType("datetime2");
@@ -161,7 +125,7 @@ namespace DeskJr.Data.Migrations
 
                     b.HasIndex("RequestingEmployeeId");
 
-                    b.ToTable("LeaveRequests", (string)null);
+                    b.ToTable("Leaves");
                 });
 
             modelBuilder.Entity("DeskJr.Entity.Models.LeaveType", b =>
@@ -182,11 +146,7 @@ namespace DeskJr.Data.Migrations
 
                     b.HasKey("ID");
 
-
                     b.ToTable("LeaveTypes");
-
-                    b.ToTable("LeaveType", (string)null);
-
                 });
 
             modelBuilder.Entity("DeskJr.Entity.Models.Team", b =>
@@ -204,7 +164,7 @@ namespace DeskJr.Data.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Teams", (string)null);
+                    b.ToTable("Teams");
                 });
 
             modelBuilder.Entity("DeskJr.Entity.Models.Employee", b =>
@@ -222,26 +182,7 @@ namespace DeskJr.Data.Migrations
                     b.Navigation("Title");
                 });
 
-            modelBuilder.Entity("DeskJr.Entity.Models.LeaveAllocation", b =>
-                {
-                    b.HasOne("DeskJr.Entity.Models.Employee", "Employee")
-                        .WithMany("LeaveAllocations")
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DeskJr.Entity.Models.LeaveType", "LeaveType")
-                        .WithMany()
-                        .HasForeignKey("LeaveTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Employee");
-
-                    b.Navigation("LeaveType");
-                });
-
-            modelBuilder.Entity("DeskJr.Entity.Models.LeaveRequest", b =>
+            modelBuilder.Entity("DeskJr.Entity.Models.Leave", b =>
                 {
                     b.HasOne("DeskJr.Entity.Models.Employee", "ApprovedBy")
                         .WithMany()
@@ -254,7 +195,7 @@ namespace DeskJr.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("DeskJr.Entity.Models.Employee", "RequestingEmployee")
-                        .WithMany("LeaveRequests")
+                        .WithMany()
                         .HasForeignKey("RequestingEmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -264,13 +205,6 @@ namespace DeskJr.Data.Migrations
                     b.Navigation("LeaveType");
 
                     b.Navigation("RequestingEmployee");
-                });
-
-            modelBuilder.Entity("DeskJr.Entity.Models.Employee", b =>
-                {
-                    b.Navigation("LeaveAllocations");
-
-                    b.Navigation("LeaveRequests");
                 });
 #pragma warning restore 612, 618
         }

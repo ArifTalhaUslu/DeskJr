@@ -1,10 +1,10 @@
-﻿using System;
-using DeskJr.Entity.Types;
+﻿using DeskJr.Entity.Types;
 
 namespace DeskJr.Service.Dto
 {
-    public class LeaveRequestCreateDTO
+    public class LeaveUpdateDTO
     {
+        public Guid ID { get; set; }
         public Guid RequestingEmployeeId { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
