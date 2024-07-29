@@ -16,7 +16,7 @@ namespace DeskJr.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllLeaveRequests()
+        public async Task<IActionResult> GetAllLeaves()
         {
             var leaves = await _leaveService.GetAllLeavesAsync();
             return Ok(leaves);
