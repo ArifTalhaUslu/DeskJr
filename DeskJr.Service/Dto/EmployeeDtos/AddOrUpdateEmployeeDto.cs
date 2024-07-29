@@ -6,7 +6,7 @@ namespace DeskJr.Service.Dto
     {
         public Guid? ID { get; set; }
         public string Name { get; set; }
-        public DateTime DayOfBirth { get; set; }
+        public DateOnly DayOfBirth { get; set; }
         public EnumRole EmployeeRole { get; set; }
         public EnumGender Gender { get; set; }
         public Guid? TitleId { get; set; }
