@@ -58,12 +58,7 @@ function ConfirmDelete({
                 type="submit"
                 className="btn btn-danger"
                 text="Delete"
-                onClick={(e) => {
-                  onConfirm(e);
-                  const close_button =
-                    document.getElementById("delete-form-closed");
-                  close_button?.click();
-                }}
+                onClick={onConfirm}
               />
             </div>
           </form>

@@ -12,7 +12,6 @@ const Employee: any = () => {
   const [selectedEmployee, setSelectedEmployee] = useState("");
   const [modalModeName, setModalModeName] = useState("");
   const [modalDataTarget] = useState("employeeAddModal");
-
   const [isTrigger, setIsTrigger] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -21,7 +20,6 @@ const Employee: any = () => {
   useEffect(() => {
     getList();
   }, [isTrigger]);
-
 
   const getList = async () => {
     employeeService.getAllEmployee().then((data) => {
@@ -113,7 +111,7 @@ const Employee: any = () => {
           onDelete={handleDelete}
           isEditable={isEditable}
           isDeletable={isDeletable}
-          hiddenColumns={["id","password"]}
+          hiddenColumns={["id", "password"]}
           renderColumn={renderColumn}
           columnNames={columnNames}
           hasNewRecordButton={true}
@@ -133,12 +131,6 @@ const Employee: any = () => {
         setSelectedEmployee={setSelectedEmployee}
         getList={getList}
         onClose={onModalClose}
-      />
-      <ConfirmDelete
-        onConfirm={(e) => onConfirmDelete(e)}
-        selectedItemId={selectedItemId}
-        onClose={onModalClose}
-        setShouldRefresh={setShouldRefresh}
       />
       <ConfirmDelete
         onConfirm={(e) => onConfirmDelete(e)}
