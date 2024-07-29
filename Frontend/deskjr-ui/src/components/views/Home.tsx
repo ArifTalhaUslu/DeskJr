@@ -2,21 +2,34 @@ import { useState, useEffect } from 'react';
 import EmployeeService from '../../services/EmployeeService';
 
 const Home = (props: any) => {
-    const id = 'guid-from-db'
+    const id = '78190b40-d9cf-4b09-bc50-08dcad679a5c';
     const [employee, setEmployee] = useState<any>(null);
+    const [employees, setEmployees] = useState<any[]>([]);
+
     useEffect(() => {
-        const fetchedEmployee = async () => {
+        const fetchEmployee = async () => {
             try {
                 const fetchedEmployeeData = await EmployeeService.getEmployeeById(id);
                 setEmployee(fetchedEmployeeData);
-            }
-            catch (error) {
+            } catch (error) {
                 console.error("Error fetching employee data: ", error);
             }
         };
-        fetchedEmployee();
+
+        const fetchAllEmployees = async () => {
+            try {
+                const fetchedEmployeesData = await EmployeeService.getAllEmployee();
+                setEmployees(fetchedEmployeesData);
+            } catch (error) {
+                console.error("Error fetching all employees data: ", error);
+            }
+        };
+
+        fetchEmployee();
+        fetchAllEmployees();
     }, [id]);
-    return <>
+
+    return (
         <div className="container">
             <div className="row">
                 <div className="col-12">
@@ -30,27 +43,19 @@ const Home = (props: any) => {
                     <table className="table table-hover">
                         <thead>
                             <tr>
-                                <th>Header 1</th>
-                                <th>Header 2</th>
-                                <th>Header 3</th>
+                                <th>Name</th>
+                                <th>Day of Birth</th>
+                                <th>Employee Role</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Data 1</td>
-                                <td>Data 2</td>
-                                <td>Data 3</td>
-                            </tr>
-                            <tr>
-                                <td>Data 4</td>
-                                <td>Data 5</td>
-                                <td>Data 6</td>
-                            </tr>
-                            <tr>
-                                <td>Data 7</td>
-                                <td>Data 8</td>
-                                <td>Data 9</td>
-                            </tr>
+                            {employees.map((emp) => (
+                                <tr key={emp.id}>
+                                    <td>{emp.name}</td>
+                                    <td>{new Date(emp.dayOfBirth).toLocaleDateString()}</td>
+                                    <td>{emp.employeeRole === 2 ? "Employee" : emp.employeeRole === 1 ? "Manager" : emp.employeeRole === 0 ? "Admin" : "Unknown"}</td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                 </div>
@@ -78,7 +83,7 @@ const Home = (props: any) => {
                 </div>
             </div>
         </div>
-    </>;
+    );
 };
 
 export default Home;
