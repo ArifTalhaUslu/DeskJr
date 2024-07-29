@@ -18,10 +18,10 @@ namespace DeskJr.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateOrUpdateEmployee(UpdateEmployeeDto employeeDto)
+        public async Task<ActionResult> CreateOrUpdateEmployee(AddOrUpdateEmployeeDto employeeDto)
         {
             var result = await _employeeService.AddOrUpdateEmployeeAsync(employeeDto);
-            if (result)
+            if (!result)
             {
                 throw new BadRequestException("Employee could not be created.");
             }
@@ -33,12 +33,12 @@ namespace DeskJr.Api.Controllers
         public async Task<ActionResult> DeleteEmployee(DeleteEmployeeDto deleteEmployeeDto)
         {
             var result = await _employeeService.DeleteEmployeeAsync(deleteEmployeeDto.Id);
-            if (result)
+            if (!result)
             {
-                return Ok();
+                return NotFound();
             }
 
-            return NotFound();
+            return Ok();
         }
 
         [HttpGet]
@@ -56,15 +56,15 @@ namespace DeskJr.Api.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> UpdateEmployee(UpdateEmployeeDto employeeDto)
+        public async Task<ActionResult> UpdateEmployee(AddOrUpdateEmployeeDto employeeDto)
         {
             var result = await _employeeService.UpdateEmployeeAsync(employeeDto);
-            if (result)
+            if (!result)
             {
-                return Ok();
+                return BadRequest();
             }
 
-            return BadRequest();
+            return Ok();
         }
         [HttpGet("teams/{teamId}/employees")]
         public async Task<IActionResult> GetEmployeesByTeamId(Guid teamId)

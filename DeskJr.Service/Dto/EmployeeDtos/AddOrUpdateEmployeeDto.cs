@@ -2,7 +2,7 @@
 
 namespace DeskJr.Service.Dto
 {
-    public class UpdateEmployeeDto
+    public class AddOrUpdateEmployeeDto
     {
         public Guid? ID { get; set; }
         public string Name { get; set; }

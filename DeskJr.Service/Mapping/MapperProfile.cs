@@ -9,7 +9,7 @@ namespace DeskJr.Service.Mapping
         public MapperProfile()
         {
             CreateMap<Employee, EmployeeDto>().ReverseMap();
-            CreateMap<Employee, UpdateEmployeeDto>().ReverseMap();
+            CreateMap<Employee, AddOrUpdateEmployeeDto>().ReverseMap();
             CreateMap<Employee, CreateEmployeeDto>().ReverseMap();
             CreateMap<Team, TeamDto>().ReverseMap();
             CreateMap<Team, UpdateTeamDto>().ReverseMap();
@@ -20,9 +20,9 @@ namespace DeskJr.Service.Mapping
             CreateMap<LeaveType, LeaveTypeDTO>().ReverseMap();
             CreateMap<LeaveType, LeaveTypeCreateDTO>().ReverseMap();
             CreateMap<LeaveType, LeaveTypeUpdateDTO>().ReverseMap();
-            CreateMap<LeaveRequest, LeaveRequestDTO>().ReverseMap();
-            CreateMap<LeaveRequest, LeaveRequestCreateDTO>().ReverseMap();
-            CreateMap<LeaveRequest, LeaveRequestUpdateDTO>().ReverseMap();
+            CreateMap<Leave, LeaveDTO>().ReverseMap();
+            CreateMap<Leave, LeaveCreateDTO>().ReverseMap();
+            CreateMap<Leave, LeaveUpdateDTO>().ReverseMap();
         }
     }
 }
