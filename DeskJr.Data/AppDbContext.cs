@@ -1,6 +1,5 @@
 ﻿using DeskJr.Entity.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace DeskJr.Data
 {
@@ -15,6 +14,7 @@ namespace DeskJr.Data
         public DbSet<EmployeeTitle> EmployeeTitles { get; set; }
         public DbSet<Leave> Leaves { get; set; }
         public DbSet<LeaveType> LeaveTypes { get; set; }
+        public DbSet<Holiday> Holidays { get; set; }
 
 
 
@@ -24,7 +24,7 @@ namespace DeskJr.Data
             modelBuilder.Entity<EmployeeTitle>()
           .HasIndex(t => t.TitleName)
           .IsUnique();
-           
+
 
 
 
