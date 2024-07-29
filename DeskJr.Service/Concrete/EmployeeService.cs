@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using DeskJr.Common;
+using DeskJr.Common.Exceptions;
 using DeskJr.Entity.Models;
 using DeskJr.Repository.Abstract;
 using DeskJr.Service.Abstract;
@@ -17,23 +19,20 @@ namespace DeskJr.Service.Concrete
             _mapper = mapper;
         }
 
-        public async Task<bool> AddOrUpdateEmployeeAsync(UpdateEmployeeDto employeeDto)
+        public async Task<bool> AddOrUpdateEmployeeAsync(AddOrUpdateEmployeeDto employeeDto)
         {
-            var employee = _mapper.Map<Employee>(employeeDto);
-           
-            if (employeeDto.ID != null)
+            if (employeeDto.ID == null)
             {
-                Console.WriteLine("UPDATE");
-                return await _employeeRepository.UpdateAsync(employee);
+                if (string.IsNullOrEmpty(employeeDto.Password)) 
+                    throw new BadRequestException("Password is not null field!");
+
+                employeeDto.Password = Encrypter.EncryptString(employeeDto.Password);
+                return await _employeeRepository.AddAsync(_mapper.Map<Employee>(employeeDto));
             }
-            else
-            {
-                Console.WriteLine("create");
-                return await _employeeRepository.AddAsync(employee);
-            }
+            return await _employeeRepository.UpdateAsync(_mapper.Map<Employee>(employeeDto));
         }
 
-       
+
         public async Task<bool> DeleteEmployeeAsync(Guid id)
         {
             return await _employeeRepository.DeleteAsync(id);
@@ -57,7 +56,7 @@ namespace DeskJr.Service.Concrete
             return _mapper.Map<IEnumerable<EmployeeDto>>(employees);
         }
 
-        public async Task<bool> UpdateEmployeeAsync(UpdateEmployeeDto employeeDto)
+        public async Task<bool> UpdateEmployeeAsync(AddOrUpdateEmployeeDto employeeDto)
         {
             var employee = _mapper.Map<Employee>(employeeDto);
             return await _employeeRepository.UpdateAsync(employee);

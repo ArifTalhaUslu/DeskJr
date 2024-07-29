@@ -12,11 +12,16 @@ const Employee: any = () => {
   const [selectedEmployee, setSelectedEmployee] = useState("");
   const [modalModeName, setModalModeName] = useState("");
   const [modalDataTarget] = useState("employeeAddModal");
-  const [shouldRefresh, setShouldRefresh] = useState(false);
+
+  const [isTrigger, setIsTrigger] = useState(false);
+  const [isDelete, setIsDelete] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
+  const [formToBeClosed, setFormToBeClosed] = useState("");
 
   useEffect(() => {
     getList();
-  }, [selectedEmployee, shouldRefresh]);
+  }, [isTrigger]);
+
 
   const getList = async () => {
     employeeService.getAllEmployee().then((data) => {
@@ -32,24 +37,29 @@ const Employee: any = () => {
         .deleteEmployee(selectedItemId)
         .then(() => {
           alert("Success");
+          setIsTrigger(true);
         })
         .catch((err: any) => {
           console.log(err);
         });
     }
 
-    const close_button = document.getElementById("confirm-delete-close");
-    close_button?.click();
+    // const close_button = document.getElementById("confirm-delete-close");
+    // close_button?.click();
     onModalClose();
   };
 
   const handleEdit = (employee: any) => {
     setSelectedItemId(employee.id);
     setModalModeName("Update");
+    setIsEdit(true);
+    setFormToBeClosed("form-close");
   };
 
   const handleDelete = (employee: any) => {
     setSelectedItemId(employee.id);
+    setIsDelete(true);
+    setFormToBeClosed("delete-form-closed");
   };
 
   const isEditable = (item: any) => true;
@@ -64,7 +74,7 @@ const Employee: any = () => {
         ? "Manager"
         : value === 0
         ? "Admin"
-        : "";
+        : value;
     } else if (column === "gender") {
       return value === 0 ? "Male" : value === 1 ? "Female" : value;
     } else if (column === "dayOfBirth") {
@@ -77,6 +87,10 @@ const Employee: any = () => {
     setSelectedItemId("");
     setSelectedEmployee("");
     setModalModeName("");
+    setIsTrigger(false);
+    const close_button = document.getElementById(formToBeClosed);
+    close_button?.click();
+    setFormToBeClosed("");
     //window.location.reload(); //gecici cozum
   };
 
@@ -99,12 +113,14 @@ const Employee: any = () => {
           onDelete={handleDelete}
           isEditable={isEditable}
           isDeletable={isDeletable}
-          hiddenColumns={["id", "password"]}
+          hiddenColumns={["id","password"]}
           renderColumn={renderColumn}
           columnNames={columnNames}
           hasNewRecordButton={true}
           newRecordButtonOnClick={() => {
             setModalModeName("Add");
+            setFormToBeClosed("form-close");
+            setIsTrigger(true);
           }}
           newRecordModalDataTarget={modalDataTarget}
         />
@@ -115,6 +131,12 @@ const Employee: any = () => {
         modalModeName={modalModeName}
         selectedEmployee={selectedEmployee}
         setSelectedEmployee={setSelectedEmployee}
+        getList={getList}
+        onClose={onModalClose}
+      />
+      <ConfirmDelete
+        onConfirm={(e) => onConfirmDelete(e)}
+        selectedItemId={selectedItemId}
         onClose={onModalClose}
         setShouldRefresh={setShouldRefresh}
       />
