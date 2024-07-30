@@ -55,17 +55,6 @@ namespace DeskJr.Api.Controllers
             return Ok(employee);
         }
 
-        [HttpPut]
-        public async Task<ActionResult> UpdateEmployee(AddOrUpdateEmployeeDto employeeDto)
-        {
-            var result = await _employeeService.UpdateEmployeeAsync(employeeDto);
-            if (!result)
-            {
-                return BadRequest();
-            }
-
-            return Ok();
-        }
         [HttpGet("teams/{teamId}/employees")]
         public async Task<IActionResult> GetEmployeesByTeamId(Guid teamId)
         {
