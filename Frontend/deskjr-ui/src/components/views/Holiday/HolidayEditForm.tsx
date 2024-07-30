@@ -5,20 +5,17 @@ import holidayService from "../../../services/HolidayService";
 
 const HolidayEditForm: any = (props: any) => {
    
-
- 
-
   useEffect(() => {
     if (props.selectedItemId) {
       holidayService.getHolidayById(props.selectedItemId).then((data) => {
-        props.setSelectedEmployee(data);
+        props.setSelectedHoliday(data);
       });
     }
   }, [props.selectedItemId]);
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
-    props.setSelectedEmployee((prev: any) => ({
+    props.setSelectedHoliday((prev: any) => ({
         ...prev,
         [name]: value,
       }));
@@ -28,7 +25,7 @@ const HolidayEditForm: any = (props: any) => {
     e.preventDefault();
     holidayService
       .addOrUpdateHoliday({
-        ...props.selectedEmployee,
+        ...props.selectedHoliday,
       })
       .then(() => {
         alert("success");
@@ -53,7 +50,7 @@ const HolidayEditForm: any = (props: any) => {
     <>
       <div
         className="modal fade"
-        id="employeeAddModal"
+        id="holidayAddModal"
         role="dialog"
         data-backdrop="static"
       >
@@ -120,69 +117,6 @@ const HolidayEditForm: any = (props: any) => {
                     onChange={(e: any) => handleChange(e)}
                     required
                   />
-
-                  
-
-                  
-                  {props.modalModeName === "Add" ? (
-                    <></>
-                  ) : (
-                    <>
-                      {/* <label className="col-form-label">Title:</label>
-                <Input
-                  type="text"
-                  name="titleId"
-                  value={
-                    props.selectedEmployee && props.selectedEmployee.titleId
-                  }
-                  onChange={(e: any) => handleChange(e)}
-                /> */}
-                    </>
-                  )}
-
-                  {props.modalModeName === "Add" ? (
-                    <></>
-                  ) : (
-                    <>
-                      {/* <label className="col-form-label">Team:</label>
-                <Input
-                  type="text"
-                  name="teamId"
-                  value={
-                    props.selectedEmployee && props.selectedEmployee.teamId
-                  }
-                  onChange={(e: any) => handleChange(e)} */}
-                    </>
-                  )}
-{/*
-                  <label className="col-form-label">E-mail:</label>
-                  <Input
-                    type="text"
-                    name="email"
-                    value={
-                      props.selectedEmployee && props.selectedEmployee.email
-                    }
-                    onChange={(e: any) => handleChange(e)}
-                    required
-                  /> */}
-{/*                  {props.modalModeName === "Add" ? (
-                    <>
-                      <label className="col-form-label">Password:</label>
-                      <Input
-                        type="password"
-                        name="password"
-                        value={
-                          props.selectedEmployee &&
-                          props.selectedEmployee.password
-                        }
-                        onChange={(e: any) => handleChange(e)}
-                        required
-                      />
-                    </> 
-                  ) : (
-                    <></>
-                  )}
-*/} 
                 </div>
               </div>
               <div className="modal-footer">

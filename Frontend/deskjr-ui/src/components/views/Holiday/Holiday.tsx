@@ -9,12 +9,10 @@ import HolidayEditForm from "./HolidayEditForm";
 const Holiday: any = () => {
   const [items, setItems] = useState([]);
   const [selectedItemId, setSelectedItemId] = useState("");
-  const [selectedEmployee, setSelectedEmployee] = useState("");
+  const [selectedHoliday, setSelectedHoliday] = useState("");
   const [modalModeName, setModalModeName] = useState("");
-  const [modalDataTarget] = useState("employeeAddModal");
+  const [modalDataTarget] = useState("holidayAddModal");
   const [isTrigger, setIsTrigger] = useState(false);
-  const [isDelete, setIsDelete] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
   const [formToBeClosed, setFormToBeClosed] = useState("");
 
   useEffect(() => {
@@ -50,13 +48,11 @@ const Holiday: any = () => {
   const handleEdit = (holiday: any) => {
     setSelectedItemId(holiday.id);
     setModalModeName("Update");
-    setIsEdit(true);
     setFormToBeClosed("form-close");
   };
 
   const handleDelete = (holiday: any) => {
     setSelectedItemId(holiday.id);
-    setIsDelete(true);
     setFormToBeClosed("delete-form-closed");
   };
 
@@ -75,7 +71,7 @@ const Holiday: any = () => {
 
   const onModalClose = () => {
     setSelectedItemId("");
-    setSelectedEmployee("");
+    setSelectedHoliday("");
     setModalModeName("");
     setIsTrigger(false);
     const close_button = document.getElementById(formToBeClosed);
@@ -85,7 +81,7 @@ const Holiday: any = () => {
   };
 
   const columnNames = {
-    name: "Employee Name",
+    name: "Holiday Name",
     startDate: "Start Date",
     endDate: "End Date",
   };
@@ -115,8 +111,8 @@ const Holiday: any = () => {
       <HolidayEditForm
         selectedItemId={selectedItemId}
         modalModeName={modalModeName}
-        selectedEmployee={selectedEmployee}
-        setSelectedEmployee={setSelectedEmployee}
+        selectedHoliday={selectedHoliday}
+        setSelectedHoliday={setSelectedHoliday}
         getList={getList}
         onClose={onModalClose}
       />
