@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import EmployeeService from "../../services/EmployeeService";
 
 interface NavigationBarProps {
     brand: {
@@ -15,6 +16,22 @@ interface NavigationBarProps {
 }
 
 const NavigationBar: React.FC<NavigationBarProps> = ({ brand, links }) => {
+    const [employee, setEmployee] = useState<any>(null);
+    const id = '78190b40-d9cf-4b09-bc50-08dcad679a5c';
+
+    useEffect(() => {
+        const fetchEmployee = async () => {
+            try {
+                const fetchedEmployeeData = await EmployeeService.getEmployeeById(id);
+                setEmployee(fetchedEmployeeData);
+            } catch (error) {
+                console.error("Error fetching employee data: ", error);
+            }
+        };
+
+        fetchEmployee();
+    }, [id]);
+
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container-fluid">
@@ -33,7 +50,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ brand, links }) => {
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNavDropdown">
-                    <ul className="navbar-nav">
+                    <ul className="navbar-nav mr-auto">
                         {links.map((link, index) => {
                             if (!link.isDropDown) {
                                 return (
@@ -71,6 +88,30 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ brand, links }) => {
                                 );
                             }
                         })}
+                    </ul>
+                    <ul className="navbar-nav ml-auto">
+                        <li className="nav-item dropdown">
+                            <a
+                                className="nav-link dropdown-toggle"
+                                href="#"
+                                id="navbarUserDropdown"
+                                role="button"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                            >
+                                <i className="bi bi-person"></i> {employee ? employee.name : 'Loading...'}
+                            </a>
+                            <div
+                                className="dropdown-menu"
+                                aria-labelledby="navbarUserDropdown"
+                            >
+                                <Link className="dropdown-item" to="/profile">Option 1</Link>
+                                <Link className="dropdown-item" to="/settings">Option 2</Link>
+                                <div className="dropdown-divider"></div>
+                                <Link className="dropdown-item" to="/logout">Option 3</Link>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>
