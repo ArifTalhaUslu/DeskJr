@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DeskJr.Common;
 using DeskJr.Service.Abstract;
 using DeskJr.Service.Dto;
 using Microsoft.AspNetCore.Mvc;
@@ -71,7 +72,7 @@ namespace DeskJr.Api.Controllers
         {
             var employee = await _employeeService.GetEmployeeByEmailAsync(loginRequest.Email);
 
-            if (employee != null && employee.Password == loginRequest.Password)
+            if (employee != null && employee.Password == Encrypter.EncryptString(loginRequest.Password))
             {
                 return employee;
             }

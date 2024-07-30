@@ -12,7 +12,7 @@ export const login = (creds: LoginForm) => async (dispatch: UserDispatch) => {
         .then((data: any) => {
             const { token, employee } = data.data;
             localStorage.setItem("token", token);
-            localStorage.setItem("employee", JSON.stringify(employee));
+            localStorage.setItem("id", JSON.stringify(employee.id));
             dispatch({ type: "LOGIN_SUCCESS", payload: data.data });
         })
         .catch((err: any) => {
