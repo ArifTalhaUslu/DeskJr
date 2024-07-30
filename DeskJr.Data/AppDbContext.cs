@@ -22,10 +22,20 @@ namespace DeskJr.Data
         {
             modelBuilder.Entity<Employee>().Property(d => d.Name).HasColumnType("VARCHAR").HasMaxLength(150).IsRequired();
             modelBuilder.Entity<EmployeeTitle>()
-          .HasIndex(t => t.TitleName)
-          .IsUnique();
-           
+                                      .HasIndex(t => t.TitleName)
+                                      .IsUnique();
 
+            modelBuilder.Entity<Team>()
+                   .HasOne(t => t.Manager)
+                   .WithMany()
+                   .HasForeignKey(t => t.ManagerId)
+                   .OnDelete(DeleteBehavior.Restrict); // Silme davranışını belirlemek önemli
+
+            modelBuilder.Entity<Employee>()
+                    .HasOne(e => e.Team)
+                    .WithMany() // Eğer Team ile birden fazla Employee ilişkisi varsa WithMany
+                    .HasForeignKey(e => e.TeamId)
+                    .OnDelete(DeleteBehavior.Restrict); // Silme davranışını belirlemek önemli
 
 
         }

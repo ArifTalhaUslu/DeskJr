@@ -72,5 +72,7 @@ namespace DeskJr.Api.Controllers
             var employees = await _employeeService.GetEmployeesByTeamIdAsync(teamId);
             return Ok(employees);
         }
+
+        //employee Managerları çekecek endpoint gerekli
     }
 }
