@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DeskJr.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240729131446_v4")]
-    partial class v4
+    [Migration("20240730075749_v2")]
+    partial class v2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -61,6 +61,8 @@ namespace DeskJr.Data.Migrations
                     b.HasKey("ID");
 
                     b.HasIndex("EmployeeTitleId");
+
+                    b.HasIndex("TeamId");
 
                     b.ToTable("Employees");
                 });
@@ -164,9 +166,7 @@ namespace DeskJr.Data.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("ManagerId")
-                        .IsUnique()
-                        .HasFilter("[ManagerId] IS NOT NULL");
+                    b.HasIndex("ManagerId");
 
                     b.ToTable("Teams");
                 });
@@ -177,7 +177,14 @@ namespace DeskJr.Data.Migrations
                         .WithMany()
                         .HasForeignKey("EmployeeTitleId");
 
+                    b.HasOne("DeskJr.Entity.Models.Team", "Team")
+                        .WithMany()
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
                     b.Navigation("EmployeeTitle");
+
+                    b.Navigation("Team");
                 });
 
             modelBuilder.Entity("DeskJr.Entity.Models.Leave", b =>
@@ -208,16 +215,11 @@ namespace DeskJr.Data.Migrations
             modelBuilder.Entity("DeskJr.Entity.Models.Team", b =>
                 {
                     b.HasOne("DeskJr.Entity.Models.Employee", "Manager")
-                        .WithOne("Team")
-                        .HasForeignKey("DeskJr.Entity.Models.Team", "ManagerId");
+                        .WithMany()
+                        .HasForeignKey("ManagerId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Manager");
-                });
-
-            modelBuilder.Entity("DeskJr.Entity.Models.Employee", b =>
-                {
-                    b.Navigation("Team")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
