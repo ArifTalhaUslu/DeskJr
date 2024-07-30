@@ -1,30 +1,41 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import teamService from "../../../services/TeamService";
 import Input from "../../CommonComponents/Input";
 import Button from "../../CommonComponents/Button";
+import employeeService from "../../../services/EmployeeService";
 
 const TeamEditForm: any = (props: any) => {
+  const [managers, setManagers] = useState([]);
+
   useEffect(() => {
     if (props.selectedItemId) {
       teamService.getTeamById(props.selectedItemId).then((data) => {
         props.setSelectedTeam(data);
       });
     }
+
+    employeeService.getAllEmployee().then((data) => {
+      const managers = data.filter((employee: any) => employee.employeeRole === 1);
+      setManagers(managers);
+    });
   }, [props.selectedItemId]);
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
     props.setSelectedTeam((prevState: any) => ({
-      ...prevState,
-      [name]: value,
+        ...prevState,
+        [name]: value,
+        managerId: name === 'manager' ? value : prevState.managerId,
     }));
-  };
+};
+
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
     teamService
       .addOrUpdateTeam({
         ...props.selectedTeam,
+        managerId: props.selectedTeam.managerId || null,
       })
       .then(() => {
         alert("success");
@@ -87,11 +98,14 @@ const TeamEditForm: any = (props: any) => {
                   <select
                     name="manager"
                     className="form-control"
-                    value={props.selectedTeam && props.selectedTeam.manager && props.selectedTeam.manager.name}
+                    value={props.selectedTeam?.managerId || ""}
                     onChange={(e: any) => handleChange(e)}
-                    required
                   >
-<option value="">{props.selectedTeam && props.selectedTeam.manager && props.selectedTeam.manager.name}</option>
+                    <option value=""></option>
+                    {managers.map((manager: any) => (
+                      <option key={manager.id} value={manager.id}>
+                        {manager.name}
+                      </option>))}
                   </select>
                 </div>
               </div>

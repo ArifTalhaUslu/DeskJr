@@ -184,20 +184,13 @@ const EmployeeEditForm: any = (props: any) => {
                     </>
                   )}
 
-                  {props.modalModeName === "Add" ? (
-                    <></>
-                  ) : (
-                    <>
-                      {/* <label className="col-form-label">Team:</label>
-                <Input
-                  type="text"
-                  name="teamId"
-                  value={
-                    props.selectedEmployee && props.selectedEmployee.teamId
-                  }
-                  onChange={(e: any) => handleChange(e)} */}
-                    </>
-                  )}
+                  {/* <label className="col-form-label">Team:</label>
+                  <Input
+                    type="text"
+                    name="teamId"
+                    value={props.selectedEmployee && props.selectedEmployee.team ? props.selectedEmployee.team.name : ''}
+                    onChange={(e: any) => handleChange(e)}
+                  /> */}
 
                   <label className="col-form-label">E-mail:</label>
                   <Input
