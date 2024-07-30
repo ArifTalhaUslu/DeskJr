@@ -1,20 +1,17 @@
 import { useEffect, useState } from "react";
-import employeeService from "../../../services/EmployeeService";
+import teamService from "../../../services/TeamService";
 import Card from "../../CommonComponents/Card";
 import Board from "../../CommonComponents/Board";
-import EmployeeEditForm from "./EmployeeEditForm";
-import { formatDate } from "date-fns";
+import TeamEditForm from "./TeamEditForm";
 import ConfirmDelete from "../../CommonComponents/ConfirmDelete";
 
-const Employee: any = () => {
+const Team: any = () => {
   const [items, setItems] = useState([]);
   const [selectedItemId, setSelectedItemId] = useState("");
-  const [selectedEmployee, setSelectedEmployee] = useState("");
+  const [selectedTeam, setSelectedTeam] = useState("");
   const [modalModeName, setModalModeName] = useState("");
-  const [modalDataTarget] = useState("employeeAddModal");
+  const [modalDataTarget] = useState("teamAddModal");
   const [isTrigger, setIsTrigger] = useState(false);
-  const [isDelete, setIsDelete] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
   const [formToBeClosed, setFormToBeClosed] = useState("");
 
   useEffect(() => {
@@ -22,7 +19,7 @@ const Employee: any = () => {
   }, [isTrigger]);
 
   const getList = async () => {
-    employeeService.getAllEmployee().then((data) => {
+    teamService.getAllTeam().then((data) => {
       setItems(data);
     });
   };
@@ -31,8 +28,8 @@ const Employee: any = () => {
     e.preventDefault();
 
     if (selectedItemId) {
-      employeeService
-        .deleteEmployee(selectedItemId)
+      teamService
+        .deleteTeam(selectedItemId)
         .then(() => {
           alert("Success");
           setIsTrigger(true);
@@ -41,22 +38,19 @@ const Employee: any = () => {
           console.log(err);
         });
     }
-
-    // const close_button = document.getElementById("confirm-delete-close");
-    // close_button?.click();
     onModalClose();
   };
 
-  const handleEdit = (employee: any) => {
-    setSelectedItemId(employee.id);
+  const handleEdit = (team: any) => {
+    setSelectedItemId(team.id);
     setModalModeName("Update");
-    setIsEdit(true);
+    //setIsEdit(true);
     setFormToBeClosed("form-close");
   };
 
-  const handleDelete = (employee: any) => {
-    setSelectedItemId(employee.id);
-    setIsDelete(true);
+  const handleDelete = (team: any) => {
+    setSelectedItemId(team.id);
+    //setIsDelete(true);
     setFormToBeClosed("delete-form-closed");
   };
 
@@ -64,58 +58,38 @@ const Employee: any = () => {
 
   const isDeletable = (item: any) => true;
 
-  const renderColumn = (column: string, value: any) => {
-    if (column === "employeeRole") {
-      return value === 2
-        ? "Employee"
-        : value === 1
-        ? "Manager"
-        : value === 0
-        ? "Admin"
-        : value;
-    } else if (column === "gender") {
-      return value === 0 ? "Male" : value === 1 ? "Female" : value;
-    } else if (column === "dayOfBirth") {
-      return formatDate(new Date(value), "dd/MM/yyyy");
-    } else if (column == "employeeTitle") {
-      return value && value.titleName;
-    }else if (column == "team") {
-      return value && value.name;
-    }
-    return value;
-  };
-
   const onModalClose = () => {
     setSelectedItemId("");
-    setSelectedEmployee("");
+    setSelectedTeam("");
     setModalModeName("");
     setIsTrigger(false);
     const close_button = document.getElementById(formToBeClosed);
     close_button?.click();
     setFormToBeClosed("");
-    //window.location.reload(); //gecici cozum
+  };
+  
+  const renderColumn = (column: string, value: any) => {
+    if (column === "manager") {
+      return value && value.name;
+    } 
+    return value;
   };
 
   const columnNames = {
-    name: "Employee Name",
-    dayOfBirth: "BirthDay",
-    employeeRole: "Employee Role",
-    gender: "Gender",
-    employeeTitle: "Title Name",
-    team: "Team Name",
-    email: "E-mail",
+    name: "Team Name",
+    manager: "Manager Name",
   };
 
   return (
     <>
-      <Card title={"Employee List"}>
+      <Card title={"Team List"}>
         <Board
           items={items}
           onEdit={handleEdit}
           onDelete={handleDelete}
           isEditable={isEditable}
           isDeletable={isDeletable}
-          hiddenColumns={["id", "password", "teamId", "employeeTitleId"]}
+          hiddenColumns={["id","managerId"]}
           renderColumn={renderColumn}
           columnNames={columnNames}
           hasNewRecordButton={true}
@@ -128,14 +102,15 @@ const Employee: any = () => {
         />
       </Card>
 
-      <EmployeeEditForm
+      <TeamEditForm
         selectedItemId={selectedItemId}
         modalModeName={modalModeName}
-        selectedEmployee={selectedEmployee}
-        setSelectedEmployee={setSelectedEmployee}
+        selectedTeam={selectedTeam}
+        setSelectedTeam={setSelectedTeam}
         getList={getList}
         onClose={onModalClose}
       />
+
       <ConfirmDelete
         onConfirm={(e) => onConfirmDelete(e)}
         selectedItemId={selectedItemId}
@@ -145,4 +120,4 @@ const Employee: any = () => {
   );
 };
 
-export default Employee;
+export default Team;

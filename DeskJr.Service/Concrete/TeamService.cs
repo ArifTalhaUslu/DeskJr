@@ -18,10 +18,15 @@ namespace DeskJr.Service.Concrete
             _mapper = mapper;
         }
 
-        public async Task<bool> AddTeamAsync(CreateTeamDto teamDto)
+        public async Task<bool> AddOrUpdateTeamAsync(AddOrUpdateTeamDto teamDto)
         {
             var team = _mapper.Map<Team>(teamDto);
-            return await _teamRepository.AddAsync(team);
+            if (teamDto.ID == null)
+            {
+                return await _teamRepository.AddAsync(team);
+            }
+            return await _teamRepository.UpdateAsync(team);
+
         }
 
         public async Task<bool> DeleteTeamAsync(Guid id)
@@ -31,7 +36,7 @@ namespace DeskJr.Service.Concrete
 
         public async Task<List<TeamDto>> GetAllTeamsAsync()
         {
-            var teams = await _teamRepository.GetAllAsync();
+            var teams = await _teamRepository.GetListWithIncludeManagerAsync();
             return _mapper.Map<List<TeamDto>>(teams);
         }
 
@@ -41,7 +46,7 @@ namespace DeskJr.Service.Concrete
             return _mapper.Map<TeamDto>(team);
         }
 
-        public async Task<bool> UpdateTeamAsync(UpdateTeamDto teamDto)
+        public async Task<bool> UpdateTeamAsync(AddOrUpdateTeamDto teamDto)
         {
             var team = _mapper.Map<Team>(teamDto);
             return await _teamRepository.UpdateAsync(team);

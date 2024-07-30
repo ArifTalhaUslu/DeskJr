@@ -12,7 +12,7 @@ import PendingLeaveRequests from "./components/views/PendingLeaveRequest";
 import Holidays from "./components/views/Holiday/Holiday";
 import LeaveTypes from "./components/views/LeaveType";
 import Title from "./components/views/Title";
-import Team from "./components/views/Team";
+import Team from "./components/views/Team/Team";
 
 const navigation = {
     brand: { name: "�Desk", to: "/" },

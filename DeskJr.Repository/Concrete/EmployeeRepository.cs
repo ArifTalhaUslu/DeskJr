@@ -25,6 +25,14 @@ namespace DeskJr.Repository.Concrete
         {
             return await _context.Employees.FirstOrDefaultAsync(e => e.Email == email);
         }
+
+        public IEnumerable<Employee> GetListWithIncludeEmployeeAsync()
+        {
+            return _context.Employees
+                .Include(x=>x.EmployeeTitle)
+                .Include(x=>x.Team)
+                .ToList();
+        }
     }
 
 }
