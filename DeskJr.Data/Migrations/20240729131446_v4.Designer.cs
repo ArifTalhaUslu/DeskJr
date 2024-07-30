@@ -4,6 +4,7 @@ using DeskJr.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DeskJr.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240729131446_v4")]
+    partial class v4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,8 +61,6 @@ namespace DeskJr.Data.Migrations
                     b.HasKey("ID");
 
                     b.HasIndex("EmployeeTitleId");
-
-                    b.HasIndex("TeamId");
 
                     b.ToTable("Employees");
                 });
@@ -164,7 +164,9 @@ namespace DeskJr.Data.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("ManagerId");
+                    b.HasIndex("ManagerId")
+                        .IsUnique()
+                        .HasFilter("[ManagerId] IS NOT NULL");
 
                     b.ToTable("Teams");
                 });
@@ -175,14 +177,7 @@ namespace DeskJr.Data.Migrations
                         .WithMany()
                         .HasForeignKey("EmployeeTitleId");
 
-                    b.HasOne("DeskJr.Entity.Models.Team", "Team")
-                        .WithMany()
-                        .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
                     b.Navigation("EmployeeTitle");
-
-                    b.Navigation("Team");
                 });
 
             modelBuilder.Entity("DeskJr.Entity.Models.Leave", b =>
@@ -213,11 +208,16 @@ namespace DeskJr.Data.Migrations
             modelBuilder.Entity("DeskJr.Entity.Models.Team", b =>
                 {
                     b.HasOne("DeskJr.Entity.Models.Employee", "Manager")
-                        .WithMany()
-                        .HasForeignKey("ManagerId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .WithOne("Team")
+                        .HasForeignKey("DeskJr.Entity.Models.Team", "ManagerId");
 
                     b.Navigation("Manager");
+                });
+
+            modelBuilder.Entity("DeskJr.Entity.Models.Employee", b =>
+                {
+                    b.Navigation("Team")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

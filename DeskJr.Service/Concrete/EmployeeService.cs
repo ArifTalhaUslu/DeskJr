@@ -38,10 +38,10 @@ namespace DeskJr.Service.Concrete
             return await _employeeRepository.DeleteAsync(id);
         }
 
-        public async Task<List<EmployeeDto>> GetAllEmployeesAsync()
+        public async Task<IEnumerable<EmployeeDto>> GetAllEmployeesAsync()
         {
-            var employees = await _employeeRepository.GetAllAsync();
-            return _mapper.Map<List<EmployeeDto>>(employees);
+            var employees = _employeeRepository.GetListWithIncludeEmployeeAsync();
+            return _mapper.Map<IEnumerable<EmployeeDto>>(employees);
         }
 
         public async Task<EmployeeDto?> GetEmployeeByIdAsync(Guid id)
