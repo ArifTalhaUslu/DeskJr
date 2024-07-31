@@ -1,7 +1,17 @@
-import api from "../utils/axiosConfig";
+import { SET_ERROR } from '../store/actions/actionTypes';
+import { ErrorResponseDto } from '../types/ErrorResponseDto';
+import { SetErrorAction } from '../store/actions/errorActions';
+import api from '../utils/axiosConfig';
 
 const baseUrl = "/api/Employee";
 
+export const setError = (error: ErrorResponseDto): SetErrorAction => ({
+    type: SET_ERROR,
+    payload: error,
+  });
+
+
+//try-catch eklenecek
 class EmployeeService {
   public async getAllEmployee() {
     const response = await api.get(baseUrl);

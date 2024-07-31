@@ -16,6 +16,11 @@ import PendingLeaveRequests from "./components/views/PendingLeaveRequest";
 import Holidays from "./components/views/Holiday/Holiday";
 import LeaveTypes from "./components/views/LeaveType";
 import Title from "./components/views/Title";
+import Team from "./components/views/Team";
+import { Provider } from 'react-redux'
+import store from "./store/store";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 import Team from "./components/views/Team/Team";
 import EmployeeService from "./services/EmployeeService";
 
@@ -74,6 +79,7 @@ const App: React.FC = () => {
 
     return (
         <Router>
+            <Provider store={store}>
             <div className="App">
                 {currentUser && currentUser.id && (
                     <NavigationBar
@@ -114,7 +120,9 @@ const App: React.FC = () => {
                         </>
                     )}
                 </Routes>
-            </div>
+                <ToastContainer />
+                </div>
+            </Provider>
         </Router>
     );
 };

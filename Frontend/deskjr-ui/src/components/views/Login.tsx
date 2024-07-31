@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from 'react-router-dom';
+import { AppState } from "../../store/reducers";
+import { login } from "../../store/actions/userActions";
 import Input from "../CommonComponents/Input";
 import Button from "../CommonComponents/Button";
 import Card from "../CommonComponents/Card";
-import { useDispatch, useSelector } from "react-redux";
 import { LoginForm } from "../../types/user";
 import { AppState } from "../../store";
 import { login } from "../../store/actions/userActions";
 import { redirect, useNavigate } from 'react-router-dom';
+import ErrorComponent from "../CommonComponents/ErrorComponent";
+import { showSuccessToast } from "../../utils/toastHelper";
 
 const Login: any = (props:any) => {
     window.history.pushState({}, "", "/");
@@ -22,14 +27,20 @@ const Login: any = (props:any) => {
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
         const formData: LoginForm = { email, password };
-        dispatch(login(formData));
+
+        try{
+            await dispatch(login(formData));
+        }
+        catch(error){
+            console.error(error);
+        }
     };
 
     useEffect(() => {   
         const token = localStorage.getItem("token");
-        debugger;
         if (data.name && token) {
             props.setCurrentUser(data);
+            showSuccessToast('Successful!');
             navigate("/");
         }
         else{
@@ -50,7 +61,7 @@ const Login: any = (props:any) => {
                                     className="form-control"
                                     id="email"
                                     value={email}
-                                    onChange={(e)=> setEmail(e.target.value)}
+                                    onChange={(e) => setEmail(e.target.value)}
                                     required
                                     placeholder="Enter your email"
                                 />
@@ -62,12 +73,12 @@ const Login: any = (props:any) => {
                                     className="form-control"
                                     id="password"
                                     value={password}
-                                    onChange={(e)=> setPassword(e.target.value)}
+                                    onChange={(e) => setPassword(e.target.value)}
                                     required
                                     placeholder="Enter your password"
                                 />
                             </div>
-                            <Button type="submit" text="Login" />
+                            <Button type="submit" text={loading ? "Logging in..." : "Login"} disabled={loading} />
                         </form>
                     </Card>
                 </div>

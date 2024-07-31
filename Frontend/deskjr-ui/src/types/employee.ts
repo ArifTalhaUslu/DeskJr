@@ -1,9 +1,15 @@
 import { ThunkDispatch } from "redux-thunk";
+import { AnyAction } from "redux";
 
 export interface EmployeeState {
     data: Employee[];
     loading: boolean;
     error: string;
+}
+
+export interface CurrentSession {
+    token: string;
+    employee: Employee;
 }
 
 export interface Employee {
@@ -18,18 +24,19 @@ export interface Employee {
     password: string;
 }
 
-interface GET_START {
-    type: "GET_EMPLOYEES_START";
+interface LOGIN_REQUEST {
+    type: "LOGIN_REQUEST";
 }
 
-interface GET_SUCCESS {
-    type: "GET_EMPLOYEES_SUCCESS";
-    payload: Employee[];
+interface LOGIN_SUCCESS {
+    type: "LOGIN_SUCCESS";
+    payload: CurrentSession;
 }
 
-interface GET_ERROR {
-    type: "GET_EMPLOYEES_ERROR";
+interface LOGIN_FAILURE {
+    type: "LOGIN_FAILURE";
+    payload: string; 
 }
 
-export type EmployeeAction = GET_START | GET_SUCCESS |GET_ERROR;
-export type EmployeeDispatch = ThunkDispatch<EmployeeState, void,EmployeeAction>;
+export type EmployeeAction = LOGIN_REQUEST | LOGIN_SUCCESS | LOGIN_FAILURE;
+export type EmployeeDispatch = ThunkDispatch<EmployeeState, void, AnyAction>;

@@ -1,6 +1,10 @@
 import axios from 'axios';
 import { customError } from '../types/customError';
 import ErrorHandler from './ErrorHandler';
+import { ErrorResponseDto } from '../types/ErrorResponseDto';
+import store from '../store/store'
+import { setError } from '../store/actions/errorActions';
+import { showErrorToast } from './toastHelper';
 
 const api = axios.create({
     baseURL: 'https://localhost:7187',
@@ -25,29 +29,32 @@ api.interceptors.response.use(
         return response;
     },
     (error) => {
-        let customError: customError = {
-            status: 0,
-            message: 'error',
-            details: '',
+        console.log(error.response);
+
+        let customError: ErrorResponseDto = {
+            StatusCodes: 0,
+            Message: '',
+            Details: '',
         }; 
-        if(error.response){
-            const {status, data} = error.response;
-            customError = {
-                status: status,
-                message: data.message,
-                details: data.details
-            };
+        if (error.response) {
+            const { status, data } = error.response;
+            console.log(data)
+
+            customError.StatusCodes = status;
+            customError.Message = data.Message;
+            customError.Details = data.Details;
         }
         else if (error.request){
-            customError.message = 'Network error ELSE IF';
-            customError.details = error.message;
+            customError.Message = 'No response from server';
+            customError.Details = error.message;
         }
         else{
-            customError.message = error.message;
-            customError.details = '';
+            customError.Message = error.message;
         }
 
-        ErrorHandler.setError(customError);
+        store.dispatch(setError(customError));
+        showErrorToast(customError.Message);
+
         return Promise.reject(customError);
     }
 );

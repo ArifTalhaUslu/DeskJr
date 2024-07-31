@@ -3,6 +3,7 @@ using DeskJr.Service.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System.Net;
+using System.Text.Json;
 
 
 namespace DeskJr.Middlewares
@@ -43,8 +44,8 @@ namespace DeskJr.Middlewares
                     errorDetails = new ErrorResponseDto
                     {
                         StatusCodes = response.StatusCode,
-                        Message = ex.Message,
-                        Detail = ""
+                        Message = "Not Found!",
+                        Details = ex.Message
                     };
                     break;
                 case BadRequestException:
@@ -52,17 +53,17 @@ namespace DeskJr.Middlewares
                     errorDetails = new ErrorResponseDto
                     {
                         StatusCodes = response.StatusCode,
-                        Message = ex.Message,
-                        Detail = ""
+                        Message = "Bad Request!",
+                        Details = ex.Message
                     };
                     break;
-                case ValidationException:
+                case InvalidGuidFormatException:
                     response.StatusCode = (int)HttpStatusCode.BadRequest;
                     errorDetails = new ErrorResponseDto
                     {
                         StatusCodes = response.StatusCode,
-                        Message = ex.Message,
-                        Detail = ""
+                        Message = "Invalid GUID Format!",
+                        Details = ex.Message
                     };
                     break;
                 case UnauthorizedException:
@@ -70,8 +71,8 @@ namespace DeskJr.Middlewares
                     errorDetails = new ErrorResponseDto
                     {
                         StatusCodes = response.StatusCode,
-                        Message = ex.Message,
-                        Detail = ""
+                        Message = "Unauthorized!",
+                        Details = ex.Message
                     };
                     break;
                 default:
@@ -79,12 +80,12 @@ namespace DeskJr.Middlewares
                     errorDetails = new ErrorResponseDto
                     {
                         StatusCodes = response.StatusCode,
-                        Message = "An unexpected error occurred.",
-                        Detail = ""
+                        Message = "An unexpected error occurred. (default)",
+                        Details = ex.Message
                     };
                     break;
             }
-            var result = System.Text.Json.JsonSerializer.Serialize(errorDetails);
+            var result = JsonSerializer.Serialize(errorDetails);
             return context.Response.WriteAsync(result);
         }
     }

@@ -2,7 +2,7 @@ import { LoginForm, UserDispatch, User } from "../../types/user";
 import api from "../../utils/axiosConfig";
 
 export const login = (creds: LoginForm) => async (dispatch: UserDispatch) => {
-    dispatch({ type: "LOGIN_START" });
+    dispatch({ type: LOGIN_REQUEST });
 
     await api
         .post<{
