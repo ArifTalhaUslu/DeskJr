@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using DeskJr.Common;
 using DeskJr.Service.Abstract;
 using DeskJr.Service.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -12,6 +14,7 @@ namespace DeskJr.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class LoginController : ControllerBase
     {
         private readonly JwtSettings _jwtSettings;
@@ -26,6 +29,7 @@ namespace DeskJr.Api.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginRequestDTO loginRequest)
         {
             var employee = await AuthenticationControlAsync(loginRequest);
@@ -71,7 +75,7 @@ namespace DeskJr.Api.Controllers
         {
             var employee = await _employeeService.GetEmployeeByEmailAsync(loginRequest.Email);
 
-            if (employee != null && employee.Password == loginRequest.Password)
+            if (employee != null && employee.Password == Encrypter.EncryptString(loginRequest.Password))
             {
                 return employee;
             }
