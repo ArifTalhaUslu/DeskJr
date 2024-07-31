@@ -6,17 +6,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { LoginForm } from "../../types/user";
 import { AppState } from "../../store";
 import { login } from "../../store/actions/userActions";
-import { useNavigate } from 'react-router-dom';
+import { redirect, useNavigate } from 'react-router-dom';
 
-const Login: React.FC = () => {
-    
+const Login: any = (props:any) => {
+    window.history.pushState({}, "", "/");
+
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const { data, loading, error } = useSelector((state: AppState) => state.user);
+    const { data } = useSelector((state: AppState) => state.user);
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
@@ -25,12 +26,16 @@ const Login: React.FC = () => {
     };
 
     useEffect(() => {
-        if (data.email) {
-            console.log("Login Başarılı");
+        debugger;
+        if ( data.name) {
+            alert(data.name);
+            props.setCurrentUser(data);
+            navigate("/");
         }
-    }, [data.email]);
-
-    
+        else{
+            props.setCurrentUser(null);
+        }
+    }, [data.name]);
 
     return (
         <div className="container">

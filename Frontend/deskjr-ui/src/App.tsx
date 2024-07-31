@@ -2,8 +2,13 @@ import "./App.css";
 import Login from "./components/views/Login";
 import NavigationBar from "./components/CommonComponents/NavigationBar";
 import Home from "./components/views/Home";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import React from "react";
+import {
+    BrowserRouter as Router,
+    Route,
+    Routes,
+    redirect,
+} from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import MyInfo from "./components/views/MyInfo";
 import Contacts from "./components/views/Contacts";
 import Employee from "./components/views/Employee/Employee";
@@ -13,6 +18,7 @@ import Holidays from "./components/views/Holiday/Holiday";
 import LeaveTypes from "./components/views/LeaveType";
 import Title from "./components/views/Title";
 import Team from "./components/views/Team/Team";
+import EmployeeService from "./services/EmployeeService";
 
 const navigation = {
     brand: { name: "�Desk", to: "/" },
@@ -43,23 +49,71 @@ const navigation = {
 
 const App: React.FC = () => {
     const { brand, links } = navigation;
+    const [currentUser, setCurrentUser] = useState<any>();
+
+    const fetchEmployee = (id: string) => {
+        EmployeeService.getEmployeeById(id)
+            .then((data) => {
+                setCurrentUser(data);
+            })
+            .catch((error) => {
+                console.error("Error fetching data: ", error);
+            });
+    };
+
+    useEffect(() => {
+        fetchEmployee(localStorage.getItem("id"));
+    }, []);
+
+    useEffect(() => {
+        if (currentUser && currentUser.id) {
+            redirect("/");
+        } else {
+            redirect("/login");
+        }
+    }, [currentUser]);
 
     return (
         <Router>
             <div className="App">
-                <NavigationBar brand={brand} links={links} />
+                {currentUser && currentUser.id && (
+                    <NavigationBar
+                        brand={brand}
+                        links={links}
+                        currentUser={currentUser}
+                        setCurrentUser={setCurrentUser}
+                    />
+                )}
                 <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/myInfo" element={<MyInfo />} />
-                    <Route path="/contacts" element={<Contacts />} />
-                    <Route path="/employees" element={<Employee />} />
-                    <Route path="/leaves" element={<Leaves />} />
-                    <Route path="/pendingLeaveRequests" element={<PendingLeaveRequests />} />
-                    <Route path="/holidays" element={<Holidays />} />
-                    <Route path="/leaveTypes" element={<LeaveTypes />} />
-                    <Route path="/titles" element={<Title />} />
-                    <Route path="/teams" element={<Team />} />
+                    {currentUser && currentUser.id && (
+                        <>
+                            <Route
+                                path="/"
+                                element={<Home currentUser={currentUser} />}
+                            />
+                            <Route path="/myInfo" element={<MyInfo />} />
+                            <Route path="/contacts" element={<Contacts />} />
+                            <Route path="/employees" element={<Employee />} />
+                            <Route path="/leaves" element={<Leaves />} />
+                            <Route
+                                path="/pendingLeaveRequests"
+                                element={<PendingLeaveRequests />}
+                            />
+                            <Route path="/holidays" element={<Holidays />} />
+                            <Route
+                                path="/leaveTypes"
+                                element={<LeaveTypes />}
+                            />
+                            <Route path="/titles" element={<Title />} />
+                            <Route path="/teams" element={<Team />} />
+                            <Route path="*" element={<>Not Found</> } />
+                        </>
+                    )}
+                    {!currentUser && (
+                        <>
+                            <Route path="*" element={<Login setCurrentUser={setCurrentUser} /> } />
+                        </>
+                    )}
                 </Routes>
             </div>
         </Router>
