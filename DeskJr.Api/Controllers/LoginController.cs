@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DeskJr.Common.Exceptions;
 using DeskJr.Service.Abstract;
 using DeskJr.Service.Dto;
 using Microsoft.AspNetCore.Mvc;
@@ -63,6 +64,7 @@ namespace DeskJr.Api.Controllers
                 expires: DateTime.Now.AddDays(7),
                 signingCredentials: credentials
             );
+            
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
@@ -76,7 +78,7 @@ namespace DeskJr.Api.Controllers
                 return employee;
             }
 
-            return null;
+            throw new UnauthorizedException("Bir hata ile karşılaşıldı :D");
         }
     }
 }

@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from 'react-router-dom';
+import { AppState } from "../../store/reducers";
+import { login } from "../../store/actions/userActions";
 import Input from "../CommonComponents/Input";
 import Button from "../CommonComponents/Button";
 import Card from "../CommonComponents/Card";
-import { useDispatch, useSelector } from "react-redux";
 import { LoginForm } from "../../types/user";
-import { AppState } from "../../store";
-import { login } from "../../store/actions/userActions";
-import { useNavigate } from 'react-router-dom';
+import ErrorComponent from "../CommonComponents/ErrorComponent";
+import { showSuccessToast } from "../../utils/toastHelper";
 
 const Login: React.FC = () => {
     
@@ -21,14 +23,21 @@ const Login: React.FC = () => {
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
         const formData: LoginForm = { email, password };
-        dispatch(login(formData));
+
+        try{
+            await dispatch(login(formData));
+        }
+        catch(error){
+            console.error(error);
+        }
     };
 
     useEffect(() => {
-        if (data.email) {
+        if (data && data.email) {
             console.log("Login Başarılı");
+            showSuccessToast('Successful!');
         }
-    }, [data.email]);
+    }, [data]);
 
     
 
@@ -45,7 +54,7 @@ const Login: React.FC = () => {
                                     className="form-control"
                                     id="email"
                                     value={email}
-                                    onChange={setEmail}
+                                    onChange={(e) => setEmail(e.target.value)}
                                     required
                                     placeholder="Enter your email"
                                 />
@@ -57,12 +66,12 @@ const Login: React.FC = () => {
                                     className="form-control"
                                     id="password"
                                     value={password}
-                                    onChange={setPassword}
+                                    onChange={(e) => setPassword(e.target.value)}
                                     required
                                     placeholder="Enter your password"
                                 />
                             </div>
-                            <Button type="submit" text="Login" />
+                            <Button type="submit" text={loading ? "Logging in..." : "Login"} disabled={loading} />
                         </form>
                     </Card>
                 </div>

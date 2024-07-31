@@ -13,6 +13,10 @@ import Holidays from "./components/views/Holiday";
 import LeaveTypes from "./components/views/LeaveType";
 import Title from "./components/views/Title";
 import Team from "./components/views/Team";
+import { Provider } from 'react-redux'
+import store from "./store/store";
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const navigation = {
     brand: { name: "�Desk", to: "/" },
@@ -46,22 +50,25 @@ const App: React.FC = () => {
 
     return (
         <Router>
-            <div className="App">
-                <NavigationBar brand={brand} links={links} />
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/myInfo" element={<MyInfo />} />
-                    <Route path="/contacts" element={<Contacts />} />
-                    <Route path="/employees" element={<Employee />} />
-                    <Route path="/leaves" element={<Leaves />} />
-                    <Route path="/pendingLeaveRequests" element={<PendingLeaveRequests />} />
-                    <Route path="/holidays" element={<Holidays />} />
-                    <Route path="/leaveTypes" element={<LeaveTypes />} />
-                    <Route path="/titles" element={<Title />} />
-                    <Route path="/teams" element={<Team />} />
-                </Routes>
-            </div>
+            <Provider store = {store}>
+                <div className="App">
+                    <NavigationBar brand={brand} links={links} />
+                        <Routes>
+                            <Route path="/" element={<Home />} />
+                            <Route path="/login" element={<Login />} />
+                            <Route path="/myInfo" element={<MyInfo />} />
+                            <Route path="/contacts" element={<Contacts />} />
+                            <Route path="/employees" element={<Employee />} />
+                            <Route path="/leaves" element={<Leaves />} />
+                            <Route path="/pendingLeaveRequests" element={<PendingLeaveRequests />} />
+                            <Route path="/holidays" element={<Holidays />} />
+                            <Route path="/leaveTypes" element={<LeaveTypes />} />                                
+                            <Route path="/titles" element={<Title />} />
+                            <Route path="/teams" element={<Team />} />
+                        </Routes>
+                        <ToastContainer />
+                </div>
+            </Provider>
         </Router>
     );
 };

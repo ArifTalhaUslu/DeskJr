@@ -1,12 +1,29 @@
-import axios from 'axios';
+import { SET_ERROR } from '../store/actions/actionTypes';
+import { SetErrorAction } from '../store/actions/errorActions';
+import { ErrorResponseDto } from '../types/ErrorResponseDto';
+import api from '../utils/axiosConfig';
 
-const baseUrl = 'https://localhost:7187/api/Login';
+export const setError = (error: ErrorResponseDto): SetErrorAction => ({
+  type: SET_ERROR,
+  payload: error,
+});
+
+const baseUrl = '/Login';
 
 class LoginService {
-    public async login(body: any) {
-        const response = await axios.post(`${baseUrl}`, body);
-    return response.data;
+  public async login(body: any) {
+    try {
+      const response = await api.post(baseUrl, body);
+      return response.data; 
+    }
+    catch(error) {
+      const ErrorResponseDto = setError(error);
+      if(ErrorResponseDto){
+        console.error('Error during login: ', ErrorResponseDto);
+        throw ErrorResponseDto;
+      }
+      throw error;
+    }    
   }
 }
-
 export default new LoginService();

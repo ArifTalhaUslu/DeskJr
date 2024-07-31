@@ -26,8 +26,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         }
         catch (Exception ex)
         {
-
-            throw;
+            throw new BadRequestException("default");
         }
     }
 
@@ -54,9 +53,9 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         {
             throw new NotFoundException($"Employee with ID {id} not found");
         }
-            _dbSet.Remove(dbTeam);
-            await _context.SaveChangesAsync();
-            return true;
+        _dbSet.Remove(dbTeam);
+        await _context.SaveChangesAsync();
+        return true;
     }
 
     public async Task<List<T>> GetAllAsync()
