@@ -1,4 +1,5 @@
 import { ThunkDispatch } from "redux-thunk";
+import { AnyAction } from "redux";
 export interface User {
     id: string;
     name: string;
@@ -22,14 +23,14 @@ export interface LoginForm {
 }
 
 export interface UserState {
-    data: User;
-    token: string;
+    data: User | null;
+    token: string | null;
     loading: boolean;
-    error: string;
+    error: string | null;
 }
 
-interface LOGIN_START {
-    type: "LOGIN_START";
+interface LOGIN_REQUEST {
+    type: "LOGIN_REQUEST";
 }
 
 interface LOGIN_SUCCESS {
@@ -37,9 +38,10 @@ interface LOGIN_SUCCESS {
     payload: CurrentSession;
 }
 
-interface LOGIN_ERROR {
-    type: "LOGIN_ERROR";
+interface LOGIN_FAILURE {
+    type: "LOGIN_FAILURE";
+    payload: string; 
 }
 
-export type UserAction = LOGIN_START | LOGIN_SUCCESS | LOGIN_ERROR;
-export type UserDispatch = ThunkDispatch<UserState, void, UserAction>;
+export type UserAction = LOGIN_REQUEST | LOGIN_SUCCESS | LOGIN_FAILURE;
+export type UserDispatch = ThunkDispatch<UserState, void, AnyAction>;

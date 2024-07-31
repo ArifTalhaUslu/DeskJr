@@ -1,40 +1,43 @@
-import { useState, useEffect } from 'react';
-import EmployeeService from '../../services/EmployeeService';
+import { useState, useEffect } from "react";
+import EmployeeService from "../../services/EmployeeService";
 
 const Home = (props: any) => {
-    const id = '78190b40-d9cf-4b09-bc50-08dcad679a5c';
     const [employee, setEmployee] = useState<any>(null);
     const [employees, setEmployees] = useState<any[]>([]);
 
-    useEffect(() => {
-        const fetchEmployee = async () => {
-            try {
-                const fetchedEmployeeData = await EmployeeService.getEmployeeById(id);
-                setEmployee(fetchedEmployeeData);
-            } catch (error) {
-                console.error("Error fetching employee data: ", error);
-            }
-        };
-
-        const fetchAllEmployees = async () => {
-            try {
-                const fetchedEmployeesData = await EmployeeService.getAllEmployee();
+    const id = localStorage.getItem("id");
+    const fetchEmployee = (id, setEmployee) => {
+        EmployeeService.getEmployeeById(id)
+            .then((data) => {
+                setEmployee(data);
+            })
+            .catch((err) => {
+                console.error("Error Fetching emplyee data...", err);
+            });
+    };
+    const fetchAllEmployees = (setEmployees) => {
+        EmployeeService.getAllEmployee()
+            .then((fetchedEmployeesData) => {
                 setEmployees(fetchedEmployeesData);
-            } catch (error) {
-                console.error("Error fetching all employees data: ", error);
-            }
-        };
+            })
+            .catch((err) => {
+                console.log("Error Home fetching employee", err);
+            });
+    };
 
-        fetchEmployee();
-        fetchAllEmployees();
-    }, [id]);
+    useEffect(() => {
+        fetchEmployee(id, setEmployee);
+        fetchAllEmployees(setEmployees);
+    });
 
     return (
         <div className="container">
             <div className="row">
                 <div className="col-12">
                     <div className="p-3 my-3 bg-primary text-white">
-                        <h1 className="mt-4">{employee ? employee.name : 'Loading...'}</h1>
+                        <h1 className="mt-4">
+                            {employee ? employee.name : "Loading..."}
+                        </h1>
                     </div>
                 </div>
                 <div className="col-md-6">
@@ -52,8 +55,20 @@ const Home = (props: any) => {
                             {employees.map((emp) => (
                                 <tr key={emp.id}>
                                     <td>{emp.name}</td>
-                                    <td>{new Date(emp.dayOfBirth).toLocaleDateString()}</td>
-                                    <td>{emp.employeeRole === 2 ? "Employee" : emp.employeeRole === 1 ? "Manager" : emp.employeeRole === 0 ? "Admin" : "Unknown"}</td>
+                                    <td>
+                                        {new Date(
+                                            emp.dayOfBirth
+                                        ).toLocaleDateString()}
+                                    </td>
+                                    <td>
+                                        {emp.employeeRole === 2
+                                            ? "Employee"
+                                            : emp.employeeRole === 1
+                                            ? "Manager"
+                                            : emp.employeeRole === 0
+                                            ? "Admin"
+                                            : "Unknown"}
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>

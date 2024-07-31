@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import EmployeeService from "../../services/EmployeeService";
+import { Employee } from "../../types/employee";
+import Button from "./Button";
 
 interface NavigationBarProps {
+    currentUser:Employee;
+    setCurrentUser:any;
     brand: {
         name: string;
         to?: string;
@@ -15,22 +19,8 @@ interface NavigationBarProps {
     }[];
 }
 
-const NavigationBar: React.FC<NavigationBarProps> = ({ brand, links }) => {
-    const [employee, setEmployee] = useState<any>(null);
-    const id = '78190b40-d9cf-4b09-bc50-08dcad679a5c';
-
-    useEffect(() => {
-        const fetchEmployee = async () => {
-            try {
-                const fetchedEmployeeData = await EmployeeService.getEmployeeById(id);
-                setEmployee(fetchedEmployeeData);
-            } catch (error) {
-                console.error("Error fetching employee data: ", error);
-            }
-        };
-
-        fetchEmployee();
-    }, [id]);
+const NavigationBar: React.FC<NavigationBarProps> = ({ brand, links, currentUser, setCurrentUser }) => {
+    const navigate = useNavigate();
 
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -100,16 +90,21 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ brand, links }) => {
                                 aria-haspopup="true"
                                 aria-expanded="false"
                             >
-                                <i className="bi bi-person"></i> {employee ? employee.name : 'Loading...'}
+                                <i className="bi bi-person"></i> {currentUser ? currentUser.name : 'Unauthorized'}
                             </a>
                             <div
                                 className="dropdown-menu"
                                 aria-labelledby="navbarUserDropdown"
                             >
-                                <Link className="dropdown-item" to="/profile">Option 1</Link>
-                                <Link className="dropdown-item" to="/settings">Option 2</Link>
+                                <Link className="dropdown-item" to="/profile">Profile</Link>
+                                <Link className="dropdown-item" to="/settings">Settings</Link>
                                 <div className="dropdown-divider"></div>
-                                <Link className="dropdown-item" to="/logout">Option 3</Link>
+                                <Button text={"Logout"} className="dropdown-item" onClick={() => {
+                                            setCurrentUser(null);
+                                            localStorage.removeItem("id");
+                                            localStorage.removeItem("token");
+                                            navigate("/login");                                            
+                                }} />
                             </div>
                         </li>
                     </ul>
