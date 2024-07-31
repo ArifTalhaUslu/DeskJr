@@ -5,6 +5,7 @@ import Board from "../../CommonComponents/Board";
 import EmployeeEditForm from "./EmployeeEditForm";
 import { formatDate } from "date-fns";
 import ConfirmDelete from "../../CommonComponents/ConfirmDelete";
+import { showErrorToast } from "../../../utils/toastHelper";
 
 const Employee: any = () => {
   const [items, setItems] = useState([]);
@@ -24,6 +25,9 @@ const Employee: any = () => {
   const getList = async () => {
     employeeService.getAllEmployee().then((data) => {
       setItems(data);
+    })
+    .catch((err) => {
+      showErrorToast(err);
     });
   };
 
@@ -37,8 +41,8 @@ const Employee: any = () => {
           alert("Success");
           setIsTrigger(true);
         })
-        .catch((err: any) => {
-          console.log(err);
+        .catch((err) => {
+          showErrorToast(err);
         });
     }
 

@@ -1,25 +1,30 @@
 import Button from "../../CommonComponents/Button";
 import Input from "../../CommonComponents/Input";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import holidayService from "../../../services/HolidayService";
+import { showErrorToast } from "../../../utils/toastHelper";
 
 const HolidayEditForm: any = (props: any) => {
-   
+
   useEffect(() => {
     if (props.selectedItemId) {
-      holidayService.getHolidayById(props.selectedItemId).then((data) => {
-        props.setSelectedHoliday(data);
-      });
+      holidayService.getHolidayById(props.selectedItemId)
+        .then((data) => {
+          props.setSelectedHoliday(data);
+        })
+        .catch((err) => {
+          showErrorToast(err);
+        });
     }
   }, [props.selectedItemId]);
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
     props.setSelectedHoliday((prev: any) => ({
-        ...prev,
-        [name]: value,
-      }));
-    };
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -32,8 +37,8 @@ const HolidayEditForm: any = (props: any) => {
         props.getList();
         props.onClose();
       })
-      .catch((err: any) => {
-        console.log(err);
+      .catch((err) => {
+        showErrorToast(err);
       });
   };
 
@@ -82,7 +87,7 @@ const HolidayEditForm: any = (props: any) => {
                 <Input
                   type="hidden"
                   name="Id"
-                  value={props.selectedHoliday && props.selectedHoliday.id} 
+                  value={props.selectedHoliday && props.selectedHoliday.id}
                 />
                 <div className="form-group">
                   <label className="col-form-label">Name:</label>
@@ -90,7 +95,7 @@ const HolidayEditForm: any = (props: any) => {
                     type="text"
                     name="name"
                     value={
-                      props.selectedHoliday && props.selectedHoliday.name 
+                      props.selectedHoliday && props.selectedHoliday.name
                     }
                     onChange={(e: any) => handleChange(e)}
                     required
@@ -100,8 +105,8 @@ const HolidayEditForm: any = (props: any) => {
                     type="date"
                     name="startDate"
                     value={
-                      props.selectedHoliday && 
-                      formatDate(props.selectedHoliday.startDate) 
+                      props.selectedHoliday &&
+                      formatDate(props.selectedHoliday.startDate)
                     }
                     onChange={(e: any) => handleChange(e)}
                     required
@@ -112,7 +117,7 @@ const HolidayEditForm: any = (props: any) => {
                     name="endDate"
                     value={
                       props.selectedHoliday &&
-                      formatDate(props.selectedHoliday.endDate) 
+                      formatDate(props.selectedHoliday.endDate)
                     }
                     onChange={(e: any) => handleChange(e)}
                     required

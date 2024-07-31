@@ -7,10 +7,6 @@ import Input from "../CommonComponents/Input";
 import Button from "../CommonComponents/Button";
 import Card from "../CommonComponents/Card";
 import { LoginForm } from "../../types/user";
-import { AppState } from "../../store";
-import { login } from "../../store/actions/userActions";
-import { redirect, useNavigate } from 'react-router-dom';
-import ErrorComponent from "../CommonComponents/ErrorComponent";
 import { showSuccessToast } from "../../utils/toastHelper";
 
 const Login: any = (props:any) => {
@@ -29,7 +25,7 @@ const Login: any = (props:any) => {
         const formData: LoginForm = { email, password };
 
         try{
-            await dispatch(login(formData));
+            dispatch(login(formData));
         }
         catch(error){
             console.error(error);
@@ -40,7 +36,7 @@ const Login: any = (props:any) => {
         const token = localStorage.getItem("token");
         if (data.name && token) {
             props.setCurrentUser(data);
-            showSuccessToast('Successful!');
+            // showSuccessToast('Successful!');
             navigate("/");
         }
         else{
@@ -78,7 +74,7 @@ const Login: any = (props:any) => {
                                     placeholder="Enter your password"
                                 />
                             </div>
-                            <Button type="submit" text={loading ? "Logging in..." : "Login"} disabled={loading} />
+                            <Button type="submit" text={"Login"} />
                         </form>
                     </Card>
                 </div>

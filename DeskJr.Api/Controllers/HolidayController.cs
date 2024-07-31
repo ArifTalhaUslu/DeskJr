@@ -47,6 +47,7 @@ namespace DeskJr.Api.Controllers
         public async Task<ActionResult> GetAllHoliday()
         {
             var holidays = await _holidayService.GetAllHolidaysAsync();
+            throw new BadRequestException("Aha");
             return Ok(holidays);
         }
 

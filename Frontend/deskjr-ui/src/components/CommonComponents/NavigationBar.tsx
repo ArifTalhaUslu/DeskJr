@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import EmployeeService from "../../services/EmployeeService";
 import { Employee } from "../../types/employee";
 import Button from "./Button";
 

@@ -16,13 +16,13 @@ import PendingLeaveRequests from "./components/views/PendingLeaveRequest";
 import Holidays from "./components/views/Holiday/Holiday";
 import LeaveTypes from "./components/views/LeaveType";
 import Title from "./components/views/Title";
-import Team from "./components/views/Team";
 import { Provider } from 'react-redux'
 import store from "./store/store";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import Team from "./components/views/Team/Team";
 import EmployeeService from "./services/EmployeeService";
+import { showErrorToast } from "./utils/toastHelper";
 
 const navigation = {
     brand: { name: "�Desk", to: "/" },
@@ -60,8 +60,8 @@ const App: React.FC = () => {
             .then((data) => {
                 setCurrentUser(data);
             })
-            .catch((error) => {
-                console.error("Error fetching data: ", error);
+            .catch((err) => {
+              showErrorToast(err);
             });
     };
 
@@ -79,7 +79,6 @@ const App: React.FC = () => {
 
     return (
         <Router>
-            <Provider store={store}>
             <div className="App">
                 {currentUser && currentUser.id && (
                     <NavigationBar
@@ -116,13 +115,12 @@ const App: React.FC = () => {
                     )}
                     {!currentUser && (
                         <>
-                            <Route path="*" element={<Login setCurrentUser={setCurrentUser} /> } />
+                            <Route path="*" element={<Login setCurrentUser={setCurrentUser} currentUser={currentUser} /> } />
                         </>
                     )}
                 </Routes>
                 <ToastContainer />
                 </div>
-            </Provider>
         </Router>
     );
 };

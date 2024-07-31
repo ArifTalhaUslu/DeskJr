@@ -2,6 +2,7 @@ import Button from "../../CommonComponents/Button";
 import Input from "../../CommonComponents/Input";
 import { useEffect, useState } from "react";
 import employeeService from "../../../services/EmployeeService";
+import { showErrorToast } from "../../../utils/toastHelper";
 
 const EmployeeEditForm: any = (props: any) => {
   const [genderOptions] = useState([
@@ -21,6 +22,9 @@ const EmployeeEditForm: any = (props: any) => {
     if (props.selectedItemId) {
       employeeService.getEmployeeById(props.selectedItemId).then((data) => {
         props.setSelectedEmployee(data);
+      })
+      .catch((err) => {
+        showErrorToast(err);
       });
     }
   }, [props.selectedItemId]);
@@ -51,8 +55,8 @@ const EmployeeEditForm: any = (props: any) => {
         props.getList();
         props.onClose();
       })
-      .catch((err: any) => {
-        console.log(err);
+      .catch((err) => {
+        showErrorToast(err);
       });
   };
 

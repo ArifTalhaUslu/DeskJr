@@ -5,6 +5,7 @@ import Board from "../../CommonComponents/Board";
 import { formatDate } from "date-fns";
 import ConfirmDelete from "../../CommonComponents/ConfirmDelete";
 import HolidayEditForm from "./HolidayEditForm";
+import { showErrorToast } from "../../../utils/toastHelper";
 
 const Holiday: any = () => {
   const [items, setItems] = useState([]);
@@ -20,9 +21,13 @@ const Holiday: any = () => {
   }, [isTrigger]);
 
   const getList = async () => {
-    holidayService.getAllHoliday().then((data) => {
-      setItems(data);
-    });
+    holidayService.getAllHoliday()
+      .then((data) => {
+        setItems(data);
+      })
+      .catch((err) => {
+        showErrorToast(err);
+      });
   };
 
   const onConfirmDelete = async (e: any) => {
@@ -35,8 +40,8 @@ const Holiday: any = () => {
           alert("Success");
           setIsTrigger(true);
         })
-        .catch((err: any) => {
-          console.log(err);
+        .catch((err) => {
+          showErrorToast(err);
         });
     }
 
@@ -116,7 +121,7 @@ const Holiday: any = () => {
         getList={getList}
         onClose={onModalClose}
       />
-      
+
       <ConfirmDelete
         onConfirm={(e) => onConfirmDelete(e)}
         selectedItemId={selectedItemId}

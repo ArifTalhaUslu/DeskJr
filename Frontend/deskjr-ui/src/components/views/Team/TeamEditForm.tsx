@@ -2,13 +2,18 @@ import { useEffect } from "react";
 import teamService from "../../../services/TeamService";
 import Input from "../../CommonComponents/Input";
 import Button from "../../CommonComponents/Button";
+import { showErrorToast } from "../../../utils/toastHelper";
 
 const TeamEditForm: any = (props: any) => {
   useEffect(() => {
     if (props.selectedItemId) {
-      teamService.getTeamById(props.selectedItemId).then((data) => {
-        props.setSelectedTeam(data);
-      });
+      teamService.getTeamById(props.selectedItemId)
+        .then((data) => {
+          props.setSelectedTeam(data);
+        })
+        .catch((err) => {
+          showErrorToast(err);
+        });
     }
   }, [props.selectedItemId]);
 
@@ -31,8 +36,8 @@ const TeamEditForm: any = (props: any) => {
         props.getList();
         props.onClose();
       })
-      .catch((err: any) => {
-        console.log(err);
+      .catch((err) => {
+        showErrorToast(err);
       });
   };
 
@@ -91,7 +96,7 @@ const TeamEditForm: any = (props: any) => {
                     onChange={(e: any) => handleChange(e)}
                     required
                   >
-<option value="">{props.selectedTeam && props.selectedTeam.manager && props.selectedTeam.manager.name}</option>
+                    <option value="">{props.selectedTeam && props.selectedTeam.manager && props.selectedTeam.manager.name}</option>
                   </select>
                 </div>
               </div>

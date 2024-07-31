@@ -4,6 +4,7 @@ import Card from "../../CommonComponents/Card";
 import Board from "../../CommonComponents/Board";
 import TeamEditForm from "./TeamEditForm";
 import ConfirmDelete from "../../CommonComponents/ConfirmDelete";
+import { showErrorToast } from "../../../utils/toastHelper";
 
 const Team: any = () => {
   const [items, setItems] = useState([]);
@@ -21,6 +22,9 @@ const Team: any = () => {
   const getList = async () => {
     teamService.getAllTeam().then((data) => {
       setItems(data);
+    })
+    .catch((err) => {
+      showErrorToast(err);
     });
   };
 
@@ -34,8 +38,8 @@ const Team: any = () => {
           alert("Success");
           setIsTrigger(true);
         })
-        .catch((err: any) => {
-          console.log(err);
+        .catch((err) => {
+          showErrorToast(err);
         });
     }
     onModalClose();
