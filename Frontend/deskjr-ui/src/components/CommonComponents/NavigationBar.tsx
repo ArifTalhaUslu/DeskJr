@@ -103,7 +103,6 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ brand, links, currentUser
                                             setCurrentUser(null);
                                             localStorage.removeItem("id");
                                             localStorage.removeItem("token");
-                                            window.location.reload();
                                             navigate("/login");                                            
                                 }} />
                             </div>

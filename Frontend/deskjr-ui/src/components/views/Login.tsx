@@ -25,15 +25,15 @@ const Login: any = (props:any) => {
         dispatch(login(formData));
     };
 
-    useEffect(() => {
+    useEffect(() => {   
+        const token = localStorage.getItem("token");
         debugger;
-        if ( data.name) {
-            alert(data.name);
+        if (data.name && token) {
             props.setCurrentUser(data);
             navigate("/");
         }
         else{
-            props.setCurrentUser(null);
+            props.setCurrentUser(undefined);
         }
     }, [data.name]);
 
