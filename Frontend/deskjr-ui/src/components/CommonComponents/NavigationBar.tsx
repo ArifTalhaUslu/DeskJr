@@ -1,7 +1,12 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import EmployeeService from "../../services/EmployeeService";
+import { Employee } from "../../types/employee";
+import Button from "./Button";
 
 interface NavigationBarProps {
+    currentUser:Employee;
+    setCurrentUser:any;
     brand: {
         name: string;
         to?: string;
@@ -14,7 +19,9 @@ interface NavigationBarProps {
     }[];
 }
 
-const NavigationBar: React.FC<NavigationBarProps> = ({ brand, links }) => {
+const NavigationBar: React.FC<NavigationBarProps> = ({ brand, links, currentUser, setCurrentUser }) => {
+    const navigate = useNavigate();
+
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container-fluid">
@@ -33,7 +40,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ brand, links }) => {
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNavDropdown">
-                    <ul className="navbar-nav">
+                    <ul className="navbar-nav mr-auto">
                         {links.map((link, index) => {
                             if (!link.isDropDown) {
                                 return (
@@ -71,6 +78,35 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ brand, links }) => {
                                 );
                             }
                         })}
+                    </ul>
+                    <ul className="navbar-nav ml-auto">
+                        <li className="nav-item dropdown">
+                            <a
+                                className="nav-link dropdown-toggle"
+                                href="#"
+                                id="navbarUserDropdown"
+                                role="button"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false"
+                            >
+                                <i className="bi bi-person"></i> {currentUser ? currentUser.name : 'Unauthorized'}
+                            </a>
+                            <div
+                                className="dropdown-menu"
+                                aria-labelledby="navbarUserDropdown"
+                            >
+                                <Link className="dropdown-item" to="/profile">Profile</Link>
+                                <Link className="dropdown-item" to="/settings">Settings</Link>
+                                <div className="dropdown-divider"></div>
+                                <Button text={"Logout"} className="dropdown-item" onClick={() => {
+                                            setCurrentUser(null);
+                                            localStorage.removeItem("id");
+                                            localStorage.removeItem("token");
+                                            navigate("/login");                                            
+                                }} />
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>

@@ -8,6 +8,7 @@ namespace DeskJr.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class EmployeeController : ControllerBase
     {
         private readonly IEmployeeService _employeeService;
@@ -18,10 +19,10 @@ namespace DeskJr.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateOrUpdateEmployee(UpdateEmployeeDto employeeDto)
+        public async Task<ActionResult> CreateOrUpdateEmployee(AddOrUpdateEmployeeDto employeeDto)
         {
             var result = await _employeeService.AddOrUpdateEmployeeAsync(employeeDto);
-            if (result)
+            if (!result)
             {
                 throw new BadRequestException("Employee could not be created.");
             }
@@ -33,12 +34,12 @@ namespace DeskJr.Api.Controllers
         public async Task<ActionResult> DeleteEmployee(DeleteEmployeeDto deleteEmployeeDto)
         {
             var result = await _employeeService.DeleteEmployeeAsync(deleteEmployeeDto.Id);
-            if (result)
+            if (!result)
             {
-                return Ok();
+                return NotFound();
             }
 
-            return NotFound();
+            return Ok();
         }
 
         [HttpGet]
@@ -55,22 +56,13 @@ namespace DeskJr.Api.Controllers
             return Ok(employee);
         }
 
-        [HttpPut]
-        public async Task<ActionResult> UpdateEmployee(UpdateEmployeeDto employeeDto)
-        {
-            var result = await _employeeService.UpdateEmployeeAsync(employeeDto);
-            if (result)
-            {
-                return Ok();
-            }
-
-            return BadRequest();
-        }
         [HttpGet("teams/{teamId}/employees")]
         public async Task<IActionResult> GetEmployeesByTeamId(Guid teamId)
         {
             var employees = await _employeeService.GetEmployeesByTeamIdAsync(teamId);
             return Ok(employees);
         }
+
+        //employee Managerları çekecek endpoint gerekli
     }
 }

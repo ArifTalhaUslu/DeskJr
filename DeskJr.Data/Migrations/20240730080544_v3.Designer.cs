@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DeskJr.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240722203136_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20240730080544_v3")]
+    partial class v3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -40,6 +40,9 @@ namespace DeskJr.Data.Migrations
                     b.Property<int>("EmployeeRole")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("EmployeeTitleId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("Gender")
                         .HasColumnType("int");
 
@@ -55,14 +58,11 @@ namespace DeskJr.Data.Migrations
                     b.Property<Guid?>("TeamId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("TitleId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("ID");
 
-                    b.HasIndex("TeamId");
+                    b.HasIndex("EmployeeTitleId");
 
-                    b.HasIndex("TitleId");
+                    b.HasIndex("TeamId");
 
                     b.ToTable("Employees");
                 });
@@ -85,50 +85,35 @@ namespace DeskJr.Data.Migrations
                     b.ToTable("EmployeeTitles");
                 });
 
-            modelBuilder.Entity("DeskJr.Entity.Models.LeaveAllocation", b =>
+            modelBuilder.Entity("DeskJr.Entity.Models.Holiday", b =>
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("DateCreated")
+                    b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("EmployeeId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("LeaveTypeId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("NumberOfDays")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Period")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("EmployeeId");
-
-                    b.HasIndex("LeaveTypeId");
-
-                    b.ToTable("LeaveAllocation");
+                    b.ToTable("Holidays");
                 });
 
-            modelBuilder.Entity("DeskJr.Entity.Models.LeaveRequest", b =>
+            modelBuilder.Entity("DeskJr.Entity.Models.Leave", b =>
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool?>("Approved")
-                        .HasColumnType("bit");
-
                     b.Property<Guid?>("ApprovedById")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("Cancelled")
-                        .HasColumnType("bit");
 
                     b.Property<DateTime>("DateActioned")
                         .HasColumnType("datetime2");
@@ -152,6 +137,9 @@ namespace DeskJr.Data.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("StatusOfLeave")
+                        .HasColumnType("int");
+
                     b.HasKey("ID");
 
                     b.HasIndex("ApprovedById");
@@ -160,7 +148,7 @@ namespace DeskJr.Data.Migrations
 
                     b.HasIndex("RequestingEmployeeId");
 
-                    b.ToTable("LeaveRequests");
+                    b.ToTable("Leaves");
                 });
 
             modelBuilder.Entity("DeskJr.Entity.Models.LeaveType", b =>
@@ -181,7 +169,7 @@ namespace DeskJr.Data.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("LeaveType");
+                    b.ToTable("LeaveTypes");
                 });
 
             modelBuilder.Entity("DeskJr.Entity.Models.Team", b =>
@@ -199,44 +187,28 @@ namespace DeskJr.Data.Migrations
 
                     b.HasKey("ID");
 
+                    b.HasIndex("ManagerId");
+
                     b.ToTable("Teams");
                 });
 
             modelBuilder.Entity("DeskJr.Entity.Models.Employee", b =>
                 {
+                    b.HasOne("DeskJr.Entity.Models.EmployeeTitle", "EmployeeTitle")
+                        .WithMany()
+                        .HasForeignKey("EmployeeTitleId");
+
                     b.HasOne("DeskJr.Entity.Models.Team", "Team")
                         .WithMany()
-                        .HasForeignKey("TeamId");
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("DeskJr.Entity.Models.EmployeeTitle", "Title")
-                        .WithMany()
-                        .HasForeignKey("TitleId");
+                    b.Navigation("EmployeeTitle");
 
                     b.Navigation("Team");
-
-                    b.Navigation("Title");
                 });
 
-            modelBuilder.Entity("DeskJr.Entity.Models.LeaveAllocation", b =>
-                {
-                    b.HasOne("DeskJr.Entity.Models.Employee", "Employee")
-                        .WithMany("LeaveAllocations")
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DeskJr.Entity.Models.LeaveType", "LeaveType")
-                        .WithMany()
-                        .HasForeignKey("LeaveTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Employee");
-
-                    b.Navigation("LeaveType");
-                });
-
-            modelBuilder.Entity("DeskJr.Entity.Models.LeaveRequest", b =>
+            modelBuilder.Entity("DeskJr.Entity.Models.Leave", b =>
                 {
                     b.HasOne("DeskJr.Entity.Models.Employee", "ApprovedBy")
                         .WithMany()
@@ -249,7 +221,7 @@ namespace DeskJr.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("DeskJr.Entity.Models.Employee", "RequestingEmployee")
-                        .WithMany("LeaveRequests")
+                        .WithMany()
                         .HasForeignKey("RequestingEmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -261,11 +233,14 @@ namespace DeskJr.Data.Migrations
                     b.Navigation("RequestingEmployee");
                 });
 
-            modelBuilder.Entity("DeskJr.Entity.Models.Employee", b =>
+            modelBuilder.Entity("DeskJr.Entity.Models.Team", b =>
                 {
-                    b.Navigation("LeaveAllocations");
+                    b.HasOne("DeskJr.Entity.Models.Employee", "Manager")
+                        .WithMany()
+                        .HasForeignKey("ManagerId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
-                    b.Navigation("LeaveRequests");
+                    b.Navigation("Manager");
                 });
 #pragma warning restore 612, 618
         }

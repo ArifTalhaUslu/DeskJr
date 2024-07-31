@@ -6,9 +6,7 @@ namespace DeskJr.Entity.Models
     {
 
         [Required]
-
         public string TitleName { get; set; }
-
 
     }
 }

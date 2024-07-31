@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { customError } from '../types/customError';
+import ErrorHandler from './ErrorHandler';
 import { ErrorResponseDto } from '../types/ErrorResponseDto';
 import store from '../store/store'
 import { setError } from '../store/actions/errorActions';
@@ -13,7 +15,7 @@ api.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('token');
         if(token){
-            config.headers.Authorization = 'Bearer ${token}';
+            config.headers.Authorization = `Bearer ${token}`;
         }
         return config;
     },

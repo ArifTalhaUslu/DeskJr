@@ -18,16 +18,9 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 
     public async Task<bool> AddAsync(T entity)
     {
-        try
-        {
-            await _dbSet.AddAsync(entity);
-            var affectedRowCount = await _context.SaveChangesAsync();
-            return affectedRowCount > 0;
-        }
-        catch (Exception ex)
-        {
-            throw new BadRequestException("default");
-        }
+        await _dbSet.AddAsync(entity);
+        var affectedRowCount = await _context.SaveChangesAsync();
+        return affectedRowCount > 0;
     }
 
     public async Task<bool> UpdateAsync(T entity)
@@ -37,12 +30,12 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 
         if (dbTeam == null)
         {
-            throw new NotFoundException($"Employee with ID {entity.ID} not found");
+            throw new NotFoundException($"Not found");
         }
 
         _context.Entry(dbTeam).CurrentValues.SetValues(entity);
         affectedRowCount = await _context.SaveChangesAsync();
-        
+
         return affectedRowCount > 0;
     }
 
@@ -51,7 +44,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         var dbTeam = await _dbSet.FirstOrDefaultAsync(e => e.ID == id);
         if (dbTeam == null)
         {
-            throw new NotFoundException($"Employee with ID {id} not found");
+            throw new NotFoundException($"Not found");
         }
         _dbSet.Remove(dbTeam);
         await _context.SaveChangesAsync();
@@ -60,17 +53,18 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 
     public async Task<List<T>> GetAllAsync()
     {
-        var dbTeams = await _dbSet.ToListAsync();
-        return dbTeams;
+        var entities = await _dbSet.ToListAsync();
+        return entities;
     }
 
     public async Task<T?> GetByIdAsync(Guid id)
     {
-        var dbTeam = await _dbSet.FirstOrDefaultAsync(e => e.ID == id);
-        if (dbTeam == null)
+        var entity = await _dbSet.FirstOrDefaultAsync(e => e.ID == id);
+        if (entity == null)
         {
-            throw new NotFoundException($"Employee with ID {id} not found");
+            throw new NotFoundException("Not found");
         }
-        return dbTeam;
+
+        return entity;
     }
 }
