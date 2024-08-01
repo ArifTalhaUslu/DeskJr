@@ -7,7 +7,7 @@ import {
     Routes,
     redirect,
 } from "react-router-dom";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import MyInfo from "./components/views/MyInfo";
 import Contacts from "./components/views/Contacts";
 import Employee from "./components/views/Employee/Employee";
@@ -21,36 +21,79 @@ import Team from "./components/views/Team/Team";
 import EmployeeService from "./services/EmployeeService";
 import { showErrorToast } from "./utils/toastHelper";
 
-const navigation = {
-    brand: { name: "�Desk", to: "/" },
-    links: [
-        { name: "My Info", to: "/myInfo" },
-        { name: "Contacts", to: "/contacts" },
-        { name: "Employee List", to: "/employees" },
-        {
-            name: "Leave",
-            isDropDown: true,
-            subLinks: [
-                { name: "My Leaves", to: "/leaves" },
-                { name: "Pending Leave Requests", to: "/pendingLeaveRequests" },
-            ],
-        },
-        {
-            name: "Settings",
-            isDropDown: true,
-            subLinks: [
-                { name: "Holidays", to: "/holidays" },
-                { name: "Leave Types", to: "/leaveTypes" },
-                { name: "Titles", to: "/titles" },
-                { name: "Teams", to: "/teams" },
-            ],
-        },
-    ],
-};
-
 const App: React.FC = () => {
-    const { brand, links } = navigation;
     const [currentUser, setCurrentUser] = useState<any>();
+
+    const navigation = (currentUser: any) => {
+        return {
+            brand: { name: "�Desk", to: "/" },
+            links: [
+                {
+                    name: "My Info",
+                    to: "/myInfo",
+                    visible: currentUser !== null,
+                },
+                {
+                    name: "Contacts",
+                    to: "/contacts",
+                    visible: currentUser !== null,
+                },
+                {
+                    name: "Employee List",
+                    to: "/employees",
+                    visible: currentUser.employeeRole === 0,
+                },
+                {
+                    name: "Leave",
+                    visible: currentUser !== null,
+                    isDropDown: true,
+                    subLinks: [
+                        {
+                            name: "My Leaves",
+                            to: "/leaves",
+                            visible: currentUser !== null,
+                        },
+                        {
+                            name: "Pending Leave Requests",
+                            to: "/pendingLeaveRequests",
+                            visible: currentUser !== null,
+                        },
+                    ],
+                },
+                {
+                    name: "Settings",
+                    visible: currentUser !== null,
+                    isDropDown: true,
+                    subLinks: [
+                        {
+                            name: "Holidays",
+                            to: "/holidays",
+                            visible: currentUser !== null,
+                        },
+                        {
+                            name: "Leave Types",
+                            to: "/leaveTypes",
+                            visible: currentUser !== null,
+                        },
+                        {
+                            name: "Titles",
+                            to: "/titles",
+                            visible: currentUser !== null,
+                        },
+                        {
+                            name: "Teams",
+                            to: "/teams",
+                            visible: currentUser !== null,
+                        },
+                    ],
+                },
+            ],
+        };
+    };
+
+    const getNavigation = navigation(currentUser);
+    const { brand, links } = getNavigation;
+
     const [idFromLocalStr] = useState(localStorage.getItem("id"));
 
     const fetchEmployee = (id: string) => {
