@@ -69,6 +69,7 @@ namespace DeskJr.Api.Controllers
         [HttpGet("employee/{employeeId}")]
         public async Task<ActionResult<IEnumerable<LeaveDTO>>> GetLeavesByEmployeeId(Guid employeeId)
         {
+            Console.WriteLine("test");
             var leaves = await _leaveService.GetLeavesByEmployeeIdAsync(employeeId);
             if (leaves == null || !leaves.Any())
             {

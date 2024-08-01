@@ -11,7 +11,7 @@ import React, { useEffect, useState } from "react";
 import MyInfo from "./components/views/MyInfo";
 import Contacts from "./components/views/Contacts";
 import Employee from "./components/views/Employee/Employee";
-import Leaves from "./components/views/Leave";
+import Leaves from "./components/views/Leave/Leave";
 import PendingLeaveRequests from "./components/views/PendingLeaveRequest";
 import Holidays from "./components/views/Holiday/Holiday";
 import LeaveTypes from "./components/views/LeaveType";
