@@ -16,7 +16,7 @@ import PendingLeaveRequests from "./components/views/PendingLeaveRequest";
 import Holidays from "./components/views/Holiday/Holiday";
 import LeaveTypes from "./components/views/LeaveType";
 import Title from "./components/views/Title";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import Team from "./components/views/Team/Team";
 import EmployeeService from "./services/EmployeeService";
 import { showErrorToast } from "./utils/toastHelper";
@@ -95,26 +95,47 @@ const App: React.FC = () => {
                                     element={<Home currentUser={currentUser} />}
                                 />
                                 <Route path="/myInfo" element={<MyInfo />} />
-                                <Route path="/contacts" element={<Contacts />} />
-                                <Route path="/employees" element={<Employee />} />
+                                <Route
+                                    path="/contacts"
+                                    element={<Contacts />}
+                                />
+
                                 <Route path="/leaves" element={<Leaves />} />
                                 <Route
                                     path="/pendingLeaveRequests"
                                     element={<PendingLeaveRequests />}
                                 />
-                                <Route path="/holidays" element={<Holidays />} />
+                                <Route
+                                    path="/holidays"
+                                    element={<Holidays />}
+                                />
                                 <Route
                                     path="/leaveTypes"
                                     element={<LeaveTypes />}
                                 />
                                 <Route path="/titles" element={<Title />} />
-                                <Route path="/teams" element={<Team />} />
                                 <Route path="*" element={<>Not Found</>} />
+                            </>
+                        )}
+                        {currentUser && currentUser.employeeRole === 0 && (
+                            <>
+                                <Route
+                                    path="/employees"
+                                    element={<Employee />}
+                                />
+                                <Route path="/teams" element={<Team />} />
                             </>
                         )}
                         {!currentUser && (
                             <>
-                                <Route path="*" element={<Login setCurrentUser={setCurrentUser} />} />
+                                <Route
+                                    path="*"
+                                    element={
+                                        <Login
+                                            setCurrentUser={setCurrentUser}
+                                        />
+                                    }
+                                />
                             </>
                         )}
                     </Routes>

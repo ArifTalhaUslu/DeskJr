@@ -39,9 +39,12 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ brand, links, currentUser
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNavDropdown">
-                    <ul className="navbar-nav mr-auto">
+                <ul className="navbar-nav mr-auto">
                         {links.map((link, index) => {
                             if (!link.isDropDown) {
+                                if (link.name === "Employee List" && currentUser.employeeRole !== 0) {
+                                    return null; 
+                                }
                                 return (
                                     <li className="nav-item" key={index}>
                                         <Link className="nav-link" to={link.to!}>
@@ -67,11 +70,17 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ brand, links, currentUser
                                             className="dropdown-menu"
                                             aria-labelledby={`navbarDropdown${index}`}
                                         >
-                                            {link.subLinks?.map((subLink, subIndex) => (
-                                                <Link className="dropdown-item" to={subLink.to!} key={subIndex}>
-                                                    {subLink.name}
-                                                </Link>
-                                            ))}
+                                            {link.subLinks?.map((subLink, subIndex) => {
+                                                if (subLink.name === "Teams" && currentUser.employeeRole !== 0) {
+                                                    return null;
+                                                }
+                                                return (
+                                                    <Link className="dropdown-item" to={subLink.to!} key={subIndex}>
+                                                        {subLink.name}
+                                                    </Link>
+                                                );
+                                            })}
+
                                         </div>
                                     </li>
                                 );
@@ -89,16 +98,16 @@ const NavigationBar: React.FC<NavigationBarProps> = ({ brand, links, currentUser
                                 aria-haspopup="true"
                                 aria-expanded="false"
                             >
-                                <i className="bi bi-person"></i> {currentUser ? currentUser.name : 'Unauthorized'}
+                                <i className="bi bi-person "></i> {currentUser ? currentUser.name : 'Unauthorized'}
                             </a>
                             <div
-                                className="dropdown-menu"
+                                className="dropdown-menu dropdown-menu-right"
                                 aria-labelledby="navbarUserDropdown"
                             >
-                                <Link className="dropdown-item" to="/profile">Profile</Link>
+                                <Link className="dropdown-item " to="/profile">Profile</Link>
                                 <Link className="dropdown-item" to="/settings">Settings</Link>
                                 <div className="dropdown-divider"></div>
-                                <Button text={"Logout"} className="dropdown-item" onClick={() => {
+                                <Button text={"Logout"} type="button" className="dropdown-item btn btn-danger" style={{ color: 'red',fontWeight : "bold" }} onClick={() => {
                                             setCurrentUser(null);
                                             localStorage.removeItem("id");
                                             localStorage.removeItem("token");
