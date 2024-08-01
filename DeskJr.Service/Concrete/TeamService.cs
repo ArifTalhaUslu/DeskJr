@@ -36,7 +36,7 @@ namespace DeskJr.Service.Concrete
 
         public async Task<List<TeamDto>> GetAllTeamsAsync()
         {
-            var teams = await _teamRepository.GetListWithIncludeManagerAsync();
+            var teams =  _teamRepository.GetListWithIncludeManagerAsync();
             return _mapper.Map<List<TeamDto>>(teams);
         }
 

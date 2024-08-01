@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using DeskJr.Entity.Types;
 
 namespace DeskJr.Entity.Models
@@ -12,12 +13,12 @@ namespace DeskJr.Entity.Models
 
         [ForeignKey("EmployeeTitleId")]
         public Guid? EmployeeTitleId { get; set; }
-
+        [JsonIgnore]
         public EmployeeTitle? EmployeeTitle { get; set; }
 
         [ForeignKey("TeamId")]
         public Guid? TeamId { get; set; }
-
+        [JsonIgnore]
         public Team? Team { get; set; }
 
         public string Email { get; set; }

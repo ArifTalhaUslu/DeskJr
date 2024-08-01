@@ -48,13 +48,11 @@ const Team: any = () => {
   const handleEdit = (team: any) => {
     setSelectedItemId(team.id);
     setModalModeName("Update");
-    //setIsEdit(true);
     setFormToBeClosed("form-close");
   };
 
   const handleDelete = (team: any) => {
     setSelectedItemId(team.id);
-    //setIsDelete(true);
     setFormToBeClosed("delete-form-closed");
   };
 

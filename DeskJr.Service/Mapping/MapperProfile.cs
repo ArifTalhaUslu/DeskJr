@@ -11,6 +11,7 @@ namespace DeskJr.Service.Mapping
             CreateMap<Employee, EmployeeDto>().ReverseMap();
             CreateMap<Employee, AddOrUpdateEmployeeDto>().ReverseMap();
             CreateMap<Employee, CreateEmployeeDto>().ReverseMap();
+            CreateMap<Employee, ManagerDto>().ReverseMap();
             CreateMap<Team, TeamDto>().ReverseMap();
             CreateMap<Team, AddOrUpdateTeamDto>().ReverseMap();
             CreateMap<Team, CreateTeamDto>().ReverseMap();
