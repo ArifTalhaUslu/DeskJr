@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import EmployeeService from "../../services/EmployeeService";
+import { showErrorToast } from "../../utils/toastHelper";
 
 const Home = (props: any) => {
     const [employee, setEmployee] = useState<any>(null);
@@ -12,7 +13,7 @@ const Home = (props: any) => {
                 setEmployee(data);
             })
             .catch((err) => {
-                console.error("Error Fetching emplyee data...", err);
+              showErrorToast(err);
             });
     };
     const fetchAllEmployees = (setEmployees) => {
@@ -21,14 +22,14 @@ const Home = (props: any) => {
                 setEmployees(fetchedEmployeesData);
             })
             .catch((err) => {
-                console.log("Error Home fetching employee", err);
+              showErrorToast(err);
             });
     };
 
     useEffect(() => {
         fetchEmployee(id, setEmployee);
         fetchAllEmployees(setEmployees);
-    });
+    },[]);
 
     return (
         <div className="container">

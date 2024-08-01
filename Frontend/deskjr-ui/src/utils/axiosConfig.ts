@@ -1,6 +1,4 @@
 import axios from 'axios';
-import { customError } from '../types/customError';
-import ErrorHandler from './ErrorHandler';
 import { ErrorResponseDto } from '../types/ErrorResponseDto';
 import store from '../store/store'
 import { setError } from '../store/actions/errorActions';
@@ -44,16 +42,17 @@ api.interceptors.response.use(
             customError.Message = data.Message;
             customError.Details = data.Details;
         }
-        else if (error.request){
-            customError.Message = 'No response from server';
-            customError.Details = error.message;
-        }
+    //      else if (error.request){
+    //      customError.Message = 'No response from server';
+    //        customError.Details = error.message;
+    //    }
         else{
             customError.Message = error.message;
+            customError.Details = error.details;
         }
 
         store.dispatch(setError(customError));
-        showErrorToast(customError.Message);
+        showErrorToast(customError.Message + '. Details: ' + customError.Details);
 
         return Promise.reject(customError);
     }

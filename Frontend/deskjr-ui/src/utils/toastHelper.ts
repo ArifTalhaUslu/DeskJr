@@ -4,7 +4,7 @@ import 'react-toastify/dist/ReactToastify.minimal.css';
 const toastOptions = {
     position: 'top-right' as const,
     autoClose: 3000,
-    closeOnClick: true,
+    closeOnClick: false,
 }
 export const showSuccessToast = (message: string) => {
     toast.success(message, {
@@ -14,6 +14,7 @@ export const showSuccessToast = (message: string) => {
 };
 
 export const showErrorToast = (message: string) => {
+    // message = detail ? (message + '\n' + detail) : message;
     toast.error(message, {
         ...toastOptions,
         style: { backgroundColor: 'red', color: 'white' },

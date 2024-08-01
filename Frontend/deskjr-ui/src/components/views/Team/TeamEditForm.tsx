@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import teamService from "../../../services/TeamService";
 import Input from "../../CommonComponents/Input";
 import Button from "../../CommonComponents/Button";
+import { showErrorToast, showSuccessToast } from "../../../utils/toastHelper";
 import employeeService from "../../../services/EmployeeService";
 
 const TeamEditForm: any = (props: any) => {
@@ -9,9 +10,13 @@ const TeamEditForm: any = (props: any) => {
 
   useEffect(() => {
     if (props.selectedItemId) {
-      teamService.getTeamById(props.selectedItemId).then((data) => {
-        props.setSelectedTeam(data);
-      });
+      teamService.getTeamById(props.selectedItemId)
+        .then((data) => {
+          props.setSelectedTeam(data);
+        })
+        .catch((err) => {
+          showErrorToast(err);
+        });
     }
 
     employeeService.getAllEmployee().then((data) => {
@@ -38,12 +43,12 @@ const TeamEditForm: any = (props: any) => {
         managerId: props.selectedTeam.managerId || null,
       })
       .then(() => {
-        alert("success");
+        showSuccessToast('Successful!');
         props.getList();
         props.onClose();
       })
-      .catch((err: any) => {
-        console.log(err);
+      .catch((err) => {
+        showErrorToast(err);
       });
   };
 

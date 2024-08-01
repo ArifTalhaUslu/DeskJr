@@ -2,7 +2,7 @@ import Button from "../../CommonComponents/Button";
 import Input from "../../CommonComponents/Input";
 import { useEffect, useState } from "react";
 import employeeService from "../../../services/EmployeeService";
-import teamService from "../../../services/TeamService";
+import { showErrorToast, showSuccessToast } from "../../../utils/toastHelper";
 
 const EmployeeEditForm: any = (props: any) => {
   const [teams, setTeams] = useState([]);
@@ -24,6 +24,9 @@ const EmployeeEditForm: any = (props: any) => {
     if (props.selectedItemId) {
       employeeService.getEmployeeById(props.selectedItemId).then((data) => {
         props.setSelectedEmployee(data);
+      })
+      .catch((err) => {
+        showErrorToast(err);
       });
     }
 
@@ -55,12 +58,12 @@ const EmployeeEditForm: any = (props: any) => {
         ...props.selectedEmployee,
       })
       .then(() => {
-        alert("success");
+        showSuccessToast('Successful!');
         props.getList();
         props.onClose();
       })
-      .catch((err: any) => {
-        console.log(err);
+      .catch((err) => {
+        showErrorToast(err);
       });
   };
 
