@@ -2,7 +2,7 @@ import Button from "../../CommonComponents/Button";
 import Input from "../../CommonComponents/Input";
 import { useEffect } from "react";
 import holidayService from "../../../services/HolidayService";
-import { showErrorToast } from "../../../utils/toastHelper";
+import { showErrorToast, showSuccessToast } from "../../../utils/toastHelper";
 
 const HolidayEditForm: any = (props: any) => {
 
@@ -33,7 +33,7 @@ const HolidayEditForm: any = (props: any) => {
         ...props.selectedHoliday,
       })
       .then(() => {
-        alert("success");
+        showSuccessToast('Successful!');
         props.getList();
         props.onClose();
       })

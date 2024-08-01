@@ -5,7 +5,7 @@ import Board from "../../CommonComponents/Board";
 import EmployeeEditForm from "./EmployeeEditForm";
 import { formatDate } from "date-fns";
 import ConfirmDelete from "../../CommonComponents/ConfirmDelete";
-import { showErrorToast } from "../../../utils/toastHelper";
+import { showErrorToast, showSuccessToast } from "../../../utils/toastHelper";
 
 const Employee: any = () => {
   const [items, setItems] = useState([]);
@@ -38,7 +38,7 @@ const Employee: any = () => {
       employeeService
         .deleteEmployee(selectedItemId)
         .then(() => {
-          alert("Success");
+          showSuccessToast('Successful!');
           setIsTrigger(true);
         })
         .catch((err) => {

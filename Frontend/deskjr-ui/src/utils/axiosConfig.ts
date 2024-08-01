@@ -42,12 +42,13 @@ api.interceptors.response.use(
             customError.Message = data.Message;
             customError.Details = data.Details;
         }
-        // else if (error.request){
-        //     customError.Message = 'No response from server';
-        //     customError.Details = error.message;
-        // }
+    //      else if (error.request){
+    //      customError.Message = 'No response from server';
+    //        customError.Details = error.message;
+    //    }
         else{
             customError.Message = error.message;
+            customError.Details = error.details;
         }
 
         store.dispatch(setError(customError));

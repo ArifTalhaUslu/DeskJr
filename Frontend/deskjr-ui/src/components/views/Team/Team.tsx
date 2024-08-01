@@ -4,7 +4,7 @@ import Card from "../../CommonComponents/Card";
 import Board from "../../CommonComponents/Board";
 import TeamEditForm from "./TeamEditForm";
 import ConfirmDelete from "../../CommonComponents/ConfirmDelete";
-import { showErrorToast } from "../../../utils/toastHelper";
+import { showErrorToast, showSuccessToast } from "../../../utils/toastHelper";
 
 const Team: any = () => {
   const [items, setItems] = useState([]);
@@ -35,7 +35,7 @@ const Team: any = () => {
       teamService
         .deleteTeam(selectedItemId)
         .then(() => {
-          alert("Success");
+          showSuccessToast('Successful!');
           setIsTrigger(true);
         })
         .catch((err) => {

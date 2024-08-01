@@ -2,7 +2,7 @@ import Button from "../../CommonComponents/Button";
 import Input from "../../CommonComponents/Input";
 import { useEffect, useState } from "react";
 import employeeService from "../../../services/EmployeeService";
-import { showErrorToast } from "../../../utils/toastHelper";
+import { showErrorToast, showSuccessToast } from "../../../utils/toastHelper";
 
 const EmployeeEditForm: any = (props: any) => {
   const [genderOptions] = useState([
@@ -51,7 +51,7 @@ const EmployeeEditForm: any = (props: any) => {
         ...props.selectedEmployee,
       })
       .then(() => {
-        alert("success");
+        showSuccessToast('Successful!');
         props.getList();
         props.onClose();
       })
