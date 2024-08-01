@@ -62,7 +62,7 @@ namespace DeskJr.Data.Migrations
 
                     b.HasIndex("TeamId");
 
-                    b.ToTable("Employees");
+                    b.ToTable("Employees", (string)null);
                 });
 
             modelBuilder.Entity("DeskJr.Entity.Models.EmployeeTitle", b =>
@@ -80,7 +80,7 @@ namespace DeskJr.Data.Migrations
                     b.HasIndex("TitleName")
                         .IsUnique();
 
-                    b.ToTable("EmployeeTitles");
+                    b.ToTable("EmployeeTitles", (string)null);
                 });
 
             modelBuilder.Entity("DeskJr.Entity.Models.Holiday", b =>
@@ -101,7 +101,7 @@ namespace DeskJr.Data.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Holidays");
+                    b.ToTable("Holidays", (string)null);
                 });
 
             modelBuilder.Entity("DeskJr.Entity.Models.Leave", b =>
@@ -146,7 +146,7 @@ namespace DeskJr.Data.Migrations
 
                     b.HasIndex("RequestingEmployeeId");
 
-                    b.ToTable("Leaves");
+                    b.ToTable("Leaves", (string)null);
                 });
 
             modelBuilder.Entity("DeskJr.Entity.Models.LeaveType", b =>
@@ -167,7 +167,7 @@ namespace DeskJr.Data.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("LeaveTypes");
+                    b.ToTable("LeaveTypes", (string)null);
                 });
 
             modelBuilder.Entity("DeskJr.Entity.Models.Team", b =>
@@ -187,7 +187,7 @@ namespace DeskJr.Data.Migrations
 
                     b.HasIndex("ManagerId");
 
-                    b.ToTable("Teams");
+                    b.ToTable("Teams", (string)null);
                 });
 
             modelBuilder.Entity("DeskJr.Entity.Models.Employee", b =>
