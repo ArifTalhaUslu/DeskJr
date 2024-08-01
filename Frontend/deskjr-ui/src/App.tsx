@@ -26,7 +26,7 @@ const App: React.FC = () => {
 
     const navigation = (currentUser: any) => {
         return {
-            brand: { name: "�Desk", to: "/" },
+            brand: { name: "�Desk", to: "/"},
             links: [
                 {
                     name: "My Info",
@@ -41,7 +41,7 @@ const App: React.FC = () => {
                 {
                     name: "Employee List",
                     to: "/employees",
-                    visible: currentUser.employeeRole === 0,
+                    visible: currentUser?.employeeRole === 0,
                 },
                 {
                     name: "Leave",
@@ -62,7 +62,7 @@ const App: React.FC = () => {
                 },
                 {
                     name: "Settings",
-                    visible: currentUser !== null,
+                    visible: currentUser?.employeeRole === 0,
                     isDropDown: true,
                     subLinks: [
                         {
@@ -83,7 +83,7 @@ const App: React.FC = () => {
                         {
                             name: "Teams",
                             to: "/teams",
-                            visible: currentUser !== null,
+                            visible: currentUser?.employeeRole===0,
                         },
                     ],
                 },
@@ -91,8 +91,8 @@ const App: React.FC = () => {
         };
     };
 
-    const getNavigation = navigation(currentUser);
-    const { brand, links } = getNavigation;
+    
+    const { brand, links } = navigation(currentUser);
 
     const [idFromLocalStr] = useState(localStorage.getItem("id"));
 
