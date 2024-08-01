@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import teamService from "../../../services/TeamService";
 import Input from "../../CommonComponents/Input";
 import Button from "../../CommonComponents/Button";
-import { showErrorToast } from "../../../utils/toastHelper";
+import { showErrorToast, showSuccessToast } from "../../../utils/toastHelper";
 
 const TeamEditForm: any = (props: any) => {
   useEffect(() => {
@@ -32,7 +32,7 @@ const TeamEditForm: any = (props: any) => {
         ...props.selectedTeam,
       })
       .then(() => {
-        alert("success");
+        showSuccessToast('Successful!');
         props.getList();
         props.onClose();
       })

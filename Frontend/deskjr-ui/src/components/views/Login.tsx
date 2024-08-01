@@ -30,18 +30,21 @@ const Login: any = (props:any) => {
         catch(error){
             console.error(error);
         }
+        setLocalStr();
     };
-
-    useEffect(() => {   
-        const token = localStorage.getItem("token");
+const setLocalStr = () => {
+    const token = localStorage.getItem("token");
         if (data.name && token) {
             props.setCurrentUser(data);
-            // showSuccessToast('Successful!');
+            showSuccessToast('Successful!');
             navigate("/");
         }
         else{
             props.setCurrentUser(undefined);
         }
+}
+    useEffect(() => {   
+        setLocalStr();
     }, [data.name]);
 
     return (

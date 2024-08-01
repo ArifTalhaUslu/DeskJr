@@ -5,7 +5,7 @@ import Board from "../../CommonComponents/Board";
 import { formatDate } from "date-fns";
 import ConfirmDelete from "../../CommonComponents/ConfirmDelete";
 import HolidayEditForm from "./HolidayEditForm";
-import { showErrorToast } from "../../../utils/toastHelper";
+import { showErrorToast, showSuccessToast } from "../../../utils/toastHelper";
 
 const Holiday: any = () => {
   const [items, setItems] = useState([]);
@@ -37,7 +37,7 @@ const Holiday: any = () => {
       holidayService
         .deleteHoliday(selectedItemId)
         .then(() => {
-          alert("Success");
+          showSuccessToast('Successful!');
           setIsTrigger(true);
         })
         .catch((err) => {
