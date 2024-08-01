@@ -14,8 +14,6 @@ const Employee: any = () => {
   const [modalModeName, setModalModeName] = useState("");
   const [modalDataTarget] = useState("employeeAddModal");
   const [isTrigger, setIsTrigger] = useState(false);
-  const [isDelete, setIsDelete] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
   const [formToBeClosed, setFormToBeClosed] = useState("");
 
   useEffect(() => {
@@ -45,22 +43,17 @@ const Employee: any = () => {
           showErrorToast(err);
         });
     }
-
-    // const close_button = document.getElementById("confirm-delete-close");
-    // close_button?.click();
     onModalClose();
   };
 
   const handleEdit = (employee: any) => {
     setSelectedItemId(employee.id);
     setModalModeName("Update");
-    setIsEdit(true);
     setFormToBeClosed("form-close");
   };
 
   const handleDelete = (employee: any) => {
     setSelectedItemId(employee.id);
-    setIsDelete(true);
     setFormToBeClosed("delete-form-closed");
   };
 
@@ -81,9 +74,9 @@ const Employee: any = () => {
       return value === 0 ? "Male" : value === 1 ? "Female" : value;
     } else if (column === "dayOfBirth") {
       return formatDate(new Date(value), "dd/MM/yyyy");
-    } else if (column == "employeeTitle") {
+    } else if (column === "employeeTitle") {
       return value && value.titleName;
-    }else if (column == "team") {
+    }else if (column === "team") {
       return value && value.name;
     }
     return value;
@@ -97,7 +90,6 @@ const Employee: any = () => {
     const close_button = document.getElementById(formToBeClosed);
     close_button?.click();
     setFormToBeClosed("");
-    //window.location.reload(); //gecici cozum
   };
 
   const columnNames = {
