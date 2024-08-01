@@ -2,8 +2,11 @@ import Button from "../../CommonComponents/Button";
 import Input from "../../CommonComponents/Input";
 import { useEffect, useState } from "react";
 import employeeService from "../../../services/EmployeeService";
+import teamService from "../../../services/TeamService";
 
 const EmployeeEditForm: any = (props: any) => {
+  const [teams, setTeams] = useState([]);
+
   const [genderOptions] = useState([
     { value: "" },
     { value: 1, label: "Female" },
@@ -23,6 +26,10 @@ const EmployeeEditForm: any = (props: any) => {
         props.setSelectedEmployee(data);
       });
     }
+
+    teamService.getAllTeam().then((data)=>{
+      setTeams(data);
+    })
   }, [props.selectedItemId]);
 
   const handleChange = (e: any) => {
@@ -32,7 +39,8 @@ const EmployeeEditForm: any = (props: any) => {
         ...prev,
         [name]: parseInt(value, 10),
       }));
-    } else {
+    }
+    else {
       props.setSelectedEmployee((prev: any) => ({
         ...prev,
         [name]: value,
@@ -184,13 +192,18 @@ const EmployeeEditForm: any = (props: any) => {
                     </>
                   )}
 
-                  {/* <label className="col-form-label">Team:</label>
-                  <Input
-                    type="text"
-                    name="teamId"
-                    value={props.selectedEmployee && props.selectedEmployee.team ? props.selectedEmployee.team.name : ''}
+                  <label className="col-form-label">Team:</label>
+                  <select
+                    name="team"
+                    className="form-control"
+                    value={props.selectedEmployee?.team?.id || ""}
                     onChange={(e: any) => handleChange(e)}
-                  /> */}
+                  >
+                    <option value=""></option>
+                    {teams.map((team:any)=>(
+                      <option key={team.id} value={team.id}>{team.name}</option>
+                    ))}
+                  </select>
 
                   <label className="col-form-label">E-mail:</label>
                   <Input
