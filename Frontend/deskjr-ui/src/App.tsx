@@ -5,7 +5,7 @@ import {
   BrowserRouter as Router,
   Route,
   Routes,
-  redirect,
+  redirect
 } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import MyInfo from "./components/views/MyInfo";
@@ -28,6 +28,7 @@ import LeaveType from "./components/views/LeaveType/LeaveType";
 
 const App: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<any>();
+  const [loading, setLoading] = useState(true);
 
   const navigation = (currentUser: any) => {
     return {
@@ -101,26 +102,30 @@ const App: React.FC = () => {
   const [idFromLocalStr] = useState(Cookies.get("id"));
 
   const fetchEmployee = (id: string) => {
+    setLoading(true);
     EmployeeService.getEmployeeById(id)
       .then((data) => {
         setCurrentUser(data);
       })
       .catch((err) => {
         showErrorToast(err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
   useEffect(() => {
-    idFromLocalStr && fetchEmployee(idFromLocalStr);
-  }, []);
-
-  useEffect(() => {
-    if (currentUser && currentUser.id) {
-      redirect("/");
+    if (idFromLocalStr) {
+      fetchEmployee(idFromLocalStr);
     } else {
-      redirect("/login");
+      setLoading(false);
     }
-  }, [currentUser]);
+  }, [idFromLocalStr]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
@@ -137,9 +142,15 @@ const App: React.FC = () => {
           <Routes>
             {currentUser && currentUser.id && (
               <>
-                <Route path="/" element={<Home currentUser={currentUser} />} />
-                <Route path="/myInfo" element={<MyInfo />} />
-                <Route path="/contacts" element={<Contacts />} />
+                <Route
+                  path="/"
+                  element={<Home currentUser={currentUser} />}
+                />
+                <Route path="/myInfo" element={<MyInfo currentUser={currentUser} />} />
+                <Route
+                  path="/contacts"
+                  element={<Contacts />}
+                />
 
                 <Route path="/leaves" element={<Leaves />} />
                 <Route
@@ -152,7 +163,7 @@ const App: React.FC = () => {
                 <Route path="/leaveTypes" element={<LeaveType />} />
               </>
             )}
-            {currentUser && currentUser.employeeRole === 0 && (
+            {currentUser && currentUser.employeeRole === Roles.Admin && (
               <>
                 <Route path="/employees" element={<Employee />} />
                 <Route path="/teams" element={<Team />} />

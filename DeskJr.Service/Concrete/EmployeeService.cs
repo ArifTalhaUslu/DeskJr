@@ -44,9 +44,9 @@ namespace DeskJr.Service.Concrete
             return _mapper.Map<IEnumerable<EmployeeDto>>(employees);
         }
 
-        public async Task<EmployeeDto?> GetEmployeeByIdAsync(Guid id)
+        public EmployeeDto? GetEmployeeByIdAsync(Guid id)
         {
-            var employee = await _employeeRepository.GetByIdAsync(id);
+            var employee = _employeeRepository.GetByIdWithInclude(id);
             return _mapper.Map<EmployeeDto>(employee);
         }
 
