@@ -26,25 +26,25 @@ namespace DeskJr.Data
                                       .HasIndex(t => t.TitleName)
                                       .IsUnique();
 
-            modelBuilder.Entity<Team>()
-                   .HasOne(t => t.Manager)
-                   .WithMany()
-                   .HasForeignKey(t => t.ManagerId)
-                   .OnDelete(DeleteBehavior.Restrict); // Silme davranışını belirlemek önemli
+                modelBuilder.Entity<Team>()
+                       .HasOne(t => t.Manager)
+                       .WithMany()
+                       .HasForeignKey(t => t.ManagerId)
+                       .OnDelete(DeleteBehavior.Restrict); // Silme davranışını belirlemek önemli
 
-            modelBuilder.Entity<Employee>()
-                    .HasOne(e => e.Team)
-                    .WithMany() // Eğer Team ile birden fazla Employee ilişkisi varsa WithMany
-                    .HasForeignKey(e => e.TeamId)
-                    .OnDelete(DeleteBehavior.Restrict); // Silme davranışını belirlemek önemli
+                modelBuilder.Entity<Employee>()
+                        .HasOne(e => e.Team)
+                        .WithMany() // Eğer Team ile birden fazla Employee ilişkisi varsa WithMany
+                        .HasForeignKey(e => e.TeamId)
+                        .OnDelete(DeleteBehavior.Restrict); // Silme davranışını belirlemek önemli
 
 
         }
-        /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Data Source=localhost;Initial Catalog=test1;User Id=SA;Password=Ncc-1701;Integrated Security=False;Encrypt=False");
-            optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+            /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+            {
+                optionsBuilder.UseSqlServer("Data Source=localhost;Initial Catalog=test1;User Id=SA;Password=Ncc-1701;Integrated Security=False;Encrypt=False");
+                optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 
-        }*/
+            }*/
     }
 }

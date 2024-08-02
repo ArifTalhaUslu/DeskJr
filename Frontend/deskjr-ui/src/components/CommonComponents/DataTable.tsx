@@ -14,6 +14,7 @@ interface DataTableProps {
   renderColumn?: (column: string, value: any) => JSX.Element | string;
   dataTarget?: string;
   columnNames?: { [key: string]: string };
+  hideActions?: string;
 }
 
 function DataTable({
@@ -27,6 +28,7 @@ function DataTable({
   renderColumn,
   dataTarget,
   columnNames = {},
+  hideActions = 'false'
 }: DataTableProps) {
   const [records, setRecords] = useState<any>([]);
   const [columns, setColumns] = useState<string[]>([]);
@@ -40,89 +42,98 @@ function DataTable({
   const [showSearch, setShowSearch] = useState<{ [key: string]: boolean }>({});
 
   useEffect(() => {
-    const firstItem = items.length > 0 ? items[0] : {};
-    const newColumns = Object.keys(firstItem).filter(
-      (column) => !hiddenColumns.includes(column)
-    );
-    setColumns([...newColumns, "Actions"]);
+      const firstItem = items.length > 0 ? items[0] : {};
+      const newColumns = Object.keys(firstItem).filter(
+          (column) => !hiddenColumns.includes(column)
+      );
+      setColumns([...newColumns]);
 
-    const filteredItems = items.filter((item) =>
-      newColumns.every((column) => {
-        const searchQuery = searchQueries[column] || "";
-        const value =
-          item[column] != null ? item[column].toString().toLowerCase() : "";
+      if (hideActions && hideActions === 'false') {
+          setColumns([...newColumns, "Actions"]);
+      }
 
-        const isRoleMatch = roleFilter
-          ? (roleFilter === "Admin" && item["employeeRole"] === 0) ||
-            (roleFilter === "Manager" && item["employeeRole"] === 1) ||
-            (roleFilter === "Employee" && item["employeeRole"] === 2)
-          : true;
+      const filteredItems = items.filter((item) =>
+          newColumns.every((column) => {
+              const searchQuery = searchQueries[column] || "";
+              const value =
+                  item[column] != null ? item[column].toString().toLowerCase() : "";
 
-        const isGenderMatch = genderFilter
-          ? (genderFilter === "Male" && item["gender"] === 0) ||
-            (genderFilter === "Female" && item["gender"] === 1)
-          : true;
+              const isRoleMatch = roleFilter
+                  ? (roleFilter === "Admin" && item["employeeRole"] === 0) ||
+                  (roleFilter === "Manager" && item["employeeRole"] === 1) ||
+                  (roleFilter === "Employee" && item["employeeRole"] === 2)
+                  : true;
 
-        const isDateMatch =
-          column === "dayOfBirth"
-            ? (!startDate || new Date(item[column]) >= startDate) &&
-              (!endDate || new Date(item[column]) <= endDate)
-            : true;
+              const isGenderMatch = genderFilter
+                  ? (genderFilter === "Male" && item["gender"] === 0) ||
+                  (genderFilter === "Female" && item["gender"] === 1)
+                  : true;
 
-        return (
-          (!searchQuery || value.includes(searchQuery.toLowerCase())) &&
-          isRoleMatch &&
-          isGenderMatch &&
-          isDateMatch
-        );
-      })
-    );
+              const isDateMatch =
+                  column === "dayOfBirth"
+                      ? (!startDate || new Date(item[column]) >= startDate) &&
+                      (!endDate || new Date(item[column]) <= endDate)
+                      : true;
 
-    const newRecords = filteredItems.map((record: any, index: any) => (
-      <tr key={index}>
-        {newColumns.map((column) => (
-          <td
-            className="text-center"
-            key={column}
-            style={{
-              padding: column === "Actions" ? "10px 20px" : "10px",
-              verticalAlign: column === "Actions" ? "top" : "middle",
-            }}
-          >
-            {renderColumn
-              ? renderColumn(column, record[column])
-              : record[column]}
-          </td>
-        ))}
-        <td
-          className="text-center"
-          style={{
-            padding: "10px 20px",
-            verticalAlign: "top",
-          }}
-        >
-          {isEditable && isEditable(record) && onEdit && (
-            <Button
-              text="Edit"
-              className={"btn btn-warning mr-2"}
-              onClick={() => onEdit(record)}
-              isModalTrigger={true}
-              dataTarget={dataTarget}
-            ></Button>
-          )}
-          {isDeletable && isDeletable(record) && onDelete && (
-            <Button
-              text="Delete"
-              className={"btn btn-danger"}
-              onClick={() => onDelete(record)}
-              isModalTrigger={true}
-              dataTarget={"delete-confirm"}
-            ></Button>
-          )}
-        </td>
-      </tr>
-    ));
-    setRecords([...newRecords]);
+              return (
+                  (!searchQuery || value.includes(searchQuery.toLowerCase())) &&
+                  isRoleMatch &&
+                  isGenderMatch &&
+                  isDateMatch
+              );
+          })
+      );
+
+      const newRecords = filteredItems.map((record: any, index: any) => (
+          <tr key={index}>
+              {newColumns.map((column) => (
+                  <td
+                      className="text-center"
+                      key={column}
+                      style={{
+                          padding: column === "Actions" ? "10px 20px" : "10px",
+                          verticalAlign: column === "Actions" ? "top" : "middle",
+                      }}
+                  >
+                      {renderColumn
+                          ? renderColumn(column, record[column])
+                          : record[column]}
+                  </td>
+              ))}
+              {
+                  hideActions && hideActions.toString() === 'false' &&
+                  <td className="text-center">
+                  style={{
+                      padding: "10px 20px",
+                      verticalAlign: "top",
+                  }}
+              >
+                  {isEditable && isEditable(record) && onEdit && (
+                      <Button
+                          text="Edit"
+                          className={"btn btn-warning mr-2"}
+                          onClick={() => onEdit(record)}
+                          isModalTrigger={true}
+                          dataTarget={dataTarget}
+                      ></Button>
+                  )}
+                  {isDeletable && isDeletable(record) && onDelete && (
+                      <Button
+                          text="Delete"
+                          className={"btn btn-danger"}
+                          onClick={() => onDelete(record)}
+                          isModalTrigger={true}
+                          dataTarget={"delete-confirm"}
+                      ></Button>
+                  )}
+                  </td>
+              }
+          </tr>
+      ));
+      setRecords([...newRecords]);
+  } else {
+      setRecords([]);
+      setColumns([]);
   }, [
     items,
     onEdit,
