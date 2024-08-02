@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DeskJr.Entity.Models;
 using DeskJr.Repository.Abstract;
+using DeskJr.Repository.Concrete;
 using DeskJr.Service.Abstract;
 using DeskJr.Service.Dto;
 
@@ -16,10 +17,14 @@ namespace DeskJr.Service.Concrete
             _leaveTypeRepository = leaveTypeRepository;
             _mapper = mapper;
         }
-        public async Task<bool> AddLeaveTypeAsync(LeaveTypeCreateDTO LeaveTypeDto)
+        public async Task<bool> AddOrUpdateLeaveTypeAsync(LeaveTypeUpdateDTO LeaveTypeUpdateDto)
         {
-            var leaveType = _mapper.Map<LeaveType>(LeaveTypeDto);
-            return await _leaveTypeRepository.AddAsync(leaveType);
+            if (LeaveTypeUpdateDto.ID == null)
+            {
+
+                return await _leaveTypeRepository.AddAsync(_mapper.Map<LeaveType>(LeaveTypeUpdateDto));
+            }
+            return await _leaveTypeRepository.UpdateAsync(_mapper.Map<LeaveType>(LeaveTypeUpdateDto));
         }
 
         public async Task<bool> DeleteLeaveTypeAsync(Guid id)
