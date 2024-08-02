@@ -2,6 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Employee } from "../../types/employee";
 import Button from "./Button";
+import Cookies from 'js-cookie';
 
 interface NavigationBarProps {
     currentUser: Employee;
@@ -138,8 +139,8 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
                                     style={{ color: "red", fontWeight: "bold" }}
                                     onClick={() => {
                                         setCurrentUser(null);
-                                        localStorage.removeItem("id");
-                                        localStorage.removeItem("token");
+                                        Cookies.remove("id");
+                                        Cookies.remove("token");
                                         navigate("/login");
                                     }}
                                 />

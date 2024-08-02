@@ -7,7 +7,7 @@ import {
     Routes,
     redirect,
 } from "react-router-dom";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import MyInfo from "./components/views/MyInfo";
 import Contacts from "./components/views/Contacts";
 import Employee from "./components/views/Employee/Employee";
@@ -20,6 +20,8 @@ import "react-toastify/dist/ReactToastify.css";
 import Team from "./components/views/Team/Team";
 import EmployeeService from "./services/EmployeeService";
 import { showErrorToast } from "./utils/toastHelper";
+import Cookies from 'js-cookie'
+import { Roles } from "./types/Roles";
 
 const App: React.FC = () => {
     const [currentUser, setCurrentUser] = useState<any>();
@@ -41,7 +43,7 @@ const App: React.FC = () => {
                 {
                     name: "Employee List",
                     to: "/employees",
-                    visible: currentUser?.employeeRole === 0,
+                    visible: currentUser?.employeeRole === Roles.Admin,
                 },
                 {
                     name: "Leave",
@@ -62,7 +64,7 @@ const App: React.FC = () => {
                 },
                 {
                     name: "Settings",
-                    visible: currentUser?.employeeRole === 0,
+                    visible: currentUser?.employeeRole === Roles.Admin,
                     isDropDown: true,
                     subLinks: [
                         {
@@ -83,7 +85,7 @@ const App: React.FC = () => {
                         {
                             name: "Teams",
                             to: "/teams",
-                            visible: currentUser?.employeeRole===0,
+                            visible: currentUser?.employeeRole === Roles.Admin,
                         },
                     ],
                 },
@@ -94,7 +96,7 @@ const App: React.FC = () => {
     
     const { brand, links } = navigation(currentUser);
 
-    const [idFromLocalStr] = useState(localStorage.getItem("id"));
+    const [idFromLocalStr] = useState(Cookies.get("id"));
 
     const fetchEmployee = (id: string) => {
         EmployeeService.getEmployeeById(id)

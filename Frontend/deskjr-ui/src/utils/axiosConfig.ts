@@ -3,6 +3,7 @@ import { ErrorResponseDto } from '../types/ErrorResponseDto';
 import store from '../store/store'
 import { setError } from '../store/actions/errorActions';
 import { showErrorToast } from './toastHelper';
+import Cookies from 'js-cookie';
 
 const api = axios.create({
     baseURL: 'https://localhost:7187',
@@ -11,7 +12,7 @@ const api = axios.create({
 
 api.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem('token');
+        const token = Cookies.get('token');
         if(token){
             config.headers.Authorization = `Bearer ${token}`;
         }
