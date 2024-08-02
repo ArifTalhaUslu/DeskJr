@@ -5,7 +5,7 @@ import {
     BrowserRouter as Router,
     Route,
     Routes,
-    redirect,
+    redirect
 } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import MyInfo from "./components/views/MyInfo";
@@ -25,6 +25,7 @@ import { Roles } from "./types/Roles";
 
 const App: React.FC = () => {
     const [currentUser, setCurrentUser] = useState<any>();
+    const [loading, setLoading] = useState(true);
 
     const navigation = (currentUser: any) => {
         return {
@@ -105,20 +106,23 @@ const App: React.FC = () => {
             })
             .catch((err) => {
                 showErrorToast(err);
+            })
+            .finally(() => {
+                setLoading(false);
             });
     };
 
     useEffect(() => {
-        idFromLocalStr && fetchEmployee(idFromLocalStr);
-    }, []);
-
-    useEffect(() => {
-        if (currentUser && currentUser.id) {
-            redirect("/");
+        if (idFromLocalStr) {
+            fetchEmployee(idFromLocalStr);
         } else {
-            redirect("/login");
+            setLoading(false);
         }
-    }, [currentUser]);
+    }, [idFromLocalStr]);
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <>
@@ -139,7 +143,7 @@ const App: React.FC = () => {
                                     path="/"
                                     element={<Home currentUser={currentUser} />}
                                 />
-                                <Route path="/myInfo" element={<MyInfo />} />
+                                <Route path="/myInfo" element={<MyInfo currentUser={currentUser} />} />
                                 <Route
                                     path="/contacts"
                                     element={<Contacts />}
@@ -162,7 +166,7 @@ const App: React.FC = () => {
                                 <Route path="*" element={<>Not Found</>} />
                             </>
                         )}
-                        {currentUser && currentUser.employeeRole === 0 && (
+                        {currentUser && currentUser.employeeRole === Roles.Admin && (
                             <>
                                 <Route
                                     path="/employees"
@@ -181,6 +185,7 @@ const App: React.FC = () => {
                                         />
                                     }
                                 />
+                                <Route path="*" element={<>{redirect('/login')}</>} />
                             </>
                         )}
                     </Routes>

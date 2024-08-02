@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import EmployeeService from "../../services/EmployeeService";
 import { showErrorToast } from "../../utils/toastHelper";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
+import { Roles } from "../../types/Roles";
 
 const Home = (props: any) => {
     const [employee, setEmployee] = useState<any>(null);
@@ -14,7 +15,7 @@ const Home = (props: any) => {
                 setEmployee(data);
             })
             .catch((err) => {
-              showErrorToast(err);
+                showErrorToast(err);
             });
     };
     const fetchAllEmployees = (setEmployees) => {
@@ -23,14 +24,14 @@ const Home = (props: any) => {
                 setEmployees(fetchedEmployeesData);
             })
             .catch((err) => {
-              showErrorToast(err);
+                showErrorToast(err);
             });
     };
 
     useEffect(() => {
         fetchEmployee(id, setEmployee);
         fetchAllEmployees(setEmployees);
-    },[]);
+    }, []);
 
     return (
         <div className="container">
@@ -63,11 +64,11 @@ const Home = (props: any) => {
                                         ).toLocaleDateString()}
                                     </td>
                                     <td>
-                                        {emp.employeeRole === 2
+                                        {emp.employeeRole === Roles.Employee
                                             ? "Employee"
-                                            : emp.employeeRole === 1
+                                            : emp.employeeRole === Roles.Manager
                                             ? "Manager"
-                                            : emp.employeeRole === 0
+                                            : emp.employeeRole === Roles.Admin
                                             ? "Admin"
                                             : "Unknown"}
                                     </td>

@@ -6,6 +6,7 @@ import EmployeeEditForm from "./EmployeeEditForm";
 import { formatDate } from "date-fns";
 import ConfirmDelete from "../../CommonComponents/ConfirmDelete";
 import { showErrorToast, showSuccessToast } from "../../../utils/toastHelper";
+import { Roles } from "../../../types/Roles";
 
 const Employee: any = () => {
   const [items, setItems] = useState([]);
@@ -63,11 +64,11 @@ const Employee: any = () => {
 
   const renderColumn = (column: string, value: any) => {
     if (column === "employeeRole") {
-      return value === 2
+      return value === Roles.Employee
         ? "Employee"
-        : value === 1
+        : value === Roles.Manager
         ? "Manager"
-        : value === 0
+        : value === Roles.Admin
         ? "Admin"
         : value;
     } else if (column === "gender") {
