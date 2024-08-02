@@ -42,19 +42,19 @@ const MyInfo: React.FC<MyInfoProps> = ({ currentUser }) => {
                                     {currentUser.employeeRole === Roles.Employee
                                         ? "Employee"
                                         : currentUser.employeeRole === Roles.Manager
-                                        ? "Manager"
-                                        : currentUser.employeeRole === Roles.Admin
-                                        ? "Admin"
-                                        : "Unknown"}
+                                            ? "Manager"
+                                            : currentUser.employeeRole === Roles.Admin
+                                                ? "Admin"
+                                                : "Unknown"}
                                 </td>
                             </tr>
                             <tr>
                                 <th>Title:</th>
-                                <td>{currentUser.titleId || "N/A"}</td>
+                                <td>{currentUser.employeeTitle.titleName || "N/A"}</td>
                             </tr>
                             <tr>
                                 <th>Team:</th>
-                                <td>{currentUser.teamId || "N/A"}</td>
+                                <td>{currentUser.team.name || "N/A"}</td>
                             </tr>
                         </tbody>
                     </table>

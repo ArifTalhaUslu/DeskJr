@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
 import EmployeeService from "../../services/EmployeeService";
 import { showErrorToast } from "../../utils/toastHelper";
-import Cookies from 'js-cookie';
 import Board from "../CommonComponents/Board";
 import { formatDate } from "date-fns";
 import HolidayService from "../../services/HolidayService";
-import { Roles } from "../../types/Roles";
 import Card from "../CommonComponents/Card";
 
 const Home = (props: any) => {
@@ -33,8 +31,8 @@ const Home = (props: any) => {
     };
 
     useEffect(() => {
-        fetchEmployee(id, setEmployee);
-        fetchAllEmployees(setEmployees);
+        fetchAllHolidays();
+        fetchAllEmployees();
     }, []);
 
 

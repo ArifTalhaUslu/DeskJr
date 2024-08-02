@@ -10,6 +10,8 @@ export interface User {
     teamId: string | null;
     email: string;
     password: string;
+    team: any;
+    employeeTitle: any;
 }
 
 export interface CurrentSession {
