@@ -1,13 +1,18 @@
 ﻿using DeskJr.Service.Abstract;
+using DeskJr.Service.Concrete;
 using DeskJr.Service.Dto;
+
+using DeskJr.Service.Dto.EmployeeTitleDtos;
+
 using Microsoft.AspNetCore.Authorization;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace DeskJr.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class EmployeeTitleController : ControllerBase
     {
         private readonly IEmployeeTitleService _employeeTitleService;
@@ -18,9 +23,9 @@ namespace DeskJr.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateEmployeeTitle(CreateEmployeeTitleDto employeeTitleDto)
+        public async Task<ActionResult> CreateEmployeeTitle(UpdateEmployeeTitleDto employeeTitleDto)
         {
-            var result = await _employeeTitleService.AddEmployeeTitleAsync(employeeTitleDto);
+            var result = await _employeeTitleService.AddOrUpdateEmployeeAsync(employeeTitleDto);
             if (result)
             {
                 return Ok();
@@ -28,15 +33,16 @@ namespace DeskJr.Api.Controllers
             return BadRequest();
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteEmployeeTitle(Guid id)
+        [HttpDelete]
+        public async Task<ActionResult> DeleteEmployee(DeleteEmployeeTitleDto deleteEmployeeTitleDto)
         {
-            var result = await _employeeTitleService.DeleteEmployeeTitleAsync(id);
-            if (result)
+            var result = await _employeeTitleService.DeleteEmployeeTitleAsync(deleteEmployeeTitleDto.Id);
+            if (!result)
             {
-                return Ok();
+                return NotFound();
             }
-            return NotFound();
+
+            return Ok();
         }
 
         [HttpGet]

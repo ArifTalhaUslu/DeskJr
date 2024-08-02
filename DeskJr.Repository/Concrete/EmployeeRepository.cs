@@ -33,6 +33,11 @@ namespace DeskJr.Repository.Concrete
                 .Include(x=>x.Team)
                 .ToList();
         }
+
+        public Employee? GetByIdWithInclude(Guid id)
+        {
+            return _context.Employees.Include(x => x.Team).Include(x => x.EmployeeTitle).FirstOrDefault(x => x.ID == id);
+        }
     }
 
 }

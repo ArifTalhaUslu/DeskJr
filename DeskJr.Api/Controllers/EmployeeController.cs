@@ -8,7 +8,7 @@ namespace DeskJr.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
+    //[Authorize]
     public class EmployeeController : ControllerBase
     {
         private readonly IEmployeeService _employeeService;
@@ -50,9 +50,9 @@ namespace DeskJr.Api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetEmployeeById(Guid id)
+        public ActionResult GetEmployeeById(Guid id)
         {
-            var employee = await _employeeService.GetEmployeeByIdAsync(id);
+            var employee = _employeeService.GetEmployeeByIdAsync(id);
             return Ok(employee);
         }
 

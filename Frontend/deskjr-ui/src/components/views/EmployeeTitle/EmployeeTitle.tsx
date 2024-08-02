@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react";
-import employeeService from "../../../services/EmployeeService";
+import employeeTitleService from "../../../services/EmployeeTitleService";
 import Card from "../../CommonComponents/Card";
 import Board from "../../CommonComponents/Board";
-import EmployeeEditForm from "./EmployeeEditForm";
-import { formatDate } from "date-fns";
+import EmployeeTitleEditForm from "./EmployeeTitleEditForm";
 import ConfirmDelete from "../../CommonComponents/ConfirmDelete";
-import { showErrorToast, showSuccessToast } from "../../../utils/toastHelper";
-import { Roles } from "../../../types/Roles";
+import { showSuccessToast } from "../../../utils/toastHelper";
 
-const Employee: any = () => {
+const EmployeeTitle: any = () => {
   const [items, setItems] = useState([]);
   const [selectedItemId, setSelectedItemId] = useState("");
-  const [selectedEmployee, setSelectedEmployee] = useState("");
+  const [selectedEmployeeTitle, setSelectedEmployeeTitle] = useState("");
   const [modalModeName, setModalModeName] = useState("");
-  const [modalDataTarget] = useState("employeeAddModal");
+  const [modalDataTarget] = useState("employeeTitleAddModal");
   const [isTrigger, setIsTrigger] = useState(false);
+  const [isDelete, setIsDelete] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
   const [formToBeClosed, setFormToBeClosed] = useState("");
 
   useEffect(() => {
@@ -22,11 +22,8 @@ const Employee: any = () => {
   }, [isTrigger]);
 
   const getList = async () => {
-    employeeService.getAllEmployee().then((data) => {
+    employeeTitleService.getAllEmployeeTitle().then((data) => {
       setItems(data);
-    })
-    .catch((err) => {
-      showErrorToast(err);
     });
   };
 
@@ -34,27 +31,30 @@ const Employee: any = () => {
     e.preventDefault();
 
     if (selectedItemId) {
-      employeeService
-        .deleteEmployee(selectedItemId)
+      employeeTitleService
+        .deleteEmployeeTitle(selectedItemId)
         .then(() => {
-          showSuccessToast('Successful!');
+          showSuccessToast("Success");
           setIsTrigger(true);
         })
-        .catch((err) => {
-          showErrorToast(err);
+        .catch((err: any) => {
+          console.log(err);
         });
     }
+
     onModalClose();
   };
 
-  const handleEdit = (employee: any) => {
-    setSelectedItemId(employee.id);
+  const handleEdit = (employeeTitle: any) => {
+    setSelectedItemId(employeeTitle.id);
     setModalModeName("Update");
+    setIsEdit(true);
     setFormToBeClosed("form-close");
   };
 
-  const handleDelete = (employee: any) => {
-    setSelectedItemId(employee.id);
+  const handleDelete = (employeeTitle: any) => {
+    setSelectedItemId(employeeTitle.id);
+    setIsDelete(true);
     setFormToBeClosed("delete-form-closed");
   };
 
@@ -63,29 +63,12 @@ const Employee: any = () => {
   const isDeletable = (item: any) => true;
 
   const renderColumn = (column: string, value: any) => {
-    if (column === "employeeRole") {
-      return value === Roles.Employee
-        ? "Employee"
-        : value === Roles.Manager
-        ? "Manager"
-        : value === Roles.Admin
-        ? "Admin"
-        : value;
-    } else if (column === "gender") {
-      return value === 0 ? "Male" : value === 1 ? "Female" : value;
-    } else if (column === "dayOfBirth") {
-      return formatDate(new Date(value), "dd/MM/yyyy");
-    } else if (column === "employeeTitle") {
-      return value && value.titleName;
-    }else if (column === "team") {
-      return value && value.name;
-    }
     return value;
   };
 
   const onModalClose = () => {
     setSelectedItemId("");
-    setSelectedEmployee("");
+    setSelectedEmployeeTitle("");
     setModalModeName("");
     setIsTrigger(false);
     const close_button = document.getElementById(formToBeClosed);
@@ -94,25 +77,19 @@ const Employee: any = () => {
   };
 
   const columnNames = {
-    name: "Employee Name",
-    dayOfBirth: "BirthDay",
-    employeeRole: "Employee Role",
-    gender: "Gender",
-    employeeTitle: "Title Name",
-    team: "Team Name",
-    email: "E-mail",
+    titleName: "Title Name",
   };
 
   return (
     <>
-      <Card title={"Employee List"}>
+      <Card title={"Employee Title List"}>
         <Board
           items={items}
           onEdit={handleEdit}
           onDelete={handleDelete}
           isEditable={isEditable}
           isDeletable={isDeletable}
-          hiddenColumns={["id", "password", "teamId", "employeeTitleId"]}
+          hiddenColumns={["id"]}
           renderColumn={renderColumn}
           columnNames={columnNames}
           hasNewRecordButton={true}
@@ -125,11 +102,11 @@ const Employee: any = () => {
         />
       </Card>
 
-      <EmployeeEditForm
+      <EmployeeTitleEditForm
         selectedItemId={selectedItemId}
         modalModeName={modalModeName}
-        selectedEmployee={selectedEmployee}
-        setSelectedEmployee={setSelectedEmployee}
+        selectedEmployeeTitle={selectedEmployeeTitle}
+        setSelectedEmployeeTitle={setSelectedEmployeeTitle}
         getList={getList}
         onClose={onModalClose}
       />
@@ -142,4 +119,4 @@ const Employee: any = () => {
   );
 };
 
-export default Employee;
+export default EmployeeTitle;

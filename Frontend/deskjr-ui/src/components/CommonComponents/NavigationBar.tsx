@@ -125,7 +125,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
                                 className="dropdown-menu dropdown-menu-right"
                                 aria-labelledby="navbarUserDropdown"
                             >
-                                <Link className="dropdown-item " to="/profile">
+                                <Link className="dropdown-item " to="/myInfo">
                                     Profile
                                 </Link>
                                 <Link className="dropdown-item" to="/settings">

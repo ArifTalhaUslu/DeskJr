@@ -1,13 +1,19 @@
 ﻿using DeskJr.Service.Abstract;
 using Microsoft.AspNetCore.Mvc;
 using DeskJr.Service.Dto;
+
+using DeskJr.Service.Concrete;
+using DeskJr.Service.Dto.EmployeeTitleDtos;
+using DeskJr.Service.Dto.LeaveDtos;
+
 using Microsoft.AspNetCore.Authorization;
+
 
 namespace DeskJr.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class LeaveTypeController : ControllerBase
     {
         private readonly ILeaveTypeService _leaveTypeservice;
@@ -18,9 +24,9 @@ namespace DeskJr.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateLeaveType(LeaveTypeCreateDTO leaveTypeDto)
+        public async Task<ActionResult> CreateLeaveType(LeaveTypeUpdateDTO leaveTypeUpdateDto)
         {
-            var result = await _leaveTypeservice.AddLeaveTypeAsync(leaveTypeDto);
+            var result = await _leaveTypeservice.AddOrUpdateLeaveTypeAsync(leaveTypeUpdateDto);
             if (result)
             {
                 return Ok();
@@ -28,15 +34,16 @@ namespace DeskJr.Api.Controllers
             return BadRequest();
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteLeaveType(Guid id)
+        [HttpDelete]
+        public async Task<ActionResult> DeleteEmployee(LeaveTypeDeleteDto leaveTypeDeleteDto)
         {
-            var result = await _leaveTypeservice.DeleteLeaveTypeAsync(id);
-            if (result)
+            var result = await _leaveTypeservice.DeleteLeaveTypeAsync(leaveTypeDeleteDto.Id);
+            if (!result)
             {
-                return Ok();
+                return NotFound();
             }
-            return NotFound();
+
+            return Ok();
         }
 
         [HttpGet]

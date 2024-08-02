@@ -4,9 +4,12 @@ import { useEffect, useState } from "react";
 import employeeService from "../../../services/EmployeeService";
 import { showErrorToast, showSuccessToast } from "../../../utils/toastHelper";
 import teamService from "../../../services/TeamService";
+import employeeTitleService from "../../../services/EmployeeTitleService";
+import { setEmitFlags } from "typescript";
 
 const EmployeeEditForm: any = (props: any) => {
   const [teams, setTeams] = useState([]);
+  const [titles, setTitles] = useState([]);
 
   const [genderOptions] = useState([
     { value: "" },
@@ -26,14 +29,18 @@ const EmployeeEditForm: any = (props: any) => {
       employeeService.getEmployeeById(props.selectedItemId).then((data) => {
         props.setSelectedEmployee(data);
       })
-      .catch((err) => {
-        showErrorToast(err);
-      });
+        .catch((err) => {
+          showErrorToast(err);
+        });
     }
 
-    teamService.getAllTeam().then((data)=>{
+    teamService.getAllTeam().then((data) => {
       setTeams(data);
     })
+    employeeTitleService.getAllEmployeeTitle().then((data) => {
+      setTitles(data);
+    })
+
   }, [props.selectedItemId]);
 
   const handleChange = (e: any) => {
@@ -49,6 +56,7 @@ const EmployeeEditForm: any = (props: any) => {
         ...prev,
         [name]: value,
         teamId: name === 'team' ? value : prev.teamId,
+        employeeTitleId: name === 'title' ? value : prev.employeeTitleId,
       }));
     }
   };
@@ -59,6 +67,7 @@ const EmployeeEditForm: any = (props: any) => {
       .addOrUpdateEmployee({
         ...props.selectedEmployee,
         teamId: props.selectedEmployee.teamId || null,
+        employeeTitleId: props.selectedEmployee.employeeTitleId || null
       })
       .then(() => {
         showSuccessToast('Successful!');
@@ -182,16 +191,18 @@ const EmployeeEditForm: any = (props: any) => {
                       </option>
                     ))}
                   </select>
-                  {/* <label className="col-form-label">Title:</label>
+                  <label className="col-form-label">Title:</label>
                   <select
-                    name="titleId"
+                    name="title"
                     className="form-control"
                     value={props.selectedEmployee?.employeeTitleId || ""}
                     onChange={(e: any) => handleChange(e)}
                   >
                     <option value=""></option>
-                    {}
-                  </select> */}
+                    {titles.map((title: any) => (
+                      <option key={title.id} value={title.id}>{title.titleName}</option>
+                    ))}
+                  </select>
 
                   <label className="col-form-label">Team:</label>
                   <select
@@ -201,7 +212,7 @@ const EmployeeEditForm: any = (props: any) => {
                     onChange={(e: any) => handleChange(e)}
                   >
                     <option value=""></option>
-                    {teams.map((team:any)=>(
+                    {teams.map((team: any) => (
                       <option key={team.id} value={team.id}>{team.name}</option>
                     ))}
                   </select>

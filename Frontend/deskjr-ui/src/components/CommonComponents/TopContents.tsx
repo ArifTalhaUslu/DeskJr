@@ -3,7 +3,7 @@ import Button from "./Button";
 interface TopContentProps {
   hasNewRecordButton?: boolean;
   newRecordButtonOnClick?: () => void;
-  dataTarget?:string;
+  dataTarget?: string;
 }
 
 function TopContents(props: TopContentProps) {

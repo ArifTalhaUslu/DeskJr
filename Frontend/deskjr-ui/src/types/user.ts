@@ -6,10 +6,12 @@ export interface User {
     dayOfBirth: string;
     employeeRole: number;
     gender: number;
-    titleId: string | null;
+    employeeTitleId: string | null;
     teamId: string | null;
     email: string;
     password: string;
+    team: any;
+    employeeTitle: any;
 }
 
 export interface CurrentSession {
@@ -40,7 +42,7 @@ interface LOGIN_SUCCESS {
 
 interface LOGIN_FAILURE {
     type: "LOGIN_FAILURE";
-    payload: string; 
+    payload: string;
 }
 
 export type UserAction = LOGIN_REQUEST | LOGIN_SUCCESS | LOGIN_FAILURE;

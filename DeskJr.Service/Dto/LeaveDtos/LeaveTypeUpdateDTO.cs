@@ -3,8 +3,9 @@ namespace DeskJr.Service.Dto
 {
     public class LeaveTypeUpdateDTO
     {
-        public string Name { get; set; }
-        public int DefaultDays { get; set; }
+        public Guid? ID { get; set; }
+        public string? Name { get; set; }
+        
     }
 }
 
