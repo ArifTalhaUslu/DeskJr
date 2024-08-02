@@ -5,6 +5,7 @@ import Board from "../../CommonComponents/Board";
 import EmployeeEditForm from "./EmployeeEditForm";
 import { formatDate } from "date-fns";
 import ConfirmDelete from "../../CommonComponents/ConfirmDelete";
+import { showErrorToast, showSuccessToast } from "../../../utils/toastHelper";
 
 const Employee: any = () => {
   const [items, setItems] = useState([]);
@@ -13,8 +14,6 @@ const Employee: any = () => {
   const [modalModeName, setModalModeName] = useState("");
   const [modalDataTarget] = useState("employeeAddModal");
   const [isTrigger, setIsTrigger] = useState(false);
-  const [isDelete, setIsDelete] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
   const [formToBeClosed, setFormToBeClosed] = useState("");
 
   useEffect(() => {
@@ -24,6 +23,9 @@ const Employee: any = () => {
   const getList = async () => {
     employeeService.getAllEmployee().then((data) => {
       setItems(data);
+    })
+    .catch((err) => {
+      showErrorToast(err);
     });
   };
 
@@ -34,29 +36,24 @@ const Employee: any = () => {
       employeeService
         .deleteEmployee(selectedItemId)
         .then(() => {
-          alert("Success");
+          showSuccessToast('Successful!');
           setIsTrigger(true);
         })
-        .catch((err: any) => {
-          console.log(err);
+        .catch((err) => {
+          showErrorToast(err);
         });
     }
-
-    // const close_button = document.getElementById("confirm-delete-close");
-    // close_button?.click();
     onModalClose();
   };
 
   const handleEdit = (employee: any) => {
     setSelectedItemId(employee.id);
     setModalModeName("Update");
-    setIsEdit(true);
     setFormToBeClosed("form-close");
   };
 
   const handleDelete = (employee: any) => {
     setSelectedItemId(employee.id);
-    setIsDelete(true);
     setFormToBeClosed("delete-form-closed");
   };
 
@@ -77,6 +74,10 @@ const Employee: any = () => {
       return value === 0 ? "Male" : value === 1 ? "Female" : value;
     } else if (column === "dayOfBirth") {
       return formatDate(new Date(value), "dd/MM/yyyy");
+    } else if (column === "employeeTitle") {
+      return value && value.titleName;
+    }else if (column === "team") {
+      return value && value.name;
     }
     return value;
   };
@@ -89,7 +90,6 @@ const Employee: any = () => {
     const close_button = document.getElementById(formToBeClosed);
     close_button?.click();
     setFormToBeClosed("");
-    //window.location.reload(); //gecici cozum
   };
 
   const columnNames = {
@@ -97,8 +97,8 @@ const Employee: any = () => {
     dayOfBirth: "BirthDay",
     employeeRole: "Employee Role",
     gender: "Gender",
-    titleId: "Title Name",
-    teamId: "Team Name",
+    employeeTitle: "Title Name",
+    team: "Team Name",
     email: "E-mail",
   };
 
@@ -111,7 +111,7 @@ const Employee: any = () => {
           onDelete={handleDelete}
           isEditable={isEditable}
           isDeletable={isDeletable}
-          hiddenColumns={["id", "password"]}
+          hiddenColumns={["id", "password", "teamId", "employeeTitleId"]}
           renderColumn={renderColumn}
           columnNames={columnNames}
           hasNewRecordButton={true}

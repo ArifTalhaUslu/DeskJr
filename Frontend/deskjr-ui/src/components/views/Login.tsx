@@ -1,36 +1,52 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from 'react-router-dom';
+import { AppState } from "../../store/reducers";
+import { login } from "../../store/actions/userActions";
 import Input from "../CommonComponents/Input";
 import Button from "../CommonComponents/Button";
 import Card from "../CommonComponents/Card";
-import { useDispatch, useSelector } from "react-redux";
 import { LoginForm } from "../../types/user";
-import { AppState } from "../../store";
-import { login } from "../../store/actions/userActions";
-import { useNavigate } from 'react-router-dom';
+import { showSuccessToast } from "../../utils/toastHelper";
+import Cookies from 'js-cookie';
 
-const Login: React.FC = () => {
-    
+const Login: any = (props:any) => {
+    window.history.pushState({}, "", "/");
+
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const { data, loading, error } = useSelector((state: AppState) => state.user);
+    const { data } = useSelector((state: AppState) => state.user);
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
         const formData: LoginForm = { email, password };
-        dispatch(login(formData));
-    };
 
-    useEffect(() => {
-        if (data.email) {
-            console.log("Login Başarılı");
+        try{
+            dispatch(login(formData));
         }
-    }, [data.email]);
-
-    
+        catch(error){
+            console.error(error);
+        }
+        setLocalStr();
+    };
+const setLocalStr = () => {
+    const token = Cookies.get("token");
+        if (data.name && token) {
+            props.setCurrentUser(data);
+            showSuccessToast('Successful!');
+            navigate("/");
+        }
+        else{
+            props.setCurrentUser(undefined);
+        }
+}
+    useEffect(() => {   
+        setLocalStr();
+    }, [data.name]);
 
     return (
         <div className="container">
@@ -45,7 +61,7 @@ const Login: React.FC = () => {
                                     className="form-control"
                                     id="email"
                                     value={email}
-                                    onChange={setEmail}
+                                    onChange={(e) => setEmail(e.target.value)}
                                     required
                                     placeholder="Enter your email"
                                 />
@@ -57,12 +73,12 @@ const Login: React.FC = () => {
                                     className="form-control"
                                     id="password"
                                     value={password}
-                                    onChange={setPassword}
+                                    onChange={(e) => setPassword(e.target.value)}
                                     required
                                     placeholder="Enter your password"
                                 />
                             </div>
-                            <Button type="submit" text="Login" />
+                            <Button type="submit" text={"Login"} />
                         </form>
                     </Card>
                 </div>

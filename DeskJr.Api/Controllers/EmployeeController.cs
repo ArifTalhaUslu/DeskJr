@@ -8,6 +8,7 @@ namespace DeskJr.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    //[Authorize]
     public class EmployeeController : ControllerBase
     {
         private readonly IEmployeeService _employeeService;
@@ -55,22 +56,13 @@ namespace DeskJr.Api.Controllers
             return Ok(employee);
         }
 
-        [HttpPut]
-        public async Task<ActionResult> UpdateEmployee(AddOrUpdateEmployeeDto employeeDto)
-        {
-            var result = await _employeeService.UpdateEmployeeAsync(employeeDto);
-            if (!result)
-            {
-                return BadRequest();
-            }
-
-            return Ok();
-        }
         [HttpGet("teams/{teamId}/employees")]
         public async Task<IActionResult> GetEmployeesByTeamId(Guid teamId)
         {
             var employees = await _employeeService.GetEmployeesByTeamIdAsync(teamId);
             return Ok(employees);
         }
+
+        //employee Managerları çekecek endpoint gerekli
     }
 }

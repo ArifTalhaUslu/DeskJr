@@ -1,11 +1,13 @@
 ﻿using DeskJr.Service.Abstract;
 using DeskJr.Service.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DeskJr.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    //[Authorize]
     public class TeamController : ControllerBase
     {
         private readonly ITeamService _teamService;
@@ -16,14 +18,14 @@ namespace DeskJr.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CreateTeam(CreateTeamDto teamDto)
+        public async Task<ActionResult> CreateOrUpdateTeam(AddOrUpdateTeamDto teamDto)
         {
-            var result = await _teamService.AddTeamAsync(teamDto);
-            if (result)
+            var result = await _teamService.AddOrUpdateTeamAsync(teamDto);
+            if (!result)
             {
-                return Ok();
+                return BadRequest();
             }
-            return BadRequest();
+            return Ok();
         }
 
         [HttpDelete("{id}")]
@@ -51,15 +53,15 @@ namespace DeskJr.Api.Controllers
             return Ok(team);
         }
 
-        [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateTeam(UpdateTeamDto teamDto)
+        [HttpPut]
+        public async Task<ActionResult> UpdateTeam(AddOrUpdateTeamDto teamDto)
         {
             var result = await _teamService.UpdateTeamAsync(teamDto);
-            if (result)
+            if (!result)
             {
-                return Ok();
+                return BadRequest();
             }
-            return BadRequest();
+            return Ok();
         }
     }
 }

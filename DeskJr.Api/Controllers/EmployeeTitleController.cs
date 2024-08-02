@@ -1,13 +1,18 @@
 ﻿using DeskJr.Service.Abstract;
 using DeskJr.Service.Concrete;
 using DeskJr.Service.Dto;
+
 using DeskJr.Service.Dto.EmployeeTitleDtos;
+
+using Microsoft.AspNetCore.Authorization;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace DeskJr.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    //[Authorize]
     public class EmployeeTitleController : ControllerBase
     {
         private readonly IEmployeeTitleService _employeeTitleService;

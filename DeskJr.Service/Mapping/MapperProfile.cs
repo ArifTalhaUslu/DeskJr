@@ -11,8 +11,9 @@ namespace DeskJr.Service.Mapping
             CreateMap<Employee, EmployeeDto>().ReverseMap();
             CreateMap<Employee, AddOrUpdateEmployeeDto>().ReverseMap();
             CreateMap<Employee, CreateEmployeeDto>().ReverseMap();
+            CreateMap<Employee, ManagerDto>().ReverseMap();
             CreateMap<Team, TeamDto>().ReverseMap();
-            CreateMap<Team, UpdateTeamDto>().ReverseMap();
+            CreateMap<Team, AddOrUpdateTeamDto>().ReverseMap();
             CreateMap<Team, CreateTeamDto>().ReverseMap();
             CreateMap<EmployeeTitle, EmployeeTitleDto>().ReverseMap();
             CreateMap<EmployeeTitle, UpdateEmployeeTitleDto>().ReverseMap();
@@ -23,6 +24,8 @@ namespace DeskJr.Service.Mapping
             CreateMap<Leave, LeaveDTO>().ReverseMap();
             CreateMap<Leave, LeaveCreateDTO>().ReverseMap();
             CreateMap<Leave, LeaveUpdateDTO>().ReverseMap();
+            CreateMap<Holiday, HolidayDto>().ReverseMap();
+            CreateMap<Holiday, AddOrUpdateHolidayDto>().ReverseMap();
         }
     }
 }

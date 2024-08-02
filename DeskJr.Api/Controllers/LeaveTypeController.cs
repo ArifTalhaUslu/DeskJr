@@ -1,14 +1,19 @@
 ﻿using DeskJr.Service.Abstract;
 using Microsoft.AspNetCore.Mvc;
 using DeskJr.Service.Dto;
+
 using DeskJr.Service.Concrete;
 using DeskJr.Service.Dto.EmployeeTitleDtos;
 using DeskJr.Service.Dto.LeaveDtos;
+
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace DeskJr.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    //[Authorize]
     public class LeaveTypeController : ControllerBase
     {
         private readonly ILeaveTypeService _leaveTypeservice;

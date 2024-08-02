@@ -13,7 +13,7 @@ function TopContents(props: TopContentProps) {
         <div className="text-right">
           <Button
             className={"btn btn-success mb-2 mr-5"}
-            text={"Add New Employee"}
+            text={"Add New"}
             isModalTrigger={true}
             dataTarget={props.dataTarget}
             onClick={props.newRecordButtonOnClick}

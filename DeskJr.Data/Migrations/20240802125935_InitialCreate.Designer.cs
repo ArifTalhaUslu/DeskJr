@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DeskJr.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240730131027_NewVersion")]
-    partial class NewVersion
+    [Migration("20240802125935_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -40,6 +40,9 @@ namespace DeskJr.Data.Migrations
                     b.Property<int>("EmployeeRole")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("EmployeeTitleId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<int>("Gender")
                         .HasColumnType("int");
 
@@ -55,12 +58,11 @@ namespace DeskJr.Data.Migrations
                     b.Property<Guid?>("TeamId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("TitleId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("ID");
 
-                    b.HasIndex("TitleId");
+                    b.HasIndex("EmployeeTitleId");
+
+                    b.HasIndex("TeamId");
 
                     b.ToTable("Employees");
                 });
@@ -81,6 +83,27 @@ namespace DeskJr.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("EmployeeTitles");
+                });
+
+            modelBuilder.Entity("DeskJr.Entity.Models.Holiday", b =>
+                {
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Holidays");
                 });
 
             modelBuilder.Entity("DeskJr.Entity.Models.Leave", b =>
@@ -135,7 +158,6 @@ namespace DeskJr.Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
@@ -158,20 +180,25 @@ namespace DeskJr.Data.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("ManagerId")
-                        .IsUnique()
-                        .HasFilter("[ManagerId] IS NOT NULL");
+                    b.HasIndex("ManagerId");
 
                     b.ToTable("Teams");
                 });
 
             modelBuilder.Entity("DeskJr.Entity.Models.Employee", b =>
                 {
-                    b.HasOne("DeskJr.Entity.Models.EmployeeTitle", "Title")
+                    b.HasOne("DeskJr.Entity.Models.EmployeeTitle", "EmployeeTitle")
                         .WithMany()
-                        .HasForeignKey("TitleId");
+                        .HasForeignKey("EmployeeTitleId");
 
-                    b.Navigation("Title");
+                    b.HasOne("DeskJr.Entity.Models.Team", "Team")
+                        .WithMany()
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("EmployeeTitle");
+
+                    b.Navigation("Team");
                 });
 
             modelBuilder.Entity("DeskJr.Entity.Models.Leave", b =>
@@ -202,17 +229,11 @@ namespace DeskJr.Data.Migrations
             modelBuilder.Entity("DeskJr.Entity.Models.Team", b =>
                 {
                     b.HasOne("DeskJr.Entity.Models.Employee", "Manager")
-                        .WithOne("Team")
-                        .HasForeignKey("DeskJr.Entity.Models.Team", "ManagerId")
+                        .WithMany()
+                        .HasForeignKey("ManagerId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Manager");
-                });
-
-            modelBuilder.Entity("DeskJr.Entity.Models.Employee", b =>
-                {
-                    b.Navigation("Team")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

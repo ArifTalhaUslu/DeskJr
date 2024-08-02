@@ -1,6 +1,5 @@
 ﻿using DeskJr.Entity.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace DeskJr.Data
 {
@@ -15,22 +14,29 @@ namespace DeskJr.Data
         public DbSet<EmployeeTitle> EmployeeTitles { get; set; }
         public DbSet<Leave> Leaves { get; set; }
         public DbSet<LeaveType> LeaveTypes { get; set; }
+        public DbSet<Holiday> Holidays { get; set; }
 
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Employee>().Property(d => d.Name).HasColumnType("VARCHAR").HasMaxLength(150).IsRequired();
-            modelBuilder.Entity<Team>()
-            .HasOne(t => t.Manager)
-            .WithOne(e => e.Team)
-            .HasForeignKey<Team>(t => t.ManagerId)
-            .OnDelete(DeleteBehavior.Restrict);
+          
             modelBuilder.Entity<EmployeeTitle>()
-          .HasIndex(t => t.TitleName)
-          .IsUnique();
-           
+                                      .HasIndex(t => t.TitleName)
+                                      .IsUnique();
 
+            modelBuilder.Entity<Team>()
+                   .HasOne(t => t.Manager)
+                   .WithMany()
+                   .HasForeignKey(t => t.ManagerId)
+                   .OnDelete(DeleteBehavior.Restrict); // Silme davranışını belirlemek önemli
+
+            modelBuilder.Entity<Employee>()
+                    .HasOne(e => e.Team)
+                    .WithMany() // Eğer Team ile birden fazla Employee ilişkisi varsa WithMany
+                    .HasForeignKey(e => e.TeamId)
+                    .OnDelete(DeleteBehavior.Restrict); // Silme davranışını belirlemek önemli
 
 
         }

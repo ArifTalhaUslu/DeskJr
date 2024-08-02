@@ -6,6 +6,7 @@ namespace DeskJr.Service.Dto
         public Guid ID { get; set; }
         public string Name { get; set; }
         public Guid? ManagerId { get; set; }
+        public ManagerDto? Manager { get; set; }
     }
 }
 
