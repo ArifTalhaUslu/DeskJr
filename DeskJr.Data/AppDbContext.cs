@@ -20,47 +20,6 @@ namespace DeskJr.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            #region Data Seed
-
-            var teamId = Guid.NewGuid();
-            var employeeId = Guid.NewGuid();
-            var titleId = Guid.NewGuid();
-
-            modelBuilder.Entity<Team>()
-                .HasData(
-                    new Team()
-                    {
-                        Name = "Default Team",
-                        ID = teamId,
-                    }
-                );
-
-            modelBuilder.Entity<EmployeeTitle>()
-                .HasData(
-                    new EmployeeTitle()
-                    {
-                        TitleName = "Default Title",
-                        ID = titleId,
-                    }
-                );
-
-            modelBuilder.Entity<Employee>()
-                .HasData(
-                    new Employee()
-                    {
-                        ID = employeeId,
-                        Name = "Admin",
-                        DayOfBirth = DateTime.Now.AddYears(-23),
-                        Gender = Entity.Types.EnumGender.Male,
-                        EmployeeRole = Entity.Types.EnumRole.Administrator,
-                        Email = "admin@deskjr.com",
-                        Password = "202CB962AC59075B964B07152D234B70",
-                        TeamId = teamId,
-                        EmployeeTitleId = titleId,
-                    }
-                );
-            #endregion
-
             modelBuilder.Entity<Employee>().Property(d => d.Name).HasColumnType("VARCHAR").HasMaxLength(150).IsRequired();
                 modelBuilder.Entity<EmployeeTitle>()
                                           .HasIndex(t => t.TitleName)

@@ -63,21 +63,6 @@ namespace DeskJr.Data.Migrations
                     b.HasIndex("TeamId");
 
                     b.ToTable("Employees", (string)null);
-                
-
-                    b.HasData(
-                        new
-                        {
-                            ID = new Guid("1a3627b3-208e-49b1-8b8c-334d805a3a65"),
-                            DayOfBirth = new DateTime(2001, 8, 1, 17, 16, 39, 802, DateTimeKind.Local).AddTicks(4770),
-                            Email = "admin@deskjr.com",
-                            EmployeeRole = 0,
-                            EmployeeTitleId = new Guid("2bee94c8-56fe-4b90-8e0b-4789b6dca2df"),
-                            Gender = 0,
-                            Name = "Admin",
-                            Password = "202CB962AC59075B964B07152D234B70",
-                            TeamId = new Guid("98ec940f-0387-4bf7-b847-78d23184729a")
-                        });
                 });
 
             modelBuilder.Entity("DeskJr.Entity.Models.EmployeeTitle", b =>
@@ -96,12 +81,6 @@ namespace DeskJr.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("EmployeeTitles", (string)null);
-                    b.HasData(
-                        new
-                        {
-                            ID = new Guid("2bee94c8-56fe-4b90-8e0b-4789b6dca2df"),
-                            TitleName = "Default Title"
-                        });
                 });
 
             modelBuilder.Entity("DeskJr.Entity.Models.Holiday", b =>
@@ -209,12 +188,6 @@ namespace DeskJr.Data.Migrations
                     b.HasIndex("ManagerId");
 
                     b.ToTable("Teams", (string)null);
-                    b.HasData(
-                        new
-                        {
-                            ID = new Guid("98ec940f-0387-4bf7-b847-78d23184729a"),
-                            Name = "Default Team"
-                        });
                 });
 
             modelBuilder.Entity("DeskJr.Entity.Models.Employee", b =>
