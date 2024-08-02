@@ -22,30 +22,29 @@ namespace DeskJr.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Holidays",
+                columns: table => new
+                {
+                    ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Holidays", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "LeaveTypes",
                 columns: table => new
                 {
                     ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DefaultDays = table.Column<int>(type: "int", nullable: false),
-                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_LeaveTypes", x => x.ID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Teams",
-                columns: table => new
-                {
-                    ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ManagerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Teams", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -57,7 +56,7 @@ namespace DeskJr.Data.Migrations
                     DayOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EmployeeRole = table.Column<int>(type: "int", nullable: false),
                     Gender = table.Column<int>(type: "int", nullable: false),
-                    TitleId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    EmployeeTitleId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     TeamId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false)
@@ -66,14 +65,9 @@ namespace DeskJr.Data.Migrations
                 {
                     table.PrimaryKey("PK_Employees", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Employees_EmployeeTitles_TitleId",
-                        column: x => x.TitleId,
+                        name: "FK_Employees_EmployeeTitles_EmployeeTitleId",
+                        column: x => x.EmployeeTitleId,
                         principalTable: "EmployeeTitles",
-                        principalColumn: "ID");
-                    table.ForeignKey(
-                        name: "FK_Employees_Teams_TeamId",
-                        column: x => x.TeamId,
-                        principalTable: "Teams",
                         principalColumn: "ID");
                 });
 
@@ -114,15 +108,34 @@ namespace DeskJr.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Teams",
+                columns: table => new
+                {
+                    ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ManagerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Teams", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Teams_Employees_ManagerId",
+                        column: x => x.ManagerId,
+                        principalTable: "Employees",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Employees_EmployeeTitleId",
+                table: "Employees",
+                column: "EmployeeTitleId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_Employees_TeamId",
                 table: "Employees",
                 column: "TeamId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Employees_TitleId",
-                table: "Employees",
-                column: "TitleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_EmployeeTitles_TitleName",
@@ -144,15 +157,36 @@ namespace DeskJr.Data.Migrations
                 name: "IX_Leaves_RequestingEmployeeId",
                 table: "Leaves",
                 column: "RequestingEmployeeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Teams_ManagerId",
+                table: "Teams",
+                column: "ManagerId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Employees_Teams_TeamId",
+                table: "Employees",
+                column: "TeamId",
+                principalTable: "Teams",
+                principalColumn: "ID",
+                onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Leaves");
+            migrationBuilder.DropForeignKey(
+                name: "FK_Employees_EmployeeTitles_EmployeeTitleId",
+                table: "Employees");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Employees_Teams_TeamId",
+                table: "Employees");
 
             migrationBuilder.DropTable(
-                name: "Employees");
+                name: "Holidays");
+
+            migrationBuilder.DropTable(
+                name: "Leaves");
 
             migrationBuilder.DropTable(
                 name: "LeaveTypes");
@@ -162,6 +196,9 @@ namespace DeskJr.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Teams");
+
+            migrationBuilder.DropTable(
+                name: "Employees");
         }
     }
 }

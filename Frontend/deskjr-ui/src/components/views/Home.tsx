@@ -1,27 +1,30 @@
 import { useState, useEffect } from "react";
 import EmployeeService from "../../services/EmployeeService";
 import { showErrorToast } from "../../utils/toastHelper";
-import Cookies from "js-cookie";
+import Cookies from 'js-cookie';
+import Board from "../CommonComponents/Board";
+import { formatDate } from "date-fns";
+import HolidayService from "../../services/HolidayService";
 import { Roles } from "../../types/Roles";
 
 const Home = (props: any) => {
-    const [employee, setEmployee] = useState<any>(null);
     const [employees, setEmployees] = useState<any[]>([]);
+    const [holidays, setHolidays] = useState<any[]>([]);
 
-    const id = Cookies.get("id");
-    const fetchEmployee = (id, setEmployee) => {
-        EmployeeService.getEmployeeById(id)
+    const fetchAllEmployees = () => {
+        EmployeeService.getAllEmployee()
             .then((data) => {
-                setEmployee(data);
+                setEmployees(data);
             })
             .catch((err) => {
                 showErrorToast(err);
             });
     };
-    const fetchAllEmployees = (setEmployees) => {
-        EmployeeService.getAllEmployee()
-            .then((fetchedEmployeesData) => {
-                setEmployees(fetchedEmployeesData);
+
+    const fetchAllHolidays = () => {
+        HolidayService.getAllHoliday()
+            .then((data) => {
+                setHolidays(data);
             })
             .catch((err) => {
                 showErrorToast(err);
@@ -33,71 +36,77 @@ const Home = (props: any) => {
         fetchAllEmployees(setEmployees);
     }, []);
 
+
+    const columnNamesEmployee = {
+        name: "Employee Name",
+        dayOfBirth: "BirthDay"
+    };
+
+    const columnNamesHoliday = {
+        name: "Holiday Name",
+        startDate: "Start Date",
+        endDate: "End Date",
+    };
+    const renderColumnEmployee = (column: string, value: any) => {
+        if (column === "employeeRole") {
+            return value === 2
+                ? "Employee"
+                : value === 1
+                    ? "Manager"
+                    : value === 0
+                        ? "Admin"
+                        : value;
+        } else if (column === "gender") {
+            return value === 0 ? "Male" : value === 1 ? "Female" : value;
+        } else if (column === "dayOfBirth") {
+            return formatDate(new Date(value), "dd/MM/yyyy");
+        } else if (column === "employeeTitle") {
+            return value && value.titleName;
+        } else if (column === "team") {
+            return value && value.name;
+        }
+        return value;
+    };
+    const renderColumnHoliday = (column: string, value: any) => {
+        if (column === "startDate") {
+            return formatDate(new Date(value), "dd/MM/yyyy");
+        } else if (column === "endDate") {
+            return formatDate(new Date(value), "dd/MM/yyyy");
+        }
+        return value;
+    };
+
     return (
         <div className="container">
             <div className="row">
                 <div className="col-12">
                     <div className="p-3 my-3 bg-primary text-white">
                         <h1 className="mt-4">
-                            {employee ? employee.name : "Loading..."}
+                            { props.currentUser?.name }
                         </h1>
                     </div>
                 </div>
                 <div className="col-md-6">
-                    <h2>İzindeki Çalışanlar</h2>
-                    <p>Açıklama:</p>
-                    <table className="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Day of Birth</th>
-                                <th>Employee Role</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {employees.map((emp) => (
-                                <tr key={emp.id}>
-                                    <td>{emp.name}</td>
-                                    <td>
-                                        {new Date(
-                                            emp.dayOfBirth
-                                        ).toLocaleDateString()}
-                                    </td>
-                                    <td>
-                                        {emp.employeeRole === Roles.Employee
-                                            ? "Employee"
-                                            : emp.employeeRole === Roles.Manager
-                                            ? "Manager"
-                                            : emp.employeeRole === Roles.Admin
-                                            ? "Admin"
-                                            : "Unknown"}
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                    <Board
+                        items={employees}
+                        isEditable={() => { return false; }}
+                        isDeletable={() => { return false; }}
+                        hiddenColumns={["id", "password", "teamId", "employeeTitleId", "employeeRole", "gender","employeeTitle","team","email"]}
+                        renderColumn={renderColumnEmployee}
+                        columnNames={columnNamesEmployee}
+                        hideActions={'true'}
+                    />
                 </div>
                 <div className="col-md-6">
-                    <h2>Yaklaşan Tatiller</h2>
-                    <p>Açıklama:</p>
-                    <table className="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Tatiller</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Data 1</td>
-                            </tr>
-                            <tr>
-                                <td>Data 2</td>
-                            </tr>
-                            <tr>
-                                <td>Data 3</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <Board
+                        items={holidays}
+                        isEditable={() => { return false; }}
+                        isDeletable={() => { return false; }}
+                        hiddenColumns={["id"]}
+                        renderColumn={renderColumnHoliday}
+                        columnNames={columnNamesHoliday}
+                        hideActions={'true'}
+                    />
                 </div>
             </div>
         </div>

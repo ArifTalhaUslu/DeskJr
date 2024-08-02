@@ -2,7 +2,7 @@
 {
     public class UpdateEmployeeTitleDto
     {
-        public Guid ID { get; set; }
+        public Guid? ID { get; set; }
         public string TitleName { get; set; }
     }
 }
