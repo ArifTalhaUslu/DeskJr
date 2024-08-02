@@ -18,7 +18,7 @@ export interface Employee {
     dayOfBirth: string;
     employeeRole: number;
     gender: number;
-    titleId: any;
+    employeeTitleId: any;
     teamId: any;
     email: string;
     password: string;
@@ -35,7 +35,7 @@ interface LOGIN_SUCCESS {
 
 interface LOGIN_FAILURE {
     type: "LOGIN_FAILURE";
-    payload: string; 
+    payload: string;
 }
 
 export type EmployeeAction = LOGIN_REQUEST | LOGIN_SUCCESS | LOGIN_FAILURE;

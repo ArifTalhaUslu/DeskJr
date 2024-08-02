@@ -5,6 +5,7 @@ import Cookies from 'js-cookie';
 import Board from "../CommonComponents/Board";
 import { formatDate } from "date-fns";
 import HolidayService from "../../services/HolidayService";
+import Card from "../CommonComponents/Card";
 
 const Home = (props: any) => {
     const [employees, setEmployees] = useState<any[]>([]);
@@ -81,31 +82,35 @@ const Home = (props: any) => {
                 <div className="col-12">
                     <div className="p-3 my-3 bg-primary text-white">
                         <h1 className="mt-4">
-                            { props.currentUser?.name }
+                            {props.currentUser?.name}
                         </h1>
                     </div>
                 </div>
                 <div className="col-md-6">
-                    <Board
-                        items={employees}
-                        isEditable={() => { return false; }}
-                        isDeletable={() => { return false; }}
-                        hiddenColumns={["id", "password", "teamId", "employeeTitleId", "employeeRole", "gender","employeeTitle","team","email"]}
-                        renderColumn={renderColumnEmployee}
-                        columnNames={columnNamesEmployee}
-                        hideActions={'true'}
-                    />
+                    <Card title="Employees On Vacation">
+                        <Board
+                            items={employees}
+                            isEditable={() => { return false; }}
+                            isDeletable={() => { return false; }}
+                            hiddenColumns={["id", "password", "teamId", "employeeTitleId", "employeeRole", "gender", "employeeTitle", "team", "email"]}
+                            renderColumn={renderColumnEmployee}
+                            columnNames={columnNamesEmployee}
+                            hideActions={'true'}
+                        />
+                    </Card>
                 </div>
                 <div className="col-md-6">
-                    <Board
-                        items={holidays}
-                        isEditable={() => { return false; }}
-                        isDeletable={() => { return false; }}
-                        hiddenColumns={["id"]}
-                        renderColumn={renderColumnHoliday}
-                        columnNames={columnNamesHoliday}
-                        hideActions={'true'}
-                    />
+                    <Card title="Incomming Holidays">
+                        <Board
+                            items={holidays}
+                            isEditable={() => { return false; }}
+                            isDeletable={() => { return false; }}
+                            hiddenColumns={["id"]}
+                            renderColumn={renderColumnHoliday}
+                            columnNames={columnNamesHoliday}
+                            hideActions={'true'}
+                        />
+                    </Card>
                 </div>
             </div>
         </div>

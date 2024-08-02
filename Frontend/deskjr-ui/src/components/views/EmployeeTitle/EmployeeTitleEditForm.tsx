@@ -2,6 +2,7 @@ import Button from "../../CommonComponents/Button";
 import Input from "../../CommonComponents/Input";
 import { useEffect, useState } from "react";
 import employeeTitleService from "../../../services/EmployeeTitleService";
+import { showSuccessToast } from "../../../utils/toastHelper";
 
 const EmployeeTitleEditForm: any = (props: any) => {
   useEffect(() => {
@@ -29,7 +30,7 @@ const EmployeeTitleEditForm: any = (props: any) => {
         ...props.selectedEmployeeTitle,
       })
       .then(() => {
-        alert("Success");
+        showSuccessToast("Success");
         props.getList();
         props.onClose();
       })
