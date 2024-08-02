@@ -40,11 +40,6 @@ const App: React.FC = () => {
           visible: currentUser !== null,
         },
         {
-          name: "Contacts",
-          to: "/contacts",
-          visible: currentUser !== null,
-        },
-        {
           name: "Employee List",
           to: "/employees",
           visible: currentUser?.employeeRole === Roles.Admin,
@@ -147,10 +142,6 @@ const App: React.FC = () => {
                   element={<Home currentUser={currentUser} />}
                 />
                 <Route path="/myInfo" element={<MyInfo currentUser={currentUser} />} />
-                <Route
-                  path="/contacts"
-                  element={<Contacts />}
-                />
 
                 <Route path="/leaves" element={<Leaves />} />
                 <Route

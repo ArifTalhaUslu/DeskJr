@@ -5,7 +5,7 @@ import Card from "../../CommonComponents/Card";
 import Board from "../../CommonComponents/Board";
 import ConfirmDelete from "../../CommonComponents/ConfirmDelete";
 
-const Leave: any = () => {
+const Leave: any = (props: any) => {
   const [items, setItems] = useState([]);
   const [selectedItemId, setSelectedItemId] = useState("");
   const [selectedLeave, setSelectedLeave] = useState("");
@@ -14,19 +14,17 @@ const Leave: any = () => {
   const [isTrigger, setIsTrigger] = useState(false);
   const [formToBeClosed, setFormToBeClosed] = useState("");
 
-  const id = localStorage.getItem("id");
-
   useEffect(() => {
     getList();
   }, [isTrigger]);
 
   const getList = async () => {
-    leaveService.getLeavesByEmployeeId(id).then((data) => {
-      setItems(data);
-    })
-    .catch((err) => {
-      showErrorToast(err);
-    });
+    leaveService.getLeaveById(props.currentUser?.Id)
+      .then((data) => {
+        data && setItems(data);
+      }).catch((err) => {
+        showErrorToast(err);
+      });
   };
 
   const onConfirmDelete = async (e: any) => {
@@ -76,12 +74,12 @@ const Leave: any = () => {
   };
 
   const columnNames = {
-    
+
   };
 
   return (
-  <>
-  <Card title={"Leave List"}>
+    <>
+      <Card title={"Leave List"}>
         <Board
           items={items}
           onEdit={handleEdit}
@@ -100,13 +98,13 @@ const Leave: any = () => {
           newRecordModalDataTarget={modalDataTarget}
         />
       </Card>
-      
+
       <ConfirmDelete
         onConfirm={(e) => onConfirmDelete(e)}
         selectedItemId={selectedItemId}
         onClose={onModalClose}
       />
-      </>
+    </>
   );
 };
 

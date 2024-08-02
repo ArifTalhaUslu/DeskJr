@@ -7,7 +7,7 @@ namespace DeskJr.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class LeaveController : ControllerBase
     {
         private readonly ILeaveService _leaveService;
