@@ -10,6 +10,7 @@ function Button(props: any) {
         }
         data-toggle={props.isModalTrigger ? 'modal' : ''} 
         data-target={'#' + props.dataTarget}
+        style={props.style}
       >
         {props.text ? props.text : 'Click'}
       </button>

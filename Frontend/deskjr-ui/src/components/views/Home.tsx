@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import EmployeeService from "../../services/EmployeeService";
 import { showErrorToast } from "../../utils/toastHelper";
+import Cookies from 'js-cookie';
 
 const Home = (props: any) => {
     const [employee, setEmployee] = useState<any>(null);
     const [employees, setEmployees] = useState<any[]>([]);
 
-    const id = localStorage.getItem("id");
+    const id = Cookies.get("id");
     const fetchEmployee = (id, setEmployee) => {
         EmployeeService.getEmployeeById(id)
             .then((data) => {
