@@ -16,42 +16,87 @@ import PendingLeaveRequests from "./components/views/PendingLeaveRequest";
 import Holidays from "./components/views/Holiday/Holiday";
 import LeaveTypes from "./components/views/LeaveType";
 import Title from "./components/views/Title";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import Team from "./components/views/Team/Team";
 import EmployeeService from "./services/EmployeeService";
 import { showErrorToast } from "./utils/toastHelper";
-
-const navigation = {
-    brand: { name: "�Desk", to: "/" },
-    links: [
-        { name: "My Info", to: "/myInfo" },
-        { name: "Contacts", to: "/contacts" },
-        { name: "Employee List", to: "/employees" },
-        {
-            name: "Leave",
-            isDropDown: true,
-            subLinks: [
-                { name: "My Leaves", to: "/leaves" },
-                { name: "Pending Leave Requests", to: "/pendingLeaveRequests" },
-            ],
-        },
-        {
-            name: "Settings",
-            isDropDown: true,
-            subLinks: [
-                { name: "Holidays", to: "/holidays" },
-                { name: "Leave Types", to: "/leaveTypes" },
-                { name: "Titles", to: "/titles" },
-                { name: "Teams", to: "/teams" },
-            ],
-        },
-    ],
-};
+import Cookies from 'js-cookie'
+import { Roles } from "./types/Roles";
 
 const App: React.FC = () => {
-    const { brand, links } = navigation;
     const [currentUser, setCurrentUser] = useState<any>();
-    const [idFromLocalStr] = useState(localStorage.getItem("id"));
+
+    const navigation = (currentUser: any) => {
+        return {
+            brand: { name: "�Desk", to: "/"},
+            links: [
+                {
+                    name: "My Info",
+                    to: "/myInfo",
+                    visible: currentUser !== null,
+                },
+                {
+                    name: "Contacts",
+                    to: "/contacts",
+                    visible: currentUser !== null,
+                },
+                {
+                    name: "Employee List",
+                    to: "/employees",
+                    visible: currentUser?.employeeRole === Roles.Admin,
+                },
+                {
+                    name: "Leave",
+                    visible: currentUser !== null,
+                    isDropDown: true,
+                    subLinks: [
+                        {
+                            name: "My Leaves",
+                            to: "/leaves",
+                            visible: currentUser !== null,
+                        },
+                        {
+                            name: "Pending Leave Requests",
+                            to: "/pendingLeaveRequests",
+                            visible: currentUser !== null,
+                        },
+                    ],
+                },
+                {
+                    name: "Settings",
+                    visible: currentUser?.employeeRole === Roles.Admin,
+                    isDropDown: true,
+                    subLinks: [
+                        {
+                            name: "Holidays",
+                            to: "/holidays",
+                            visible: currentUser !== null,
+                        },
+                        {
+                            name: "Leave Types",
+                            to: "/leaveTypes",
+                            visible: currentUser !== null,
+                        },
+                        {
+                            name: "Titles",
+                            to: "/titles",
+                            visible: currentUser !== null,
+                        },
+                        {
+                            name: "Teams",
+                            to: "/teams",
+                            visible: currentUser?.employeeRole === Roles.Admin,
+                        },
+                    ],
+                },
+            ],
+        };
+    };
+
+    
+    const { brand, links } = navigation(currentUser);
+
+    const [idFromLocalStr] = useState(Cookies.get("id"));
 
     const fetchEmployee = (id: string) => {
         EmployeeService.getEmployeeById(id)
@@ -95,26 +140,47 @@ const App: React.FC = () => {
                                     element={<Home currentUser={currentUser} />}
                                 />
                                 <Route path="/myInfo" element={<MyInfo />} />
-                                <Route path="/contacts" element={<Contacts />} />
-                                <Route path="/employees" element={<Employee />} />
+                                <Route
+                                    path="/contacts"
+                                    element={<Contacts />}
+                                />
+
                                 <Route path="/leaves" element={<Leaves />} />
                                 <Route
                                     path="/pendingLeaveRequests"
                                     element={<PendingLeaveRequests />}
                                 />
-                                <Route path="/holidays" element={<Holidays />} />
+                                <Route
+                                    path="/holidays"
+                                    element={<Holidays />}
+                                />
                                 <Route
                                     path="/leaveTypes"
                                     element={<LeaveTypes />}
                                 />
                                 <Route path="/titles" element={<Title />} />
-                                <Route path="/teams" element={<Team />} />
                                 <Route path="*" element={<>Not Found</>} />
+                            </>
+                        )}
+                        {currentUser && currentUser.employeeRole === 0 && (
+                            <>
+                                <Route
+                                    path="/employees"
+                                    element={<Employee />}
+                                />
+                                <Route path="/teams" element={<Team />} />
                             </>
                         )}
                         {!currentUser && (
                             <>
-                                <Route path="*" element={<Login setCurrentUser={setCurrentUser} />} />
+                                <Route
+                                    path="*"
+                                    element={
+                                        <Login
+                                            setCurrentUser={setCurrentUser}
+                                        />
+                                    }
+                                />
                             </>
                         )}
                     </Routes>

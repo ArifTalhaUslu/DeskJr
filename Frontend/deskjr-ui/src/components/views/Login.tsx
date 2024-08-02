@@ -8,6 +8,7 @@ import Button from "../CommonComponents/Button";
 import Card from "../CommonComponents/Card";
 import { LoginForm } from "../../types/user";
 import { showSuccessToast } from "../../utils/toastHelper";
+import Cookies from 'js-cookie';
 
 const Login: any = (props:any) => {
     window.history.pushState({}, "", "/");
@@ -33,7 +34,7 @@ const Login: any = (props:any) => {
         setLocalStr();
     };
 const setLocalStr = () => {
-    const token = localStorage.getItem("token");
+    const token = Cookies.get("token");
         if (data.name && token) {
             props.setCurrentUser(data);
             showSuccessToast('Successful!');

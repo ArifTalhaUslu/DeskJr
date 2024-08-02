@@ -41,8 +41,18 @@ namespace DeskJr.Api.Controllers
             var response = new LoginResponseDTO
             {
                 Token = token,
-                Employee = employee
+                Employee = employee,
             };
+
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTime.Now.AddDays(7)
+            };
+
+            Response.Cookies.Append("token", token, cookieOptions);
 
             return Ok(response);
         }
@@ -82,7 +92,7 @@ namespace DeskJr.Api.Controllers
                 return employee;
             }
 
-            throw new UnauthorizedException("Bir hata ile karşılaşıldı :D");
+            throw new UnauthorizedException("Authentication Failed.:)");
         }
     }
 }
