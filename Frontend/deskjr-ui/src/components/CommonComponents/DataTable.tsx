@@ -10,8 +10,9 @@ interface DataTableProps {
   isDeletable?: (item: any) => boolean;
   hiddenColumns?: string[];
   renderColumn?: (column: string, value: any) => JSX.Element | string;
-  dataTarget?:string;
-  columnNames?:{[key: string]: string};
+  dataTarget?: string;
+  columnNames?: { [key: string]: string };
+  hideActions?: string;
 }
 
 function DataTable({
@@ -25,6 +26,7 @@ function DataTable({
   renderColumn,
   dataTarget,
   columnNames = {},
+  hideActions = 'false'
 }: DataTableProps) {
   const [records, setRecords] = useState<any>([]);
   const [columns, setColumns] = useState<string[]>([]);
@@ -34,7 +36,12 @@ function DataTable({
       const newColumns = Object.keys(firstItem).filter(
         (column) => !hiddenColumns.includes(column)
       );
-      setColumns([...newColumns, "Actions"]);
+
+      setColumns([...newColumns]);
+
+      if (hideActions && hideActions === 'false') {
+        setColumns([...newColumns, "Actions"]);
+      }
 
       const newRecords = items.map((record: any, index: any) => (
         <tr key={index}>
@@ -45,26 +52,29 @@ function DataTable({
                 : record[column]}
             </td>
           ))}
-          <td className="text-center">
-            {isEditable && isEditable(record) && onEdit && (
-              <Button
-                text="Edit"
-                className={"btn btn-warning mr-2"}
-                onClick={() => onEdit(record)}
-                isModalTrigger={true}
-                dataTarget={dataTarget}
-              ></Button>
-            )}
-            {isDeletable && isDeletable(record) && onDelete && (
-              <Button
-                text="Delete"
-                className={"btn btn-danger"}
-                onClick={() => onDelete(record)}
-                isModalTrigger={true}
-                dataTarget={"delete-confirm"}
-              ></Button>
-            )}
-          </td>
+          {
+            hideActions && hideActions.toString() === 'false' &&
+            <td className="text-center">
+              {isEditable && isEditable(record) && onEdit && (
+                <Button
+                  text="Edit"
+                  className={"btn btn-warning mr-2"}
+                  onClick={() => onEdit(record)}
+                  isModalTrigger={true}
+                  dataTarget={dataTarget}
+                ></Button>
+              )}
+              {isDeletable && isDeletable(record) && onDelete && (
+                <Button
+                  text="Delete"
+                  className={"btn btn-danger"}
+                  onClick={() => onDelete(record)}
+                  isModalTrigger={true}
+                  dataTarget={"delete-confirm"}
+                ></Button>
+              )}
+            </td>
+          }
         </tr>
       ));
       setRecords([...newRecords]);
@@ -86,11 +96,13 @@ function DataTable({
     <table className={tableClassName ? tableClassName : "table table-bordered"}>
       <thead>
         <tr>
-          {columns.map((column) => (
-            <th className="text-center" key={column}>
-              {columnNames[column] || column}
-            </th>
-          ))}
+          {columns.map((column) => {
+            return (
+              <th className="text-center" key={column}>
+                {columnNames[column] || column}
+              </th>
+            )
+          })}
         </tr>
       </thead>
       <tbody>
