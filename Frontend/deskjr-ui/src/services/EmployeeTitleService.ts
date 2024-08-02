@@ -13,13 +13,13 @@ class EmployeeTitleService {
     return response.data;
   }
 
-  public async addOrUpdateEmployeeTitle(employee: any) {
-    const response = await axios.post(baseUrl, employee);
+  public async addOrUpdateEmployeeTitle(employeeTitle: any) {
+    const response = await axios.post(baseUrl, employeeTitle);
     return response.data;
   }
 
-  public async updateEmployeeTitle(employee: any) {
-    const response = await axios.put(baseUrl, employee);
+  public async updateEmployeeTitle(employeeTitle: any) {
+    const response = await axios.put(baseUrl, employeeTitle);
     return response.data;
   }
 

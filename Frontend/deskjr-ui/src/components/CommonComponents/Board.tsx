@@ -10,7 +10,7 @@ interface BoardProps {
   isDeletable?: (item: any) => boolean;
   hiddenColumns?: string[];
   renderColumn?: (column: string, value: any) => JSX.Element | string;
-  columnNames?:{[key: string]: string};
+  columnNames?: { [key: string]: string };
   hasNewRecordButton?: boolean;
   newRecordButtonOnClick?: () => void;
   newRecordModalDataTarget?: string;
@@ -31,7 +31,7 @@ function Board({
   newRecordModalDataTarget,
 }: BoardProps) {
   const renderedItems = items ?? [];
-  
+
   return (
     <>
       <TopContents

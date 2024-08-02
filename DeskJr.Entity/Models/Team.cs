@@ -5,6 +5,7 @@
 
         public string Name { get; set; }
         public Guid? ManagerId { get; set; }
+        public Employee Manager { get; set; }
 
 
     }

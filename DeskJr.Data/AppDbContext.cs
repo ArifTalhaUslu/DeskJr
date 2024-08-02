@@ -21,6 +21,11 @@ namespace DeskJr.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Employee>().Property(d => d.Name).HasColumnType("VARCHAR").HasMaxLength(150).IsRequired();
+            modelBuilder.Entity<Team>()
+            .HasOne(t => t.Manager)
+            .WithOne(e => e.Team)
+            .HasForeignKey<Team>(t => t.ManagerId)
+            .OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<EmployeeTitle>()
           .HasIndex(t => t.TitleName)
           .IsUnique();
