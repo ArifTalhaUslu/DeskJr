@@ -3,8 +3,11 @@ import Input from "../../CommonComponents/Input";
 import { useEffect, useState } from "react";
 import employeeService from "../../../services/EmployeeService";
 import { showErrorToast, showSuccessToast } from "../../../utils/toastHelper";
+import teamService from "../../../services/TeamService";
 
 const EmployeeEditForm: any = (props: any) => {
+  const [teams, setTeams] = useState([]);
+
   const [genderOptions] = useState([
     { value: "" },
     { value: 1, label: "Female" },
@@ -27,6 +30,10 @@ const EmployeeEditForm: any = (props: any) => {
         showErrorToast(err);
       });
     }
+
+    teamService.getAllTeam().then((data)=>{
+      setTeams(data);
+    })
   }, [props.selectedItemId]);
 
   const handleChange = (e: any) => {
@@ -36,10 +43,12 @@ const EmployeeEditForm: any = (props: any) => {
         ...prev,
         [name]: parseInt(value, 10),
       }));
-    } else {
+    }
+    else {
       props.setSelectedEmployee((prev: any) => ({
         ...prev,
         [name]: value,
+        teamId: name === 'team' ? value : prev.teamId,
       }));
     }
   };
@@ -49,6 +58,7 @@ const EmployeeEditForm: any = (props: any) => {
     employeeService
       .addOrUpdateEmployee({
         ...props.selectedEmployee,
+        teamId: props.selectedEmployee.teamId || null,
       })
       .then(() => {
         showSuccessToast('Successful!');
@@ -172,36 +182,29 @@ const EmployeeEditForm: any = (props: any) => {
                       </option>
                     ))}
                   </select>
-                  {props.modalModeName === "Add" ? (
-                    <></>
-                  ) : (
-                    <>
-                      {/* <label className="col-form-label">Title:</label>
-                <Input
-                  type="text"
-                  name="titleId"
-                  value={
-                    props.selectedEmployee && props.selectedEmployee.titleId
-                  }
-                  onChange={(e: any) => handleChange(e)}
-                /> */}
-                    </>
-                  )}
+                  {/* <label className="col-form-label">Title:</label>
+                  <select
+                    name="titleId"
+                    className="form-control"
+                    value={props.selectedEmployee?.employeeTitleId || ""}
+                    onChange={(e: any) => handleChange(e)}
+                  >
+                    <option value=""></option>
+                    {}
+                  </select> */}
 
-                  {props.modalModeName === "Add" ? (
-                    <></>
-                  ) : (
-                    <>
-                      {/* <label className="col-form-label">Team:</label>
-                <Input
-                  type="text"
-                  name="teamId"
-                  value={
-                    props.selectedEmployee && props.selectedEmployee.teamId
-                  }
-                  onChange={(e: any) => handleChange(e)} */}
-                    </>
-                  )}
+                  <label className="col-form-label">Team:</label>
+                  <select
+                    name="team"
+                    className="form-control"
+                    value={props.selectedEmployee?.teamId || ""}
+                    onChange={(e: any) => handleChange(e)}
+                  >
+                    <option value=""></option>
+                    {teams.map((team:any)=>(
+                      <option key={team.id} value={team.id}>{team.name}</option>
+                    ))}
+                  </select>
 
                   <label className="col-form-label">E-mail:</label>
                   <Input

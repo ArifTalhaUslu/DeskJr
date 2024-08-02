@@ -15,9 +15,9 @@ namespace DeskJr.Repository.Concrete
             _context = context;
         }
 
-        public async Task<IEnumerable<Team>> GetListWithIncludeManagerAsync()
+        public  IEnumerable<Team> GetListWithIncludeManagerAsync()
         {
-            return await _context.Teams.Include(x => x.Manager).ToListAsync();
+            return  _context.Teams.Include(x => x.Manager).ToList();
         }
     }
 }
