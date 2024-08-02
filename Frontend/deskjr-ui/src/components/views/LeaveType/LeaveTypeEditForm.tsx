@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import leaveTypeService from "../../../services/LeaveTypeService";
 import Button from "../../CommonComponents/Button";
 import Input from "../../CommonComponents/Input";
+import { showSuccessToast } from "../../../utils/toastHelper";
 
 const LeaveTypeEditForm: any = (props: any) => {
   useEffect(() => {
@@ -27,7 +28,7 @@ const LeaveTypeEditForm: any = (props: any) => {
         ...props.selectedLeaveType,
       })
       .then(() => {
-        alert("Success");
+        showSuccessToast("Success");
         props.getList();
         props.onClose();
       })

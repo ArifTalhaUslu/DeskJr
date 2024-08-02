@@ -35,105 +35,81 @@ function DataTable({
   const [searchQueries, setSearchQueries] = useState<{ [key: string]: string }>(
     {}
   );
-  const [roleFilter, setRoleFilter] = useState<string>("");
-  const [genderFilter, setGenderFilter] = useState<string>("");
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
   const [showSearch, setShowSearch] = useState<{ [key: string]: boolean }>({});
 
   useEffect(() => {
-      const firstItem = items.length > 0 ? items[0] : {};
-      const newColumns = Object.keys(firstItem).filter(
-          (column) => !hiddenColumns.includes(column)
-      );
-      setColumns([...newColumns]);
+    const firstItem = items.length > 0 ? items[0] : {};
+    const newColumns = Object.keys(firstItem).filter(
+      (column) => !hiddenColumns.includes(column)
+    );
+    setColumns([...newColumns]);
 
-      if (hideActions && hideActions === 'false') {
-          setColumns([...newColumns, "Actions"]);
-      }
+    if (hideActions && hideActions === 'false') {
+      setColumns([...newColumns, "Actions"]);
+    }
 
-      const filteredItems = items.filter((item) =>
-          newColumns.every((column) => {
-              const searchQuery = searchQueries[column] || "";
-              const value =
-                  item[column] != null ? item[column].toString().toLowerCase() : "";
+    const filteredItems = items.filter((item) =>
+      newColumns.every((column) => {
+        const searchQuery = searchQueries[column] || "";
+        const value =
+          item[column] != null ? item[column].toString().toLowerCase() : "";
+        return (
+          (!searchQuery || value.includes(searchQuery.toLowerCase()))
+        );
+      })
+    );
 
-              const isRoleMatch = roleFilter
-                  ? (roleFilter === "Admin" && item["employeeRole"] === 0) ||
-                  (roleFilter === "Manager" && item["employeeRole"] === 1) ||
-                  (roleFilter === "Employee" && item["employeeRole"] === 2)
-                  : true;
-
-              const isGenderMatch = genderFilter
-                  ? (genderFilter === "Male" && item["gender"] === 0) ||
-                  (genderFilter === "Female" && item["gender"] === 1)
-                  : true;
-
-              const isDateMatch =
-                  column === "dayOfBirth"
-                      ? (!startDate || new Date(item[column]) >= startDate) &&
-                      (!endDate || new Date(item[column]) <= endDate)
-                      : true;
-
-              return (
-                  (!searchQuery || value.includes(searchQuery.toLowerCase())) &&
-                  isRoleMatch &&
-                  isGenderMatch &&
-                  isDateMatch
-              );
-          })
-      );
-
-      const newRecords = filteredItems.map((record: any, index: any) => (
-          <tr key={index}>
-              {newColumns.map((column) => (
-                  <td
-                      className="text-center"
-                      key={column}
-                      style={{
-                          padding: column === "Actions" ? "10px 20px" : "10px",
-                          verticalAlign: column === "Actions" ? "top" : "middle",
-                      }}
-                  >
-                      {renderColumn
-                          ? renderColumn(column, record[column])
-                          : record[column]}
-                  </td>
-              ))}
-              {
-                  hideActions && hideActions.toString() === 'false' &&
-                  <td className="text-center">
-                  style={{
-                      padding: "10px 20px",
-                      verticalAlign: "top",
-                  }}
-              >
-                  {isEditable && isEditable(record) && onEdit && (
-                      <Button
-                          text="Edit"
-                          className={"btn btn-warning mr-2"}
-                          onClick={() => onEdit(record)}
-                          isModalTrigger={true}
-                          dataTarget={dataTarget}
-                      ></Button>
-                  )}
-                  {isDeletable && isDeletable(record) && onDelete && (
-                      <Button
-                          text="Delete"
-                          className={"btn btn-danger"}
-                          onClick={() => onDelete(record)}
-                          isModalTrigger={true}
-                          dataTarget={"delete-confirm"}
-                      ></Button>
-                  )}
-                  </td>
-              }
-          </tr>
-      ));
+    const newRecords = filteredItems.map((record: any, index: any) => (
+      <tr key={index}>
+        {newColumns.map((column) => (
+          <td
+            className="text-center"
+            key={column}
+            style={{
+              padding: column === "Actions" ? "10px 20px" : "10px",
+              verticalAlign: column === "Actions" ? "top" : "middle",
+            }}
+          >
+            {renderColumn
+              ? renderColumn(column, record[column])
+              : record[column]}
+          </td>
+        ))}
+        {
+          hideActions && hideActions.toString() === 'false' &&
+          <td className="text-center" style={{
+            padding: "10px 20px",
+            verticalAlign: "top",
+          }}>
+            {isEditable && isEditable(record) && onEdit && (
+              <Button
+                text="Edit"
+                className={"btn btn-warning mr-2"}
+                onClick={() => onEdit(record)}
+                isModalTrigger={true}
+                dataTarget={dataTarget}
+              ></Button>
+            )}
+            {isDeletable && isDeletable(record) && onDelete && (
+              <Button
+                text="Delete"
+                className={"btn btn-danger"}
+                onClick={() => onDelete(record)}
+                isModalTrigger={true}
+                dataTarget={"delete-confirm"}
+              ></Button>
+            )}
+          </td>
+        }
+      </tr>
+    ));
+    if (newRecords && newRecords.length > 0) {
       setRecords([...newRecords]);
-  } else {
+    }
+    else {
       setRecords([]);
       setColumns([]);
+    }
   }, [
     items,
     onEdit,
@@ -143,10 +119,6 @@ function DataTable({
     hiddenColumns,
     renderColumn,
     searchQueries,
-    roleFilter,
-    genderFilter,
-    startDate,
-    endDate,
   ]);
 
   const handleSearchChange = (column: string, value: string) => {
@@ -154,23 +126,6 @@ function DataTable({
       ...prev,
       [column]: value,
     }));
-  };
-
-  const handleRoleFilterChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    setRoleFilter(event.target.value);
-  };
-
-  const handleGenderFilterChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    setGenderFilter(event.target.value);
-  };
-
-  const handleResetDates = () => {
-    setStartDate(null);
-    setEndDate(null);
   };
 
   const toggleSearchVisibility = (column: string) => {
@@ -245,83 +200,26 @@ function DataTable({
                       }}
                     >
                       {columnNames[column] || column}
-                      {column !== "Actions" && (
-                        <button
-                          style={searchButtonStyle}
-                          onClick={() => toggleSearchVisibility(column)}
-                        >
-                          {showSearch[column] ? "−" : "+"}
-                        </button>
+                      {column !== "Actions" && (<></>
+                        // <button
+                        //   style={searchButtonStyle}
+                        //   onClick={() => toggleSearchVisibility(column)}
+                        // >
+                        //   showSearch[column] ? "−" : "+"
+                        // </button>
                       )}
                     </div>
                     {column !== "Actions" && showSearch[column] && (
-                      <div style={filterContainerStyle}>
-                        {column === "employeeRole" ? (
-                          <div style={filterWrapperStyle}>
-                            <select
-                              value={roleFilter}
-                              onChange={handleRoleFilterChange}
-                              className="form-control"
-                            >
-                              <option value="">All Roles</option>
-                              <option value="Admin">Admin</option>
-                              <option value="Manager">Manager</option>
-                              <option value="Employee">Employee</option>
-                            </select>
-                          </div>
-                        ) : column === "gender" ? (
-                          <div style={filterWrapperStyle}>
-                            <select
-                              value={genderFilter}
-                              onChange={handleGenderFilterChange}
-                              className="form-control"
-                            >
-                              <option value="">All Genders</option>
-                              <option value="Male">Male</option>
-                              <option value="Female">Female</option>
-                            </select>
-                          </div>
-                        ) : column === "dayOfBirth" ? (
-                          <div style={filterWrapperStyle}>
-                            <DatePicker
-                              selected={startDate}
-                              onChange={(date: Date) => setStartDate(date)}
-                              selectsStart
-                              startDate={startDate}
-                              endDate={endDate}
-                              placeholderText="Start Date"
-                              className="form-control"
-                            />
-                            <DatePicker
-                              selected={endDate}
-                              onChange={(date: Date) => setEndDate(date)}
-                              selectsEnd
-                              startDate={startDate}
-                              endDate={endDate}
-                              minDate={startDate}
-                              placeholderText="End Date"
-                              className="form-control"
-                            />
-                            <button
-                              onClick={handleResetDates}
-                              className="btn btn-secondary ml-2"
-                            >
-                              Reset Dates
-                            </button>
-                          </div>
-                        ) : (
-                          <div style={filterWrapperStyle}>
-                            <input
-                              type="text"
-                              placeholder={`Search ${column}`}
-                              value={searchQueries[column] || ""}
-                              onChange={(e) =>
-                                handleSearchChange(column, e.target.value)
-                              }
-                              className="form-control"
-                            />
-                          </div>
-                        )}
+                      <div style={filterWrapperStyle}>
+                        <input
+                          type="text"
+                          placeholder={`Search ${column}`}
+                          value={searchQueries[column] || ""}
+                          onChange={(e) =>
+                            handleSearchChange(column, e.target.value)
+                          }
+                          className="form-control"
+                        />
                       </div>
                     )}
                   </th>

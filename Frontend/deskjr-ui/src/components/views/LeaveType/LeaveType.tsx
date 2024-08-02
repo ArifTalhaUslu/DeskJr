@@ -4,6 +4,7 @@ import Card from "../../CommonComponents/Card";
 import Board from "../../CommonComponents/Board";
 import LeaveTypeEditForm from "./LeaveTypeEditForm";
 import ConfirmDelete from "../../CommonComponents/ConfirmDelete";
+import { showSuccessToast } from "../../../utils/toastHelper";
 
 const LeaveType: any = () => {
   const [items, setItems] = useState([]);
@@ -33,7 +34,7 @@ const LeaveType: any = () => {
       leaveTypeService
         .deleteLeaveType(selectedItemId)
         .then(() => {
-          alert("Success");
+          showSuccessToast("Success");
           setIsTrigger(true);
         })
         .catch((err: any) => {
