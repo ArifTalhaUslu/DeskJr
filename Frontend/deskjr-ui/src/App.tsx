@@ -8,7 +8,7 @@ import {
   redirect
 } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import MyInfo from "./components/views/MyInfo";
+import MyInfo from "./components/views/MyInfo/MyInfo";
 import Contacts from "./components/views/Contacts";
 import Employee from "./components/views/Employee/Employee";
 import Leaves from "./components/views/Leave/Leave";
@@ -119,7 +119,7 @@ const App: React.FC = () => {
   }, [idFromLocalStr]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>.</div>;
   }
 
   return (

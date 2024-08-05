@@ -26,7 +26,7 @@ const Login: any = (props:any) => {
         const formData: LoginForm = { email, password };
 
         try{
-            dispatch(login(formData));
+            await dispatch(login(formData));
         }
         catch(error){
             console.error(error);

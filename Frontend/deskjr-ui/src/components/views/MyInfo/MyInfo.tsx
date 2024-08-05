@@ -1,9 +1,9 @@
 import React from 'react';
-import { User } from '../../types/user';  // Kullanıcı türünüzü içeren dosya
-import { Roles } from '../../types/Roles';
+import { User } from '../../../types/user';
+import { Roles } from '../../../types/Roles';
 
 interface MyInfoProps {
-    currentUser: User;  // currentUser bilgisini prop olarak alacak
+    currentUser: User;
 }
 
 const MyInfo: React.FC<MyInfoProps> = ({ currentUser }) => {
