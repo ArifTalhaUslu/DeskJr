@@ -4,25 +4,33 @@ import leaveService from "../../../services/LeaveService";
 import Card from "../../CommonComponents/Card";
 import Board from "../../CommonComponents/Board";
 import ConfirmDelete from "../../CommonComponents/ConfirmDelete";
+import Cookies from "js-cookie";
+import LeaveEditForm from "./LeaveEditForm";
+import { formatDate } from "date-fns";
+import { statusOfLeave } from "../../../types/statusOfLeave";
 
 const Leave: any = (props: any) => {
+  const id = Cookies.get("id");
+  
   const [items, setItems] = useState([]);
+  const [requestingEmployeeId] = useState(id);
   const [selectedItemId, setSelectedItemId] = useState("");
   const [selectedLeave, setSelectedLeave] = useState("");
   const [modalModeName, setModalModeName] = useState("");
   const [modalDataTarget] = useState("leaveAddModal");
   const [isTrigger, setIsTrigger] = useState(false);
   const [formToBeClosed, setFormToBeClosed] = useState("");
+  
 
   useEffect(() => {
     getList();
   }, [isTrigger]);
 
   const getList = async () => {
-    leaveService.getLeaveById(props.currentUser?.Id)
-      .then((data) => {
-        data && setItems(data);
-      }).catch((err) => {
+    leaveService.getLeavesByEmployeeId(id).then((data) => {
+      setItems(data);
+    })
+      .catch((err) => {
         showErrorToast(err);
       });
   };
@@ -70,6 +78,20 @@ const Leave: any = (props: any) => {
   };
 
   const renderColumn = (column: string, value: any) => {
+    if (column === "statusOfLeave") {
+      return value === statusOfLeave.Pending
+        ? "Pending"
+        : value === statusOfLeave.Approved
+        ? "Approved"
+        : value === statusOfLeave.Cancelled
+        ? "Cancelled"
+        : value;
+    } else if (column === "startDate") {
+      return formatDate(new Date(value), "dd/MM/yyyy");
+    } else if (column === "endDate") {
+      return formatDate(new Date(value), "dd/MM/yyyy");
+    }
+    
     return value;
   };
 
@@ -98,6 +120,15 @@ const Leave: any = (props: any) => {
           newRecordModalDataTarget={modalDataTarget}
         />
       </Card>
+
+      <LeaveEditForm
+        selectedItemId={selectedItemId}
+        modalModeName={modalModeName}
+        selectedLeave={selectedLeave}
+        setSelectedLeave={setSelectedLeave}
+        getList={getList}
+        onClose={onModalClose}
+      />
 
       <ConfirmDelete
         onConfirm={(e) => onConfirmDelete(e)}

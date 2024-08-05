@@ -143,7 +143,7 @@ const App: React.FC = () => {
                 />
                 <Route path="/myInfo" element={<MyInfo currentUser={currentUser} />} />
 
-                <Route path="/leaves" element={<Leaves />} />
+                <Route path="/leaves" element={<Leaves currentUser={currentUser} />} />
                 <Route
                   path="/pendingLeaveRequests"
                   element={<PendingLeaveRequests />}

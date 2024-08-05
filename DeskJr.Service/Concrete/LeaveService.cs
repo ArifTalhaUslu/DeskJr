@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DeskJr.Data;
 using DeskJr.Entity.Models;
+using DeskJr.Entity.Types;
 using DeskJr.Repository.Abstract;
 using DeskJr.Service.Dto;
 using DeskJr.Services.Interfaces;
@@ -32,8 +33,10 @@ namespace DeskJr.Services.Concrete
             {
                 throw new Exception("Requesting employee not found");
             }
-            //requestingEmployee.LeaveRequests.Add(leaveRequest);
-            await _employeeRepository.UpdateAsync(requestingEmployee);
+
+            leave.RequestingEmployeeId = requestingEmployee.ID;
+            leave.RequestingEmployee = requestingEmployee;
+            leave.StatusOfLeave = (int)EnumStatusOfLeave.Pending;
 
             return await _leaveRepository.AddAsync(leave);
         }
