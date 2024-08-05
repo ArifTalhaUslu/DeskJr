@@ -15,7 +15,7 @@ namespace DeskJr.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class LoginController : ControllerBase
     {
         private readonly JwtSettings _jwtSettings;
