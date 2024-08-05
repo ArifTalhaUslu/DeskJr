@@ -50,11 +50,11 @@ const MyInfo: React.FC<MyInfoProps> = ({ currentUser }) => {
                             </tr>
                             <tr>
                                 <th>Title:</th>
-                                <td>{currentUser.employeeTitle.titleName || "N/A"}</td>
+                                <td>{currentUser.employeeTitle?.titleName || "N/A"}</td>
                             </tr>
                             <tr>
                                 <th>Team:</th>
-                                <td>{currentUser.team.name || "N/A"}</td>
+                                <td>{currentUser.team?.name || "N/A"}</td>
                             </tr>
                         </tbody>
                     </table>

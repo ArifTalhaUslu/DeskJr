@@ -66,7 +66,7 @@ namespace DeskJr.Api.Controllers
             }
             return NotFound();
         }
-        [HttpGet("employee/{employeeId}")]
+        [HttpGet("leaveByEmployeeId/{employeeId}")]
         public async Task<ActionResult<IEnumerable<LeaveDTO>>> GetLeavesByEmployeeId(Guid employeeId)
         {
             var leaves = await _leaveService.GetLeavesByEmployeeIdAsync(employeeId);

@@ -4,30 +4,25 @@ import leaveService from "../../../services/LeaveService";
 import Card from "../../CommonComponents/Card";
 import Board from "../../CommonComponents/Board";
 import ConfirmDelete from "../../CommonComponents/ConfirmDelete";
-import Cookies from "js-cookie";
 import LeaveEditForm from "./LeaveEditForm";
 import { formatDate } from "date-fns";
 import { statusOfLeave } from "../../../types/statusOfLeave";
 
 const Leave: any = (props: any) => {
-  const id = Cookies.get("id");
-  
   const [items, setItems] = useState([]);
-  const [requestingEmployeeId] = useState(id);
   const [selectedItemId, setSelectedItemId] = useState("");
-  const [selectedLeave, setSelectedLeave] = useState("");
+  const [selectedLeave, setSelectedLeave] = useState();
   const [modalModeName, setModalModeName] = useState("");
   const [modalDataTarget] = useState("leaveAddModal");
   const [isTrigger, setIsTrigger] = useState(false);
   const [formToBeClosed, setFormToBeClosed] = useState("");
-  
 
   useEffect(() => {
     getList();
   }, [isTrigger]);
 
   const getList = async () => {
-    leaveService.getLeavesByEmployeeId(id).then((data) => {
+    leaveService.getLeavesByEmployeeId(props.currentUser?.id).then((data) => {
       setItems(data);
     })
       .catch((err) => {
@@ -56,6 +51,9 @@ const Leave: any = (props: any) => {
     setSelectedItemId(leave.id);
     setModalModeName("Update");
     setFormToBeClosed("form-close");
+    props.setSelectedLeave(() => ({
+      requestingEmployeeId: props.currentUser?.id
+    }));
   };
 
   const handleDelete = (leave: any) => {
@@ -69,7 +67,7 @@ const Leave: any = (props: any) => {
 
   const onModalClose = () => {
     setSelectedItemId("");
-    setSelectedLeave("");
+    setSelectedLeave(null);
     setModalModeName("");
     setIsTrigger(false);
     const close_button = document.getElementById(formToBeClosed);
@@ -82,21 +80,26 @@ const Leave: any = (props: any) => {
       return value === statusOfLeave.Pending
         ? "Pending"
         : value === statusOfLeave.Approved
-        ? "Approved"
-        : value === statusOfLeave.Cancelled
-        ? "Cancelled"
-        : value;
+          ? "Approved"
+          : value === statusOfLeave.Cancelled
+            ? "Cancelled"
+            : value;
     } else if (column === "startDate") {
       return formatDate(new Date(value), "dd/MM/yyyy");
     } else if (column === "endDate") {
       return formatDate(new Date(value), "dd/MM/yyyy");
     }
-    
+
     return value;
   };
 
   const columnNames = {
-
+    startDate: "Start Date",
+    endDate: "End Date",
+    leaveTypeId: "Leave Type Id",
+    requestComments: "Request Comments",
+    statusOfLeave: "Leave Status",
+    approvedById: "Approved By Employee Id"
   };
 
   return (
@@ -108,7 +111,7 @@ const Leave: any = (props: any) => {
           onDelete={handleDelete}
           isEditable={isEditable}
           isDeletable={isDeletable}
-          hiddenColumns={["id"]}
+          hiddenColumns={["id","requestingEmployeeId"]}
           renderColumn={renderColumn}
           columnNames={columnNames}
           hasNewRecordButton={true}

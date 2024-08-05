@@ -37,7 +37,7 @@ class LeaveService {
     }
 
     public async getLeavesByEmployeeId(employeeId: any){
-        const response = await api.get(`${baseUrl}/employee/${employeeId}`);
+        const response = await api.get(`${baseUrl}/leaveByEmployeeId/${employeeId}`);
         return response.data;
     }
 }

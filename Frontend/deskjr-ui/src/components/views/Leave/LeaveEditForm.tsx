@@ -5,15 +5,6 @@ import Button from "../../CommonComponents/Button";
 import Input from "../../CommonComponents/Input";
 
 const LeaveEditForm: any = (props: any) => {
-    const[leaveTypes, setLeaveTypes] = useState([]);
-
-    const [leaveStatusOptions] = useState([
-        { value: "" },
-        { value: 0, label: "Pending" },
-        { value: 1, label: "Approved" },
-        { value: 2, label: "Cancelled" },
-    ]);
-
     useEffect(() => {
         if (props.selectedItemId) {
             leaveService.getLeaveById(props.selectedItemId).then((data) => {
@@ -23,8 +14,6 @@ const LeaveEditForm: any = (props: any) => {
                     showErrorToast(err);
                 });
         }
-
-        //leaveTypeService gelecek
     }, [props.selectedItemId]);
 
     const handleChange = (e: any) => {
@@ -95,8 +84,8 @@ const LeaveEditForm: any = (props: any) => {
                             <div className="modal-body">
                                 <Input
                                     type="hidden"
-                                    name="requestingEmployeeId"
-                                    value={props.currentUser?.id}
+                                    name="Id"
+                                    value={props.selectedLeave && props.selectedLeave.id}
                                 />
                                 <div className="form-group">
                                     <label className="col-form-label">Start Date:</label>
@@ -136,7 +125,7 @@ const LeaveEditForm: any = (props: any) => {
                                     <textarea
                                         className="form-control"
                                         name="requestComments"
-                                        value={props.selectedLeave.requestComments || ""}
+                                        value={props.selectedLeave?.requestComments || ""}
                                         onChange={(e: any) => handleChange(e)}
                                         required
                                     />
