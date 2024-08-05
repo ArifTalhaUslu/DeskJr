@@ -1,30 +1,29 @@
-import axios from "axios";
-
-const baseUrl = "https://localhost:7187/api/EmployeeTitle";
+import api from "../utils/axiosConfig";
+const baseUrl = "/api/EmployeeTitle";
 
 class EmployeeTitleService {
   public async getAllEmployeeTitle() {
-    const response = await axios.get(baseUrl);
+    const response = await api.get(baseUrl);
     return response.data;
   }
 
   public async getEmployeeTitleById(id: any) {
-    const response = await axios.get(`${baseUrl}/${id}`);
+    const response = await api.get(`${baseUrl}/${id}`);
     return response.data;
   }
 
   public async addOrUpdateEmployeeTitle(employeeTitle: any) {
-    const response = await axios.post(baseUrl, employeeTitle);
+    const response = await api.post(baseUrl, employeeTitle);
     return response.data;
   }
 
   public async updateEmployeeTitle(employeeTitle: any) {
-    const response = await axios.put(baseUrl, employeeTitle);
+    const response = await api.put(baseUrl, employeeTitle);
     return response.data;
   }
 
   public async deleteEmployeeTitle(id: any) {
-    const response = await axios.delete(`${baseUrl}`, {
+    const response = await api.delete(`${baseUrl}`, {
       data: { id: id },
     });
     return response.data;

@@ -1,30 +1,30 @@
-import axios from "axios";
+import api from "../utils/axiosConfig";
 
-const baseUrl = "https://localhost:7187/api/LeaveType";
+const baseUrl = "/api/LeaveType";
 
 class LeaveTypeService {
   public async getAllLeaveType() {
-    const response = await axios.get(baseUrl);
+    const response = await api.get(baseUrl);
     return response.data;
   }
 
   public async getLeaveTypeById(id: any) {
-    const response = await axios.get(`${baseUrl}/${id}`);
+    const response = await api.get(`${baseUrl}/${id}`);
     return response.data;
   }
 
   public async addOrUpdateLeaveType(leaveType: any) {
-    const response = await axios.post(baseUrl, leaveType);
+    const response = await api.post(baseUrl, leaveType);
     return response.data;
   }
 
   public async updateLeaveType(leaveType: any) {
-    const response = await axios.put(baseUrl, leaveType);
+    const response = await api.put(baseUrl, leaveType);
     return response.data;
   }
 
   public async deleteLeaveType(id: any) {
-    const response = await axios.delete(`${baseUrl}`, {
+    const response = await api.delete(`${baseUrl}`, {
       data: { id: id },
     });
     return response.data;
