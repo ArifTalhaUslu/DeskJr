@@ -25,6 +25,7 @@ import { Roles } from "./types/Roles";
 
 import EmployeeTitle from "./components/views/EmployeeTitle/EmployeeTitle";
 import LeaveType from "./components/views/LeaveType/LeaveType";
+import ChangePassword from "./components/views/ChangePassword/ChangePassword";
 
 const App: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<any>();
@@ -152,6 +153,8 @@ const App: React.FC = () => {
                 <Route path="/titles" element={<EmployeeTitle />} />
                 <Route path="*" element={<>Not Found</>} />
                 <Route path="/leaveTypes" element={<LeaveType />} />
+                <Route path="/changePassword" element={<ChangePassword currentUser={currentUser} />} />
+                
               </>
             )}
             {currentUser && currentUser.employeeRole === Roles.Admin && (
