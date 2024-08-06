@@ -7,7 +7,7 @@ namespace DeskJr.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class LeaveController : ControllerBase
     {
         private readonly ILeaveService _leaveService;
@@ -44,7 +44,6 @@ namespace DeskJr.Api.Controllers
         public async Task<IActionResult> UpdateLeave(LeaveUpdateDTO leaveDTO)
         {
             var result = await _leaveService.UpdateLeaveAsync(leaveDTO);
-
             return Ok();
         }
 
@@ -55,11 +54,10 @@ namespace DeskJr.Api.Controllers
 
             return Ok();
         }
-        [HttpGet("employee/{employeeId}")]
+        [HttpGet("leaveByEmployeeId/{employeeId}")]
         public async Task<ActionResult<IEnumerable<LeaveDTO>>> GetLeavesByEmployeeId(Guid employeeId)
         {
             var leaves = await _leaveService.GetLeavesByEmployeeIdAsync(employeeId);
-
             return Ok(leaves);
         }
     }

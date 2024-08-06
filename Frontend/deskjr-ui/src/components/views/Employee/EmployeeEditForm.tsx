@@ -5,8 +5,6 @@ import employeeService from "../../../services/EmployeeService";
 import { showErrorToast, showSuccessToast } from "../../../utils/toastHelper";
 import teamService from "../../../services/TeamService";
 import employeeTitleService from "../../../services/EmployeeTitleService";
-import { setEmitFlags } from "typescript";
-
 const EmployeeEditForm: any = (props: any) => {
   const [teams, setTeams] = useState([]);
   const [titles, setTitles] = useState([]);
@@ -17,7 +15,7 @@ const EmployeeEditForm: any = (props: any) => {
     { value: 0, label: "Male" },
   ]);
 
-  const [roleOptions] = useState([
+  const [roleOptions] = useState([ //types ile yap
     { value: "" },
     { value: 2, label: "Employee" },
     { value: 1, label: "Manager" },
@@ -66,7 +64,7 @@ const EmployeeEditForm: any = (props: any) => {
     employeeService
       .addOrUpdateEmployee({
         ...props.selectedEmployee,
-        teamId: props.selectedEmployee.teamId || null,
+        teamId: props.selectedEmployee.teamId,
         employeeTitleId: props.selectedEmployee.employeeTitleId || null
       })
       .then(() => {
@@ -210,6 +208,7 @@ const EmployeeEditForm: any = (props: any) => {
                     className="form-control"
                     value={props.selectedEmployee?.teamId || ""}
                     onChange={(e: any) => handleChange(e)}
+                    required
                   >
                     <option value=""></option>
                     {teams.map((team: any) => (

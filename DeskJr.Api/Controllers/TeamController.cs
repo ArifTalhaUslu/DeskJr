@@ -7,7 +7,7 @@ namespace DeskJr.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class TeamController : ControllerBase
     {
         private readonly ITeamService _teamService;

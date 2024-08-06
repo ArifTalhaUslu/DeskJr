@@ -37,6 +37,7 @@ namespace DeskJr.Repository.Concrete
         {
             return await _context.Leaves
                                  .Where(lr => lr.RequestingEmployeeId == employeeId)
+                                 .Include(e => e.LeaveType)
                                  .ToListAsync();
         }
     }

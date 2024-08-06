@@ -8,10 +8,10 @@ import {
   redirect
 } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import MyInfo from "./components/views/MyInfo";
+import MyInfo from "./components/views/MyInfo/MyInfo";
 import Contacts from "./components/views/Contacts";
 import Employee from "./components/views/Employee/Employee";
-import Leaves from "./components/views/Leave";
+import Leaves from "./components/views/Leave/Leave";
 import PendingLeaveRequests from "./components/views/PendingLeaveRequest";
 
 import Holidays from "./components/views/Holiday/Holiday";
@@ -25,6 +25,7 @@ import { Roles } from "./types/Roles";
 
 import EmployeeTitle from "./components/views/EmployeeTitle/EmployeeTitle";
 import LeaveType from "./components/views/LeaveType/LeaveType";
+import ChangePassword from "./components/views/ChangePassword/ChangePassword";
 
 const App: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<any>();
@@ -37,11 +38,6 @@ const App: React.FC = () => {
         {
           name: "My Info",
           to: "/myInfo",
-          visible: currentUser !== null,
-        },
-        {
-          name: "Contacts",
-          to: "/contacts",
           visible: currentUser !== null,
         },
         {
@@ -124,7 +120,7 @@ const App: React.FC = () => {
   }, [idFromLocalStr]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>.</div>;
   }
 
   return (
@@ -147,12 +143,8 @@ const App: React.FC = () => {
                   element={<Home currentUser={currentUser} />}
                 />
                 <Route path="/myInfo" element={<MyInfo currentUser={currentUser} />} />
-                <Route
-                  path="/contacts"
-                  element={<Contacts />}
-                />
 
-                <Route path="/leaves" element={<Leaves />} />
+                <Route path="/leaves" element={<Leaves currentUser={currentUser} />} />
                 <Route
                   path="/pendingLeaveRequests"
                   element={<PendingLeaveRequests />}
@@ -161,6 +153,8 @@ const App: React.FC = () => {
                 <Route path="/titles" element={<EmployeeTitle />} />
                 <Route path="*" element={<>Not Found</>} />
                 <Route path="/leaveTypes" element={<LeaveType />} />
+                <Route path="/changePassword" element={<ChangePassword currentUser={currentUser} />} />
+                
               </>
             )}
             {currentUser && currentUser.employeeRole === Roles.Admin && (

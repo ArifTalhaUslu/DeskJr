@@ -8,7 +8,7 @@ namespace DeskJr.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class HolidayController : ControllerBase
     {
         private readonly IHolidayService _holidayService;
