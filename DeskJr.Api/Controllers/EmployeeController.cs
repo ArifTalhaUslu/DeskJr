@@ -22,10 +22,6 @@ namespace DeskJr.Api.Controllers
         public async Task<ActionResult> CreateOrUpdateEmployee(AddOrUpdateEmployeeDto employeeDto)
         {
             var result = await _employeeService.AddOrUpdateEmployeeAsync(employeeDto);
-            if (!result)
-            {
-                throw new BadRequestException("Employee could not be created.");
-            }
 
             return Ok();
         }
@@ -34,10 +30,6 @@ namespace DeskJr.Api.Controllers
         public async Task<ActionResult> DeleteEmployee(DeleteEmployeeDto deleteEmployeeDto)
         {
             var result = await _employeeService.DeleteEmployeeAsync(deleteEmployeeDto.Id);
-            if (!result)
-            {
-                return NotFound();
-            }
 
             return Ok();
         }
@@ -46,6 +38,7 @@ namespace DeskJr.Api.Controllers
         public async Task<ActionResult> GetAllEmployee()
         {
             var employees = await _employeeService.GetAllEmployeesAsync();
+
             return Ok(employees);
         }
 
@@ -53,6 +46,7 @@ namespace DeskJr.Api.Controllers
         public ActionResult GetEmployeeById(Guid id)
         {
             var employee = _employeeService.GetEmployeeByIdAsync(id);
+            
             return Ok(employee);
         }
 
@@ -60,6 +54,7 @@ namespace DeskJr.Api.Controllers
         public async Task<IActionResult> GetEmployeesByTeamId(Guid teamId)
         {
             var employees = await _employeeService.GetEmployeesByTeamIdAsync(teamId);
+            
             return Ok(employees);
         }
 

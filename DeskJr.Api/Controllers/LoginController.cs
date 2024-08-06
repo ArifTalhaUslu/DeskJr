@@ -87,12 +87,12 @@ namespace DeskJr.Api.Controllers
         {
             var employee = await _employeeService.GetEmployeeByEmailAsync(loginRequest.Email);
 
-            if (employee != null && employee.Password == Encrypter.EncryptString(loginRequest.Password))
+            if (employee == null || employee.Password != Encrypter.EncryptString(loginRequest.Password))
             {
-                return employee;
+                throw new UnauthorizedException("Authentication Failed.");
             }
 
-            throw new UnauthorizedException("Authentication Failed.:)");
+            return employee;
         }
     }
 }

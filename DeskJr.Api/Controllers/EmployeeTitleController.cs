@@ -26,21 +26,14 @@ namespace DeskJr.Api.Controllers
         public async Task<ActionResult> CreateEmployeeTitle(UpdateEmployeeTitleDto employeeTitleDto)
         {
             var result = await _employeeTitleService.AddOrUpdateEmployeeAsync(employeeTitleDto);
-            if (result)
-            {
-                return Ok();
-            }
-            return BadRequest();
+            
+            return Ok();
         }
 
         [HttpDelete]
         public async Task<ActionResult> DeleteEmployee(DeleteEmployeeTitleDto deleteEmployeeTitleDto)
         {
             var result = await _employeeTitleService.DeleteEmployeeTitleAsync(deleteEmployeeTitleDto.Id);
-            if (!result)
-            {
-                return NotFound();
-            }
 
             return Ok();
         }
@@ -49,6 +42,7 @@ namespace DeskJr.Api.Controllers
         public async Task<ActionResult> GetAllEmployeeTitle()
         {
             var employeeTitles = await _employeeTitleService.GetAllEmployeeTitlesAsync();
+
             return Ok(employeeTitles);
         }
 
@@ -56,6 +50,7 @@ namespace DeskJr.Api.Controllers
         public async Task<ActionResult> GetEmployeeTitleById(Guid id)
         {
             var employeeTitle = await _employeeTitleService.GetEmployeeTitleByIdAsync(id);
+            
             return Ok(employeeTitle);
         }
 
@@ -63,11 +58,8 @@ namespace DeskJr.Api.Controllers
         public async Task<ActionResult> UpdateEmployeeTitle(UpdateEmployeeTitleDto employeeTitleDto)
         {
             var result = await _employeeTitleService.UpdateEmployeeTitleAsync(employeeTitleDto);
-            if (result)
-            {
-                return Ok();
-            }
-            return BadRequest();
+                
+            return Ok();
         }
     }
 }

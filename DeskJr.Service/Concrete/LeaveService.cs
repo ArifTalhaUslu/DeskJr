@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DeskJr.Common.Exceptions;
 using DeskJr.Data;
 using DeskJr.Entity.Models;
 using DeskJr.Repository.Abstract;
@@ -30,7 +31,7 @@ namespace DeskJr.Services.Concrete
 
             if (requestingEmployee == null)
             {
-                throw new Exception("Requesting employee not found");
+                throw new NotFoundException("Requesting employee not found");
             }
             //requestingEmployee.LeaveRequests.Add(leaveRequest);
             await _employeeRepository.UpdateAsync(requestingEmployee);
@@ -40,29 +41,54 @@ namespace DeskJr.Services.Concrete
 
         public async Task<bool> DeleteLeaveAsync(Guid id)
         {
+            if (id == null)
+            {
+                throw new NotFoundException("No leave exists with the provided identifier.");
+            }
+
             return await _leaveRepository.DeleteAsync(id);
         }
 
         public async Task<List<LeaveDTO>> GetAllLeavesAsync()
         {
             var leaves = await _leaveRepository.GetAllAsync();
+            if (leaves == null)
+            {
+                throw new Exception("The requested operation could not be completed.");
+            }
+
             return _mapper.Map<List<LeaveDTO>>(leaves);
         }
 
         public async Task<LeaveDTO> GetLeaveByIdAsync(Guid id)
         {
             var leave = await _leaveRepository.GetByIdAsync(id);
+            if (leave == null)
+            {
+                throw new NotFoundException("No leave exists with the provided identifier.");
+            }
+
             return _mapper.Map<LeaveDTO>(leave);
         }
 
         public async Task<bool> UpdateLeaveAsync(LeaveUpdateDTO leaveDTO)
         {
             var leave = _mapper.Map<Leave>(leaveDTO);
+            if (leave == null)
+            {
+                throw new NotFoundException("No leave exists with the provided identifier.");
+            }
+
             return await _leaveRepository.UpdateAsync(leave);
         }
         public async Task<IEnumerable<LeaveDTO>> GetLeavesByEmployeeIdAsync(Guid employeeId)
         {
             var leaves = await _leaveRepository.GetLeavesByEmployeeIdAsync(employeeId);
+            if (leaves == null)
+            {
+                throw new NotFoundException("No leaves exists with the provided employee identifier.");
+            }
+
             return _mapper.Map<IEnumerable<LeaveDTO>>(leaves);
         }
     }
