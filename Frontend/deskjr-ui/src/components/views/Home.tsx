@@ -79,8 +79,8 @@ const Home = (props: any) => {
         <div className="container">
             <div className="row">
                 <div className="col-12">
-                    <div className="p-3 my-3 bg-primary text-white">
-                        <h1 className="mt-4">
+                    <div className="p-3 my-3 bg-primary text-white card">
+                        <h1 className="mt-4" style={{textTransform: 'capitalize'}}>
                             {props.currentUser?.name}
                         </h1>
                     </div>

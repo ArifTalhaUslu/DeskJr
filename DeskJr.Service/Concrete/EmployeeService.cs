@@ -61,6 +61,24 @@ namespace DeskJr.Service.Concrete
             var employee = await _employeeRepository.GetEmployeeByEmailAsync(email);
             return _mapper.Map<EmployeeDto>(employee);
         }
+        public async Task<bool> ChangePasswordAsync(ChangePasswordRequestDTO changePasswordRequest)
+        {
+            var employee = await _employeeRepository.GetEmployeeByEmailAsync(changePasswordRequest.Email);
+
+            if (employee == null || employee.Password != Encrypter.EncryptString(changePasswordRequest.OldPassword))
+            {
+                return false;
+            }
+
+            if (employee.Password == Encrypter.EncryptString(changePasswordRequest.NewPassword))
+            {
+                return false;
+            }
+
+            employee.Password = Encrypter.EncryptString(changePasswordRequest.NewPassword);
+            return await _employeeRepository.UpdateAsync(employee);
+        }
+
     }
 }
 
