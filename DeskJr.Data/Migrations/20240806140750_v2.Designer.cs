@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DeskJr.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240806123047_v3")]
-    partial class v3
+    [Migration("20240806140750_v2")]
+    partial class v2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
