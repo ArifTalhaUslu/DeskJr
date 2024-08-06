@@ -29,36 +29,62 @@ namespace DeskJr.Service.Concrete
                 employeeDto.Password = Encrypter.EncryptString(employeeDto.Password);
                 return await _employeeRepository.AddAsync(_mapper.Map<Employee>(employeeDto));
             }
+
             return await _employeeRepository.UpdateAsync(_mapper.Map<Employee>(employeeDto));
         }
 
 
         public async Task<bool> DeleteEmployeeAsync(Guid id)
         {
+            if (id == null)
+            {
+                throw new NotFoundException("No employee exists with the provided identifier.");
+            }
+
             return await _employeeRepository.DeleteAsync(id);
         }
 
         public async Task<IEnumerable<EmployeeDto>> GetAllEmployeesAsync()
         {
             var employees = _employeeRepository.GetListWithIncludeEmployeeAsync();
+            if (employees == null)
+            {
+                throw new Exception("The requested operation could not be completed.");
+            }
+
             return _mapper.Map<IEnumerable<EmployeeDto>>(employees);
         }
 
         public EmployeeDto? GetEmployeeByIdAsync(Guid id)
         {
             var employee = _employeeRepository.GetByIdWithInclude(id);
+            if (employee == null)
+            {
+                throw new NotFoundException("No employee exists with the provided identifier.");
+            }
+
             return _mapper.Map<EmployeeDto>(employee);
         }
 
         public async Task<IEnumerable<EmployeeDto>> GetEmployeesByTeamIdAsync(Guid teamId)
         {
             var employees = await _employeeRepository.GetEmployeesByTeamIdAsync(teamId);
+            if (employees == null)
+            {
+                throw new NotFoundException("No employee exists with the provided team identifier.");
+            }
+
             return _mapper.Map<IEnumerable<EmployeeDto>>(employees);
         }
 
         public async Task<EmployeeDto?> GetEmployeeByEmailAsync(string email)
         {
             var employee = await _employeeRepository.GetEmployeeByEmailAsync(email);
+            if (string.IsNullOrEmpty(email))
+            {
+                throw new NotFoundException("No employee exists with the provided email.");
+            }
+
             return _mapper.Map<EmployeeDto>(employee);
         }
         public async Task<bool> ChangePasswordAsync(ChangePasswordRequestDTO changePasswordRequest)

@@ -57,15 +57,6 @@ namespace DeskJr.Middlewares
                         Details = ex.Message
                     };
                     break;
-                case InvalidGuidFormatException:
-                    response.StatusCode = (int)HttpStatusCode.BadRequest;
-                    errorDetails = new ErrorResponseDto
-                    {
-                        StatusCodes = response.StatusCode,
-                        Message = "Invalid GUID Format!",
-                        Details = ex.Message
-                    };
-                    break;
                 case UnauthorizedException:
                     response.StatusCode = (int)HttpStatusCode.Unauthorized;
                     errorDetails = new ErrorResponseDto
@@ -80,7 +71,7 @@ namespace DeskJr.Middlewares
                     errorDetails = new ErrorResponseDto
                     {
                         StatusCodes = response.StatusCode,
-                        Message = "An unexpected error occurred. (default)",
+                        Message = "An unexpected server error occurred.",
                         Details = ex.Message
                     };
                     break;

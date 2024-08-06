@@ -28,8 +28,6 @@ namespace DeskJr.Api.Controllers
         public async Task<IActionResult> GetLeaveById(Guid id)
         {
             var leave = await _leaveService.GetLeaveByIdAsync(id);
-            if (leave == null)
-                return NotFound();
 
             return Ok(leave);
         }
@@ -38,11 +36,8 @@ namespace DeskJr.Api.Controllers
         public async Task<IActionResult> CreateLeave(LeaveCreateDTO leaveDTO)
         {
             var result = await _leaveService.CreateLeaveAsync(leaveDTO);
-            if (result)
-            {
-                return Ok();
-            }
-            return BadRequest();
+
+            return Ok();
         }
 
         [HttpPut]
@@ -56,11 +51,8 @@ namespace DeskJr.Api.Controllers
         public async Task<IActionResult> DeleteLeave(Guid id)
         {
             var result = await _leaveService.DeleteLeaveAsync(id);
-            if (result)
-            {
-                return Ok();
-            }
-            return NotFound();
+
+            return Ok();
         }
         [HttpGet("leaveByEmployeeId/{employeeId}")]
         public async Task<ActionResult<IEnumerable<LeaveDTO>>> GetLeavesByEmployeeId(Guid employeeId)

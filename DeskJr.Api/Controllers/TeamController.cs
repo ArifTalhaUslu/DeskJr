@@ -21,10 +21,7 @@ namespace DeskJr.Api.Controllers
         public async Task<ActionResult> CreateOrUpdateTeam(AddOrUpdateTeamDto teamDto)
         {
             var result = await _teamService.AddOrUpdateTeamAsync(teamDto);
-            if (!result)
-            {
-                return BadRequest();
-            }
+
             return Ok();
         }
 
@@ -32,17 +29,15 @@ namespace DeskJr.Api.Controllers
         public async Task<ActionResult> DeleteTeam(Guid id)
         {
             var result = await _teamService.DeleteTeamAsync(id);
-            if (result)
-            {
-                return Ok();
-            }
-            return NotFound();
+
+            return Ok();
         }
 
         [HttpGet]
         public async Task<ActionResult> GetAllTeams()
         {
             var teams = await _teamService.GetAllTeamsAsync();
+            
             return Ok(teams);
         }
 
@@ -50,6 +45,7 @@ namespace DeskJr.Api.Controllers
         public async Task<ActionResult> GetTeamById(Guid id)
         {
             var team = await _teamService.GetTeamByIdAsync(id);
+            
             return Ok(team);
         }
 
@@ -57,10 +53,7 @@ namespace DeskJr.Api.Controllers
         public async Task<ActionResult> UpdateTeam(AddOrUpdateTeamDto teamDto)
         {
             var result = await _teamService.UpdateTeamAsync(teamDto);
-            if (!result)
-            {
-                return BadRequest();
-            }
+
             return Ok();
         }
     }

@@ -26,24 +26,38 @@ namespace DeskJr.Service.Concrete
 
                 return await _holidayRepository.AddAsync(_mapper.Map<Holiday>(holidayDto));
             }
+
             return await _holidayRepository.UpdateAsync(_mapper.Map<Holiday>(holidayDto));
         }
 
         public async Task<bool> DeleteHolidayAsync(Guid id)
         {
+            if (id == null)
+            {
+                throw new NotFoundException("No holiday exists with the provided identifier.");
+            }
+
             return await _holidayRepository.DeleteAsync(id);
         }
 
         public async Task<IEnumerable<HolidayDto>> GetAllHolidaysAsync()
         {
             var holidays = await _holidayRepository.GetAllAsync();
+            if (holidays == null)
+            {
+                throw new Exception("The requested operation could not be completed.");
+            }
+
             return _mapper.Map<IEnumerable<HolidayDto>>(holidays);
         }
 
         public async Task<HolidayDto?> GetHolidayByIdAsync(Guid id)
         {
             var holiday = await _holidayRepository.GetByIdAsync(id);
-            if (holiday == null) throw new NotFoundException("Not found");
+            if (holiday == null)
+            {
+                throw new NotFoundException("No holiday exists with the provided identifier.");
+            }
             return _mapper.Map<HolidayDto>(holiday);
         }
     }

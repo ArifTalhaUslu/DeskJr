@@ -23,11 +23,6 @@ namespace DeskJr.Api.Controllers
         {
             var result = await _holidayService.AddOrUpdateHolidayAsync(holidayDto);
 
-            if (!result)
-            {
-                throw new BadRequestException("Holiday could not be created.");
-            }
-
             return Ok();
         }
 
@@ -35,10 +30,6 @@ namespace DeskJr.Api.Controllers
         public async Task<ActionResult> DeleteHoliday(DeleteHolidayDto deleteHolidayDto)
         {
             var result = await _holidayService.DeleteHolidayAsync(deleteHolidayDto.ID);
-            if (!result)
-            {
-                return NotFound();
-            }
 
             return Ok();
         }
@@ -47,6 +38,7 @@ namespace DeskJr.Api.Controllers
         public async Task<ActionResult> GetAllHoliday()
         {
             var holidays = await _holidayService.GetAllHolidaysAsync();
+            
             return Ok(holidays);
         }
 
@@ -54,6 +46,7 @@ namespace DeskJr.Api.Controllers
         public async Task<ActionResult> GetHolidayById(Guid id)
         {
             var holiday = await _holidayService.GetHolidayByIdAsync(id);
+           
             return Ok(holiday);
         }
     }
