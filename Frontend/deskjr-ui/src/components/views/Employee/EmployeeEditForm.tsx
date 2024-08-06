@@ -15,7 +15,7 @@ const EmployeeEditForm: any = (props: any) => {
     { value: 0, label: "Male" },
   ]);
 
-  const [roleOptions] = useState([
+  const [roleOptions] = useState([ //types ile yap
     { value: "" },
     { value: 2, label: "Employee" },
     { value: 1, label: "Manager" },
@@ -64,7 +64,7 @@ const EmployeeEditForm: any = (props: any) => {
     employeeService
       .addOrUpdateEmployee({
         ...props.selectedEmployee,
-        teamId: props.selectedEmployee.teamId || null,
+        teamId: props.selectedEmployee.teamId,
         employeeTitleId: props.selectedEmployee.employeeTitleId || null
       })
       .then(() => {

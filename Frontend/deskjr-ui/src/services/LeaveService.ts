@@ -22,6 +22,7 @@ class LeaveService {
     }
 
     public async createLeave(leave: any){
+        debugger;
         const response = await api.post(baseUrl,leave);
         return response.data;
     }
@@ -32,7 +33,7 @@ class LeaveService {
     }
 
     public async deleteLeave(id: any){
-        const response = await api.post(`${baseUrl}/${id}`);
+        const response = await api.delete(`${baseUrl}/${id}`);
         return response.data;
     }
 

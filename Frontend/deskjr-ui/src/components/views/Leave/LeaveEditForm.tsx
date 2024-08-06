@@ -3,8 +3,11 @@ import leaveService from "../../../services/LeaveService";
 import { showErrorToast, showSuccessToast } from "../../../utils/toastHelper";
 import Button from "../../CommonComponents/Button";
 import Input from "../../CommonComponents/Input";
+import leaveTypeService from "../../../services/LeaveTypeService";
 
 const LeaveEditForm: any = (props: any) => {
+    const [leaveTypes, setLeaveTypes] = useState([]);
+
     useEffect(() => {
         if (props.selectedItemId) {
             leaveService.getLeaveById(props.selectedItemId).then((data) => {
@@ -14,30 +17,60 @@ const LeaveEditForm: any = (props: any) => {
                     showErrorToast(err);
                 });
         }
+
+        leaveTypeService.getAllLeaveType().then((data) => {
+            setLeaveTypes(data);
+        }).catch((err) => {
+            showErrorToast(err);
+        });
+
     }, [props.selectedItemId]);
 
     const handleChange = (e: any) => {
         const { name, value } = e.target;
-        props.setSelectedLeave((prevState: any) => ({
-            ...prevState,
-            [name]: value,
-        }));
+        props.setSelectedLeave((prevState: any) => {
+            if (name === 'leaveType') {
+                return { ...prevState, leaveTypeId: value };
+            } else {
+                return { ...prevState, [name]: value };
+            }
+        });
     };
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
-        leaveService
-            .createLeave({
-                ...props.selectedLeave,
-            })
-            .then(() => {
-                showSuccessToast('Successful!');
-                props.getList();
-                props.onClose();
-            })
-            .catch((err) => {
-                showErrorToast(err);
-            });
+
+        const leaveData = {
+            ...props.selectedLeave,
+            leaveTypeId: props.selectedLeave?.leaveTypeId,
+        };
+
+        if (props.modalModeName === "Add") {
+            debugger;
+            leaveService.createLeave(leaveData)
+                .then(() => {
+                    debugger;
+                    showSuccessToast('Successful!');
+                    props.getList();
+                    props.onClose();
+                })
+                .catch((err) => {
+                    debugger;
+                    showErrorToast(err);
+                });
+        }
+        if (props.modalModeName === "Update") {
+            debugger;
+            leaveService.updateLeave(leaveData)
+                .then(() => {
+                    showSuccessToast('Successful!');
+                    props.getList();
+                    props.onClose();
+                })
+                .catch((err) => {
+                    showErrorToast(err);
+                });
+        }
     };
 
     const formatDate = (date: string | Date | undefined): string => {
@@ -108,19 +141,19 @@ const LeaveEditForm: any = (props: any) => {
                                         onChange={(e: any) => handleChange(e)}
                                         required
                                     />
-                                    {/* <label className="col-form-label">Leave Type:</label>
+                                    <label className="col-form-label">Leave Type:</label>
                                     <select
-                                        name="leaveTypeId"
+                                        name="leaveType"
                                         className="form-control"
                                         value={props.selectedLeave?.leaveTypeId || ""}
                                         onChange={(e: any) => handleChange(e)}
-                                        //required
-                                      >
+                                        required
+                                    >
                                         <option value=""></option>
                                         {leaveTypes.map((leaveType: any) => (
-                                          <option key={leaveType.id} value={leaveType.id}>{leaveType.name}</option>
+                                            <option key={leaveType.id} value={leaveType.id}>{leaveType.name}</option>
                                         ))}
-                                    </select> */}
+                                    </select>
                                     <label className="col-form-label">Leave Comments:</label>
                                     <textarea
                                         className="form-control"

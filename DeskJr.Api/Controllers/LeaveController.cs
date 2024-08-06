@@ -49,11 +49,7 @@ namespace DeskJr.Api.Controllers
         public async Task<IActionResult> UpdateLeave(LeaveUpdateDTO leaveDTO)
         {
             var result = await _leaveService.UpdateLeaveAsync(leaveDTO);
-            if (result)
-            {
-                return Ok();
-            }
-            return BadRequest();
+            return Ok();
         }
 
         [HttpDelete("{id}")]

@@ -51,9 +51,12 @@ const Leave: any = (props: any) => {
     setSelectedItemId(leave.id);
     setModalModeName("Update");
     setFormToBeClosed("form-close");
-    props.setSelectedLeave(() => ({
-      requestingEmployeeId: props.currentUser?.id
-    }));
+    if (props.currentUser?.id) {
+      setSelectedLeave((prevState: any) => ({
+        ...prevState,
+        requestingEmployeeId: props.currentUser?.id,
+      }));
+    }
   };
 
   const handleDelete = (leave: any) => {
@@ -61,9 +64,17 @@ const Leave: any = (props: any) => {
     setFormToBeClosed("delete-form-closed");
   };
 
-  const isEditable = (item: any) => true;
+  const isEditable = (item: any) => {
+    if (item.statusOfLeave === statusOfLeave.Pending)
+      return true;
+    return false;
+  };
 
-  const isDeletable = (item: any) => true;
+  const isDeletable = (item: any) => {
+    if (item.statusOfLeave === statusOfLeave.Cancelled)
+      return true;
+    return false;
+  };
 
   const onModalClose = () => {
     setSelectedItemId("");
@@ -88,6 +99,8 @@ const Leave: any = (props: any) => {
       return formatDate(new Date(value), "dd/MM/yyyy");
     } else if (column === "endDate") {
       return formatDate(new Date(value), "dd/MM/yyyy");
+    } else if (column === "leaveType") {
+      return value && value.name;
     }
 
     return value;
@@ -96,7 +109,7 @@ const Leave: any = (props: any) => {
   const columnNames = {
     startDate: "Start Date",
     endDate: "End Date",
-    leaveTypeId: "Leave Type Id",
+    leaveType: "Leave Type",
     requestComments: "Request Comments",
     statusOfLeave: "Leave Status",
     approvedById: "Approved By Employee Id"
@@ -111,7 +124,7 @@ const Leave: any = (props: any) => {
           onDelete={handleDelete}
           isEditable={isEditable}
           isDeletable={isDeletable}
-          hiddenColumns={["id","requestingEmployeeId"]}
+          hiddenColumns={["id", "requestingEmployeeId", "approvedById", "leaveTypeId"]}
           renderColumn={renderColumn}
           columnNames={columnNames}
           hasNewRecordButton={true}
@@ -119,6 +132,12 @@ const Leave: any = (props: any) => {
             setModalModeName("Add");
             setFormToBeClosed("form-close");
             setIsTrigger(true);
+            if (props.currentUser?.id) {
+              setSelectedLeave((prevState: any) => ({
+                ...prevState,
+                requestingEmployeeId: props.currentUser?.id,
+              }));
+            }
           }}
           newRecordModalDataTarget={modalDataTarget}
         />

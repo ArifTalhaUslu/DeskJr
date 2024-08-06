@@ -11,16 +11,18 @@ namespace DeskJr.Services.Concrete
     public class LeaveService : ILeaveService
     {
         private readonly ILeaveRepository _leaveRepository;
+        private readonly ILeaveTypeRepository _leaveTypeRepository;
         private readonly IEmployeeRepository _employeeRepository;
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;
 
-        public LeaveService(ILeaveRepository leaveRepository, IEmployeeRepository employeeRepository, AppDbContext context, IMapper mapper)
+        public LeaveService(ILeaveRepository leaveRepository, IEmployeeRepository employeeRepository, AppDbContext context, IMapper mapper, ILeaveTypeRepository leaveTypeRepository)
         {
             _leaveRepository = leaveRepository;
             _employeeRepository = employeeRepository;
             _context = context;
             _mapper = mapper;
+            _leaveTypeRepository = leaveTypeRepository;
         }
 
         public async Task<bool> CreateLeaveAsync(LeaveCreateDTO leaveDTO)

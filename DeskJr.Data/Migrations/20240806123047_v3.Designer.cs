@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DeskJr.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240805093332_v4")]
-    partial class v4
+    [Migration("20240806123047_v3")]
+    partial class v3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -115,16 +115,10 @@ namespace DeskJr.Data.Migrations
                     b.Property<Guid?>("ApprovedById")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("DateActioned")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DateRequested")
-                        .HasColumnType("datetime2");
-
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("LeaveTypeId")
+                    b.Property<Guid>("LeaveTypeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("RequestComments")
@@ -209,7 +203,9 @@ namespace DeskJr.Data.Migrations
 
                     b.HasOne("DeskJr.Entity.Models.LeaveType", "LeaveType")
                         .WithMany()
-                        .HasForeignKey("LeaveTypeId");
+                        .HasForeignKey("LeaveTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("DeskJr.Entity.Models.Employee", "RequestingEmployee")
                         .WithMany()
