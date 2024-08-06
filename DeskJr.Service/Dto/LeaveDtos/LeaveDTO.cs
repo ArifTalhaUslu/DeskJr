@@ -10,6 +10,7 @@ namespace DeskJr.Service.Dto
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public Guid LeaveTypeId { get; set; }
+        public LeaveTypeDTO LeaveType { get; set; }
         public string RequestComments { get; set; }
         public EnumStatusOfLeave StatusOfLeave { get; set; }
         public Guid? ApprovedById { get; set; }

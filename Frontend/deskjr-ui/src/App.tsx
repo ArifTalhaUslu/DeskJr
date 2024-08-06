@@ -11,7 +11,7 @@ import React, { useEffect, useState } from "react";
 import MyInfo from "./components/views/MyInfo/MyInfo";
 import Contacts from "./components/views/Contacts";
 import Employee from "./components/views/Employee/Employee";
-import Leaves from "./components/views/Leave";
+import Leaves from "./components/views/Leave/Leave";
 import PendingLeaveRequests from "./components/views/PendingLeaveRequest";
 
 import Holidays from "./components/views/Holiday/Holiday";
@@ -38,11 +38,6 @@ const App: React.FC = () => {
         {
           name: "My Info",
           to: "/myInfo",
-          visible: currentUser !== null,
-        },
-        {
-          name: "Contacts",
-          to: "/contacts",
           visible: currentUser !== null,
         },
         {
@@ -148,12 +143,8 @@ const App: React.FC = () => {
                   element={<Home currentUser={currentUser} />}
                 />
                 <Route path="/myInfo" element={<MyInfo currentUser={currentUser} />} />
-                <Route
-                  path="/contacts"
-                  element={<Contacts />}
-                />
 
-                <Route path="/leaves" element={<Leaves />} />
+                <Route path="/leaves" element={<Leaves currentUser={currentUser} />} />
                 <Route
                   path="/pendingLeaveRequests"
                   element={<PendingLeaveRequests />}

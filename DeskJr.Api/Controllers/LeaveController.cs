@@ -49,11 +49,7 @@ namespace DeskJr.Api.Controllers
         public async Task<IActionResult> UpdateLeave(LeaveUpdateDTO leaveDTO)
         {
             var result = await _leaveService.UpdateLeaveAsync(leaveDTO);
-            if (result)
-            {
-                return Ok();
-            }
-            return BadRequest();
+            return Ok();
         }
 
         [HttpDelete("{id}")]
@@ -66,14 +62,10 @@ namespace DeskJr.Api.Controllers
             }
             return NotFound();
         }
-        [HttpGet("employee/{employeeId}")]
+        [HttpGet("leaveByEmployeeId/{employeeId}")]
         public async Task<ActionResult<IEnumerable<LeaveDTO>>> GetLeavesByEmployeeId(Guid employeeId)
         {
             var leaves = await _leaveService.GetLeavesByEmployeeIdAsync(employeeId);
-            if (leaves == null || !leaves.Any())
-            {
-                return NotFound("jlnvfv");
-            }
             return Ok(leaves);
         }
     }

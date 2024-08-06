@@ -26,14 +26,14 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     public async Task<bool> UpdateAsync(T entity)
     {
         var affectedRowCount = 0;
-        var dbTeam = await _dbSet.FindAsync(entity.ID);
+        var dbSet = await _dbSet.FindAsync(entity.ID);
 
-        if (dbTeam == null)
+        if (dbSet == null)
         {
             throw new NotFoundException($"Not found");
         }
 
-        _context.Entry(dbTeam).CurrentValues.SetValues(entity);
+        _context.Entry(dbSet).CurrentValues.SetValues(entity);
         affectedRowCount = await _context.SaveChangesAsync();
 
         return affectedRowCount > 0;
@@ -41,12 +41,12 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 
     public async Task<bool> DeleteAsync(Guid id)
     {
-        var dbTeam = await _dbSet.FirstOrDefaultAsync(e => e.ID == id);
-        if (dbTeam == null)
+        var entity = await _dbSet.FirstOrDefaultAsync(e => e.ID == id);
+        if (entity == null)
         {
             throw new NotFoundException($"Not found");
         }
-        _dbSet.Remove(dbTeam);
+        _dbSet.Remove(entity);
         await _context.SaveChangesAsync();
         return true;
     }

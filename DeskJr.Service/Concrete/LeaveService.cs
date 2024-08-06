@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DeskJr.Data;
 using DeskJr.Entity.Models;
+using DeskJr.Entity.Types;
 using DeskJr.Repository.Abstract;
 using DeskJr.Service.Dto;
 using DeskJr.Services.Interfaces;
@@ -10,16 +11,18 @@ namespace DeskJr.Services.Concrete
     public class LeaveService : ILeaveService
     {
         private readonly ILeaveRepository _leaveRepository;
+        private readonly ILeaveTypeRepository _leaveTypeRepository;
         private readonly IEmployeeRepository _employeeRepository;
         private readonly AppDbContext _context;
         private readonly IMapper _mapper;
 
-        public LeaveService(ILeaveRepository leaveRepository, IEmployeeRepository employeeRepository, AppDbContext context, IMapper mapper)
+        public LeaveService(ILeaveRepository leaveRepository, IEmployeeRepository employeeRepository, AppDbContext context, IMapper mapper, ILeaveTypeRepository leaveTypeRepository)
         {
             _leaveRepository = leaveRepository;
             _employeeRepository = employeeRepository;
             _context = context;
             _mapper = mapper;
+            _leaveTypeRepository = leaveTypeRepository;
         }
 
         public async Task<bool> CreateLeaveAsync(LeaveCreateDTO leaveDTO)
@@ -32,8 +35,10 @@ namespace DeskJr.Services.Concrete
             {
                 throw new Exception("Requesting employee not found");
             }
-            //requestingEmployee.LeaveRequests.Add(leaveRequest);
-            await _employeeRepository.UpdateAsync(requestingEmployee);
+
+            leave.RequestingEmployeeId = requestingEmployee.ID;
+            leave.RequestingEmployee = requestingEmployee;
+            leave.StatusOfLeave = (int)EnumStatusOfLeave.Pending;
 
             return await _leaveRepository.AddAsync(leave);
         }
