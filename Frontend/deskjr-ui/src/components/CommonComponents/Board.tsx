@@ -14,7 +14,6 @@ interface BoardProps {
   hasNewRecordButton?: boolean;
   newRecordButtonOnClick?: () => void;
   newRecordModalDataTarget?: string;
-  hideActions?:string;
 }
 
 function Board({
@@ -30,7 +29,6 @@ function Board({
   hasNewRecordButton,
   newRecordButtonOnClick,
   newRecordModalDataTarget,
-  hideActions = 'false'
 }: BoardProps) {
   const renderedItems = items ?? [];
 
@@ -52,7 +50,6 @@ function Board({
           renderColumn={renderColumn}
           dataTarget={newRecordModalDataTarget}
           columnNames={columnNames}
-          hideActions={hideActions}
         />
       ) : (
         []

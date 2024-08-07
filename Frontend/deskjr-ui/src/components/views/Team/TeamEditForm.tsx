@@ -10,7 +10,8 @@ const TeamEditForm: any = (props: any) => {
 
   useEffect(() => {
     if (props.selectedItemId) {
-      teamService.getTeamById(props.selectedItemId)
+      teamService
+        .getTeamById(props.selectedItemId)
         .then((data) => {
           props.setSelectedTeam(data);
         })
@@ -20,20 +21,21 @@ const TeamEditForm: any = (props: any) => {
     }
 
     employeeService.getAllEmployee().then((data) => {
-      const managers = data.filter((employee: any) => employee.employeeRole === 1);
+      const managers = data.filter(
+        (employee: any) => employee.employeeRole === 1
+      );
       setManagers(managers);
     });
-  }, [props.selectedItemId]);
+  }, [props, props.selectedItemId]);
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
     props.setSelectedTeam((prevState: any) => ({
-        ...prevState,
-        [name]: value,
-        managerId: name === 'manager' ? value : prevState.managerId,
+      ...prevState,
+      [name]: value,
+      managerId: name === "manager" ? value : prevState.managerId,
     }));
-};
-
+  };
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -43,7 +45,7 @@ const TeamEditForm: any = (props: any) => {
         managerId: props.selectedTeam.managerId || null,
       })
       .then(() => {
-        showSuccessToast('Successful!');
+        showSuccessToast("Successful!");
         props.getList();
         props.onClose();
       })
@@ -110,7 +112,8 @@ const TeamEditForm: any = (props: any) => {
                     {managers.map((manager: any) => (
                       <option key={manager.id} value={manager.id}>
                         {manager.name}
-                      </option>))}
+                      </option>
+                    ))}
                   </select>
                 </div>
               </div>

@@ -20,12 +20,14 @@ const Team: any = () => {
   }, [isTrigger]);
 
   const getList = async () => {
-    teamService.getAllTeam().then((data) => {
-      setItems(data);
-    })
-    .catch((err) => {
-      showErrorToast(err);
-    });
+    teamService
+      .getAllTeam()
+      .then((data) => {
+        setItems(data);
+      })
+      .catch((err) => {
+        showErrorToast(err);
+      });
   };
 
   const onConfirmDelete = async (e: any) => {
@@ -35,7 +37,7 @@ const Team: any = () => {
       teamService
         .deleteTeam(selectedItemId)
         .then(() => {
-          showSuccessToast('Successful!');
+          showSuccessToast("Successful!");
           setIsTrigger(true);
         })
         .catch((err) => {
@@ -69,11 +71,11 @@ const Team: any = () => {
     close_button?.click();
     setFormToBeClosed("");
   };
-  
+
   const renderColumn = (column: string, value: any) => {
     if (column === "manager") {
       return value && value.name;
-    } 
+    }
     return value;
   };
 
@@ -91,7 +93,7 @@ const Team: any = () => {
           onDelete={handleDelete}
           isEditable={isEditable}
           isDeletable={isDeletable}
-          hiddenColumns={["id","managerId"]}
+          hiddenColumns={["id", "managerId"]}
           renderColumn={renderColumn}
           columnNames={columnNames}
           hasNewRecordButton={true}

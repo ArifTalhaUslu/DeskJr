@@ -1,6 +1,5 @@
 import { useEffect, useState, CSSProperties } from "react";
 import Button from "./Button";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 interface DataTableProps {
@@ -14,7 +13,6 @@ interface DataTableProps {
   renderColumn?: (column: string, value: any) => JSX.Element | string;
   dataTarget?: string;
   columnNames?: { [key: string]: string };
-  hideActions?: string;
 }
 
 function DataTable({
@@ -28,7 +26,6 @@ function DataTable({
   renderColumn,
   dataTarget,
   columnNames = {},
-  hideActions = 'false'
 }: DataTableProps) {
   const [records, setRecords] = useState<any>([]);
   const [columns, setColumns] = useState<string[]>([]);
@@ -42,19 +39,17 @@ function DataTable({
     const newColumns = Object.keys(firstItem).filter(
       (column) => !hiddenColumns.includes(column)
     );
-    setColumns([...newColumns]);
-
-    if (hideActions && hideActions === 'false') {
-      setColumns([...newColumns, "Actions"]);
-    }
+    setColumns([...newColumns, "Actions"]);
 
     const filteredItems = items.filter((item) =>
       newColumns.every((column) => {
         const searchQuery = searchQueries[column] || "";
-        const value =
-          item[column] != null ? item[column].toString().toLowerCase() : "";
         return (
-          (!searchQuery || value.includes(searchQuery.toLowerCase()))
+          !searchQuery ||
+          renderColumn(column, item[column])
+            .toString()
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase())
         );
       })
     );
@@ -70,46 +65,38 @@ function DataTable({
               verticalAlign: column === "Actions" ? "top" : "middle",
             }}
           >
-            {renderColumn
-              ? renderColumn(column, record[column])
-              : record[column]}
+            {renderColumn && renderColumn(column, record[column])}
           </td>
         ))}
-        {
-          hideActions && hideActions.toString() === 'false' &&
-          <td className="text-center" style={{
+        <td
+          className="text-center"
+          style={{
             padding: "10px 20px",
             verticalAlign: "top",
-          }}>
-            {isEditable && isEditable(record) && onEdit && (
-              <Button
-                text="Edit"
-                className={"btn btn-warning mr-2"}
-                onClick={() => onEdit(record)}
-                isModalTrigger={true}
-                dataTarget={dataTarget}
-              ></Button>
-            )}
-            {isDeletable && isDeletable(record) && onDelete && (
-              <Button
-                text="Delete"
-                className={"btn btn-danger"}
-                onClick={() => onDelete(record)}
-                isModalTrigger={true}
-                dataTarget={"delete-confirm"}
-              ></Button>
-            )}
-          </td>
-        }
+          }}
+        >
+          {isEditable && isEditable(record) && onEdit && (
+            <Button
+              text="Edit"
+              className={"btn btn-warning mr-2"}
+              onClick={() => onEdit(record)}
+              isModalTrigger={true}
+              dataTarget={dataTarget}
+            ></Button>
+          )}
+          {isDeletable && isDeletable(record) && onDelete && (
+            <Button
+              text="Delete"
+              className={"btn btn-danger"}
+              onClick={() => onDelete(record)}
+              isModalTrigger={true}
+              dataTarget={"delete-confirm"}
+            ></Button>
+          )}
+        </td>
       </tr>
     ));
-    if (newRecords && newRecords.length > 0) {
-      setRecords([...newRecords]);
-    }
-    else {
-      setRecords([]);
-      setColumns([]);
-    }
+    setRecords([...newRecords]);
   }, [
     items,
     onEdit,
@@ -119,6 +106,7 @@ function DataTable({
     hiddenColumns,
     renderColumn,
     searchQueries,
+    dataTarget,
   ]);
 
   const handleSearchChange = (column: string, value: string) => {
@@ -200,26 +188,28 @@ function DataTable({
                       }}
                     >
                       {columnNames[column] || column}
-                      {column !== "Actions" && (<></>
-                        // <button
-                        //   style={searchButtonStyle}
-                        //   onClick={() => toggleSearchVisibility(column)}
-                        // >
-                        //   showSearch[column] ? "−" : "+"
-                        // </button>
+                      {column !== "Actions" && (
+                        <button
+                          style={searchButtonStyle}
+                          onClick={() => toggleSearchVisibility(column)}
+                        >
+                          {showSearch[column] ? "−" : "+"}
+                        </button>
                       )}
                     </div>
                     {column !== "Actions" && showSearch[column] && (
-                      <div style={filterWrapperStyle}>
-                        <input
-                          type="text"
-                          placeholder={`Search ${column}`}
-                          value={searchQueries[column] || ""}
-                          onChange={(e) =>
-                            handleSearchChange(column, e.target.value)
-                          }
-                          className="form-control"
-                        />
+                      <div style={filterContainerStyle}>
+                        <div style={filterWrapperStyle}>
+                          <input
+                            type="text"
+                            placeholder="Search"
+                            value={searchQueries[column] || ""}
+                            onChange={(e) =>
+                              handleSearchChange(column, e.target.value)
+                            }
+                            className="form-control"
+                          />
+                        </div>
                       </div>
                     )}
                   </th>
@@ -228,13 +218,11 @@ function DataTable({
           </tr>
         </thead>
         <tbody>
-          {records && records.length > 0 ? (
+          {records.length > 0 ? (
             records
           ) : (
             <tr>
-              <td className="text-center" colSpan={columns.length}>
-                No Records Found
-              </td>
+              <td colSpan={columns.length}>No records found.</td>
             </tr>
           )}
         </tbody>

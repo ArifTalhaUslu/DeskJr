@@ -7,6 +7,7 @@ import { formatDate } from "date-fns";
 import ConfirmDelete from "../../CommonComponents/ConfirmDelete";
 import { showErrorToast, showSuccessToast } from "../../../utils/toastHelper";
 import { Roles } from "../../../types/Roles";
+import EmployeeTitle from "../EmployeeTitle/EmployeeTitle";
 
 const Employee: any = () => {
   const [items, setItems] = useState([]);
@@ -22,12 +23,14 @@ const Employee: any = () => {
   }, [isTrigger]);
 
   const getList = async () => {
-    employeeService.getAllEmployee().then((data) => {
-      setItems(data);
-    })
-    .catch((err) => {
-      showErrorToast(err);
-    });
+    employeeService
+      .getAllEmployee()
+      .then((data) => {
+        setItems(data);
+      })
+      .catch((err) => {
+        showErrorToast(err);
+      });
   };
 
   const onConfirmDelete = async (e: any) => {
@@ -37,7 +40,7 @@ const Employee: any = () => {
       employeeService
         .deleteEmployee(selectedItemId)
         .then(() => {
-          showSuccessToast('Successful!');
+          showSuccessToast("Successful!");
           setIsTrigger(true);
         })
         .catch((err) => {
@@ -63,24 +66,30 @@ const Employee: any = () => {
   const isDeletable = (item: any) => true;
 
   const renderColumn = (column: string, value: any) => {
-    if (column === "employeeRole") {
-      return value === Roles.Employee
-        ? "Employee"
-        : value === Roles.Manager
-        ? "Manager"
-        : value === Roles.Admin
-        ? "Admin"
-        : value;
-    } else if (column === "gender") {
-      return value === 0 ? "Male" : value === 1 ? "Female" : value;
-    } else if (column === "dayOfBirth") {
-      return formatDate(new Date(value), "dd/MM/yyyy");
-    } else if (column === "employeeTitle") {
-      return value && value.titleName;
-    }else if (column === "team") {
-      return value && value.name;
+    if (!value) return "";
+    switch (column) {
+      case "employeeRole":
+        switch (value) {
+          case Roles.Employee:
+            return "Employee";
+          case Roles.Manager:
+            return "Manager";
+          case Roles.Admin:
+            return "Admin";
+          default:
+            return value;
+        }
+      case "gender":
+        return value === 0 ? "Male" : value === 1 ? "Female" : value;
+      case "dayOfBirth":
+        return formatDate(new Date(value), "dd/MM/yyyy");
+      case "employeeTitle":
+        return value && value?.titleName;
+      case "team":
+        return value && value?.name;
+      default:
+        return value;
     }
-    return value;
   };
 
   const onModalClose = () => {
