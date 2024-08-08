@@ -7,6 +7,7 @@ namespace DeskJr.Service.Abstract
         public Task<bool> AddOrUpdateHolidayAsync(AddOrUpdateHolidayDto holidayDto);
         public Task<bool> DeleteHolidayAsync(Guid id);
         public Task<IEnumerable<HolidayDto>> GetAllHolidaysAsync();
+        public Task<IEnumerable<HolidayDto>> GetUpcomingHolidaysAsync();
         public Task<HolidayDto?> GetHolidayByIdAsync(Guid id);
     }
 }

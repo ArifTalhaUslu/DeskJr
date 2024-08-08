@@ -9,5 +9,5 @@ public interface IEmployeeRepository: IGenericRepository<Employee>
     public Employee? GetByIdWithInclude(Guid id);
     public Task<Employee?> GetEmployeeByEmailAsync(string email);
     public IEnumerable<Employee> GetListWithIncludeEmployeeAsync();
-
+    Task<IEnumerable<Employee>> GetUpcomingBirthdaysAsync();
 }

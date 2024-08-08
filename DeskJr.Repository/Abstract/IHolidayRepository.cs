@@ -4,5 +4,7 @@ namespace DeskJr.Repository.Abstract
 {
     public interface IHolidayRepository : IGenericRepository<Holiday>
     {
+
+        public Task<IEnumerable<Holiday>> GetUpcomingHolidaysAsync();
     }
 }

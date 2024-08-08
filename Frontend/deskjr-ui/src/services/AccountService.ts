@@ -5,12 +5,12 @@ const accountBaseUrl = "/api/Account";
 class AccountService {
   
     public async changePassword(changePasswordRequest: any, currentUser: any) {
-        if (!currentUser || !currentUser.email) {
+        if (!currentUser || !currentUser.id) {
           throw new Error("User email is not available");
         }
         const response = await api.post(`${accountBaseUrl}/change-password`, {
           ...changePasswordRequest,
-          email: currentUser.email,
+          id: currentUser.id,
         });
         return response.data;
       }
