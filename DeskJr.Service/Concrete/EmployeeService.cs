@@ -23,7 +23,7 @@ namespace DeskJr.Service.Concrete
         {
             if (employeeDto.ID == null)
             {
-                if (string.IsNullOrEmpty(employeeDto.Password)) 
+                if (string.IsNullOrEmpty(employeeDto.Password))
                     throw new BadRequestException("Password is not null field!");
 
                 employeeDto.Password = Encrypter.EncryptString(employeeDto.Password);
@@ -89,7 +89,7 @@ namespace DeskJr.Service.Concrete
         }
         public async Task<bool> ChangePasswordAsync(ChangePasswordRequestDTO changePasswordRequest)
         {
-            var employee = await _employeeRepository.GetEmployeeByEmailAsync(changePasswordRequest.Email);
+            var employee = await _employeeRepository.GetByIdAsync(changePasswordRequest.ID);
 
             if (employee == null || employee.Password != Encrypter.EncryptString(changePasswordRequest.OldPassword))
             {
@@ -104,7 +104,11 @@ namespace DeskJr.Service.Concrete
             employee.Password = Encrypter.EncryptString(changePasswordRequest.NewPassword);
             return await _employeeRepository.UpdateAsync(employee);
         }
-
+        public async Task<IEnumerable<EmployeeDto>> GetUpcomingBirthdaysAsync()
+        {
+            var employees = await _employeeRepository.GetUpcomingBirthdaysAsync();
+            return _mapper.Map<IEnumerable<EmployeeDto>>(employees);
+        }
     }
 }
 

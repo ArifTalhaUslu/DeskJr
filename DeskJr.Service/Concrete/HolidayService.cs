@@ -50,6 +50,16 @@ namespace DeskJr.Service.Concrete
 
             return _mapper.Map<IEnumerable<HolidayDto>>(holidays);
         }
+        public async Task<IEnumerable<HolidayDto>> GetUpcomingHolidaysAsync()
+        {
+            var holidays = await _holidayRepository.GetUpcomingHolidaysAsync();
+            if (holidays == null)
+            {
+                throw new Exception("The requested operation could not be completed.");
+            }
+
+            return _mapper.Map<IEnumerable<HolidayDto>>(holidays);
+        }
 
         public async Task<HolidayDto?> GetHolidayByIdAsync(Guid id)
         {

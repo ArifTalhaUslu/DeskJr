@@ -57,6 +57,13 @@ namespace DeskJr.Api.Controllers
             
             return Ok(employees);
         }
+        [HttpGet("upcoming-birthdays")]
+        public async Task<IActionResult> GetUpcomingBirthdaysAsync()
+        {
+            var employees = await _employeeService.GetUpcomingBirthdaysAsync();
+
+            return Ok(employees);
+        }
 
         //employee Managerları çekecek endpoint gerekli
     }
