@@ -15,6 +15,7 @@ interface DataTableProps {
   dataTarget?: string;
   columnNames?: { [key: string]: string };
   hideActions?: string;
+  customElementOfActions?:(item: any) => JSX.Element;
 }
 
 function DataTable({
@@ -28,7 +29,8 @@ function DataTable({
   renderColumn,
   dataTarget,
   columnNames = {},
-  hideActions = 'false'
+  hideActions = 'false',
+  customElementOfActions,
 }: DataTableProps) {
   const [records, setRecords] = useState<any>([]);
   const [columns, setColumns] = useState<string[]>([]);
@@ -99,6 +101,7 @@ function DataTable({
                 dataTarget={"delete-confirm"}
               ></Button>
             )}
+            {customElementOfActions && customElementOfActions(record)}
           </td>
         }
       </tr>
@@ -180,7 +183,7 @@ function DataTable({
   return (
     <div>
       <table
-        className={tableClassName ? tableClassName : "table table-bordered"}
+        className={tableClassName ? tableClassName : "table table-bordered table-hover"}
         style={tableStyle}
       >
         <thead>

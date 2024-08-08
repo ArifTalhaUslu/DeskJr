@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Dto\EmployeeTitleDtos\" />
-    <Folder Include="Dto\LeaveDtos\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -101,6 +101,8 @@ const Leave: any = (props: any) => {
       return formatDate(new Date(value), "dd/MM/yyyy");
     } else if (column === "leaveType") {
       return value && value.name;
+    } else if (column === "approvedBy") {
+      return value && value.name;
     }
 
     return value;
@@ -112,7 +114,7 @@ const Leave: any = (props: any) => {
     leaveType: "Leave Type",
     requestComments: "Request Comments",
     statusOfLeave: "Leave Status",
-    approvedById: "Approved By Employee Id"
+    approvedBy: "Approved By"
   };
 
   return (
@@ -124,7 +126,7 @@ const Leave: any = (props: any) => {
           onDelete={handleDelete}
           isEditable={isEditable}
           isDeletable={isDeletable}
-          hiddenColumns={["id", "requestingEmployeeId", "approvedById", "leaveTypeId"]}
+          hiddenColumns={["id", "requestingEmployeeId", "approvedById", "leaveTypeId", "requestingEmployee"]}
           renderColumn={renderColumn}
           columnNames={columnNames}
           hasNewRecordButton={true}

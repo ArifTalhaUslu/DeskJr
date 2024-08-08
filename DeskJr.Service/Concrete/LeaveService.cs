@@ -6,6 +6,7 @@ using DeskJr.Entity.Types;
 using DeskJr.Repository.Abstract;
 using DeskJr.Service.Dto;
 using DeskJr.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace DeskJr.Services.Concrete
 {
@@ -95,6 +96,33 @@ namespace DeskJr.Services.Concrete
             }
 
             return _mapper.Map<IEnumerable<LeaveDTO>>(leaves);
+        }
+        public async Task<IEnumerable<LeaveDTO>> GetPendingLeavesForApproverEmployeeByEmployeeId(Guid currentUserId)
+        {
+            var leaves = await _leaveRepository.GetPendingLeavesForApproverEmployeeByEmployeeId(currentUserId);
+            if (leaves == null)
+            {
+                throw new NotFoundException("No leaves exists with the provided employee identifier.");
+            }
+
+            return _mapper.Map<IEnumerable<LeaveDTO>>(leaves);
+        }
+
+        public async Task<bool> UpdateLeaveStatus(UpdateLeaveStatusDto request)
+        {
+            var leaveToBeUpdated = await _context.Leaves.FirstOrDefaultAsync(x => x.ID == request.LeaveId);
+            if (leaveToBeUpdated == null)
+                throw new NotFoundException("No leave exists");
+
+            leaveToBeUpdated.StatusOfLeave = request.NewStatus;
+            leaveToBeUpdated.ApprovedById = request.ApprovedById;
+
+            if (request.ApprovedById.HasValue)
+            {
+                leaveToBeUpdated.ApprovedBy = await _context.Employees.FirstOrDefaultAsync(e => e.ID == request.ApprovedById);
+            }
+
+            return await _leaveRepository.UpdateAsync(leaveToBeUpdated);
         }
     }
 }

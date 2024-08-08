@@ -1,4 +1,5 @@
-﻿using DeskJr.Service.Dto;
+﻿using DeskJr.Entity.Types;
+using DeskJr.Service.Dto;
 
 namespace DeskJr.Services.Interfaces
 {
@@ -10,5 +11,7 @@ namespace DeskJr.Services.Interfaces
         Task<bool> UpdateLeaveAsync(LeaveUpdateDTO leaveDTO);
         Task<bool> DeleteLeaveAsync(Guid id);
         Task<IEnumerable<LeaveDTO>> GetLeavesByEmployeeIdAsync(Guid employeeId);
+        Task<IEnumerable<LeaveDTO>> GetPendingLeavesForApproverEmployeeByEmployeeId(Guid currentUserId);
+        Task<bool> UpdateLeaveStatus(UpdateLeaveStatusDto request);
     }
 }

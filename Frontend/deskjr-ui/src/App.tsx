@@ -9,10 +9,9 @@ import {
 } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import MyInfo from "./components/views/MyInfo/MyInfo";
-import Contacts from "./components/views/Contacts";
 import Employee from "./components/views/Employee/Employee";
 import Leaves from "./components/views/Leave/Leave";
-import PendingLeaveRequests from "./components/views/PendingLeaveRequest";
+import PendingLeaveRequests from "./components/views/PendingLeaveRequest/PendingLeaveRequest";
 
 import Holidays from "./components/views/Holiday/Holiday";
 
@@ -47,18 +46,18 @@ const App: React.FC = () => {
         },
         {
           name: "Leave",
-          visible: currentUser?.employeeRole === Roles.Admin,
+          visible: true,
           isDropDown: true,
           subLinks: [
             {
               name: "My Leaves",
               to: "/leaves",
-              visible: currentUser?.employeeRole === Roles.Admin,
+              visible: currentUser?.employeeRole !== Roles.Admin,
             },
             {
               name: "Pending Leave Requests",
               to: "/pendingLeaveRequests",
-              visible: currentUser?.employeeRole === Roles.Admin,
+              visible: currentUser?.employeeRole === Roles.Admin || currentUser?.employeeRole === Roles.Manager,
             },
           ],
         },
@@ -147,7 +146,7 @@ const App: React.FC = () => {
                 <Route path="/leaves" element={<Leaves currentUser={currentUser} />} />
                 <Route
                   path="/pendingLeaveRequests"
-                  element={<PendingLeaveRequests />}
+                  element={<PendingLeaveRequests currentUser={currentUser}/>}
                 />
                 <Route path="/holidays" element={<Holidays />} />
                 <Route path="/titles" element={<EmployeeTitle />} />
