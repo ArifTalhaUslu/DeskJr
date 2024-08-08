@@ -2,7 +2,7 @@
 {
     public class ChangePasswordRequestDTO
     {
-        public string Email { get; set; }
+        public Guid ID { get; set; }
         public string OldPassword { get; set; }
         public string NewPassword { get; set; }
     }

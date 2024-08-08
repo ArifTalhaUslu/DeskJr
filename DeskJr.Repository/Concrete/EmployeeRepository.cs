@@ -39,5 +39,19 @@ namespace DeskJr.Repository.Concrete
         {
             return _context.Employees.Include(x => x.Team).Include(x => x.EmployeeTitle).FirstOrDefault(x => x.ID == id);
         }
+        public async Task<IEnumerable<Employee>> GetUpcomingBirthdaysAsync()
+        {
+            var now = DateTime.Now;
+            var oneMonthLater = now.AddMonths(1);
+
+            var employees = await _context.Employees
+                .Where(x =>
+                    (x.DayOfBirth.Month == now.Month && x.DayOfBirth.Day >= now.Day) ||
+                    (x.DayOfBirth.Month == oneMonthLater.Month && x.DayOfBirth.Day <= oneMonthLater.Day) ||
+                    (x.DayOfBirth.Month > now.Month && x.DayOfBirth.Month < oneMonthLater.Month))
+                .ToListAsync();
+
+            return employees;
+        }
     }
 }

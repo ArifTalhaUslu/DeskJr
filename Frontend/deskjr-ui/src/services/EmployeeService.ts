@@ -11,7 +11,6 @@ export const setError = (error: ErrorResponseDto): SetErrorAction => ({
   });
 
 
-//try-catch eklenecek
 class EmployeeService {
   public async getAllEmployee() {
     const response = await api.get(baseUrl);
@@ -39,6 +38,12 @@ class EmployeeService {
     });
     return response.data;
   }
+  
+  public async getUpcomingBirthdays() {
+    const response = await api.get(`${baseUrl}/upcoming-birthdays`);
+    return response.data;
+  }
+  
 }
 
 export default new EmployeeService();
