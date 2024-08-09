@@ -16,7 +16,7 @@ namespace DeskJr.Data
                     var teamId = Guid.NewGuid();
                     context.Teams.Add(new Team()
                     {
-                        Name = "Default Team",
+                        Name = "Default",
                         ID = teamId,
                     });
                     await context.SaveChangesAsync();
@@ -29,7 +29,7 @@ namespace DeskJr.Data
                     });
                     await context.SaveChangesAsync();
 
-                    var team = context.Teams.FirstOrDefault(t => t.Name == "Default Team");
+                    var team = context.Teams.FirstOrDefault(t => t.Name == "Default");
                     var title = context.EmployeeTitles.FirstOrDefault(et => et.TitleName == "Default Title");
 
                     if (team != null && title != null)
@@ -43,7 +43,7 @@ namespace DeskJr.Data
                             Gender = Entity.Types.EnumGender.Male,
                             EmployeeRole = Entity.Types.EnumRole.Administrator,
                             Email = "admin@deskjr.com",
-                            Password = "202CB962AC59075B964B07152D234B70", // Assuming this is a hashed password
+                            Password = "202CB962AC59075B964B07152D234B70",
                             TeamId = team.ID,
                             EmployeeTitleId = title.ID,
                         });
