@@ -7,9 +7,7 @@ import ConfirmDelete from "../../CommonComponents/ConfirmDelete";
 import LeaveEditForm from "./LeaveEditForm";
 import { formatDate } from "date-fns";
 import { status } from "../../../types/status";
-import ApprovedIcon from "../../CommonComponents/StatusIcons/ApprovedIcon";
-import DeniedIcon from "../../CommonComponents/StatusIcons/DeniedIcon";
-import PendingIcon from "../../CommonComponents/StatusIcons/PendingIcon";
+import StatusIcon from "../../CommonComponents/StatusIcons/StatusIcon";
 
 const Leave: any = (props: any) => {
   const [items, setItems] = useState([]);
@@ -91,13 +89,7 @@ const Leave: any = (props: any) => {
 
   const renderColumn = (column: string, value: any) => {
     if (column === "statusOfLeave") {
-      return value === status.Pending
-        ? <PendingIcon fill="orange" title="Pending"/>
-        : value === status.Approved
-          ? <ApprovedIcon fill="green" title="Approved"/>
-          : value === status.Cancelled
-            ? <DeniedIcon fill="red" title="Denied"/>
-            : value;
+      return value || value == 0 ? <StatusIcon status={value} /> : value;
     } else if (column === "startDate") {
       return formatDate(new Date(value), "dd/MM/yyyy");
     } else if (column === "endDate") {

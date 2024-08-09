@@ -32,7 +32,7 @@ const App: React.FC = () => {
 
   const navigation = (currentUser: any) => {
     return {
-      brand: { name: "�Desk", to: "/" },
+      brand: { name: "� Desk Jr.", to: "/" },
       links: [
         {
           name: "My Info",
