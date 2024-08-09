@@ -98,7 +98,6 @@ function DataTable({
             )}
             {customElementOfActions && customElementOfActions(record)}
           </td>
-        }
       </tr>
     ));
     setRecords([...newRecords]);
