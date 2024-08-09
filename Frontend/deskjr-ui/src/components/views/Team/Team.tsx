@@ -74,7 +74,7 @@ const Team: any = () => {
 
   const renderColumn = (column: string, value: any) => {
     if (column === "manager") {
-      return value && value.name;
+      return (value || value == 0) && value.name;
     }
     return value;
   };

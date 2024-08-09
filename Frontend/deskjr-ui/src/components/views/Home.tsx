@@ -50,18 +50,18 @@ const Home = (props: any) => {
       return value === 2
         ? "Employee"
         : value === 1
-        ? "Manager"
-        : value === 0
-        ? "Admin"
-        : value;
+          ? "Manager"
+          : value === 0
+            ? "Admin"
+            : value;
     } else if (column === "gender") {
       return value === 0 ? "Male" : value === 1 ? "Female" : value;
     } else if (column === "dayOfBirth") {
       return formatDate(new Date(value), "dd/MM/yyyy");
     } else if (column === "employeeTitle") {
-      return value && value.titleName;
+      return (value || value == 0) && value.titleName;
     } else if (column === "team") {
-      return value && value.name;
+      return (value || value == 0) && value.name;
     }
     return value;
   };
@@ -105,7 +105,7 @@ const Home = (props: any) => {
               ]}
               renderColumn={renderColumnEmployee}
               columnNames={columnNamesEmployee}
-              //hideActions={'true'}
+            //hideActions={'true'}
             />
           </Card>
         </div>
@@ -122,7 +122,7 @@ const Home = (props: any) => {
               hiddenColumns={["id"]}
               renderColumn={renderColumnHoliday}
               columnNames={columnNamesHoliday}
-              //hideActions={'true'}
+            //hideActions={'true'}
             />
           </Card>
         </div>

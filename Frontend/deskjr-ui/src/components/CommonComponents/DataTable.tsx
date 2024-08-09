@@ -65,7 +65,7 @@ function DataTable({
               verticalAlign: column === "Actions" ? "top" : "middle",
             }}
           >
-            {renderColumn && renderColumn(column, record[column])}
+            {renderColumn(column, record[column])}
           </td>
         ))}
         <td

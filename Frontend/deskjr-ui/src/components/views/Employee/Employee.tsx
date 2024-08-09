@@ -84,9 +84,9 @@ const Employee: any = () => {
       case "dayOfBirth":
         return formatDate(new Date(value), "dd/MM/yyyy");
       case "employeeTitle":
-        return value && value?.titleName;
+        return (value || value == 0) && value?.titleName;
       case "team":
-        return value && value?.name;
+        return (value || value == 0) && value?.name;
       default:
         return value;
     }
