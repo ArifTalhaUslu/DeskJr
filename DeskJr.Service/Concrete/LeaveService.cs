@@ -193,7 +193,7 @@ namespace DeskJr.Services.Concrete
                 { "StartDate", startDate.ToShortDateString() },
                 { "EndDate", endDate.ToShortDateString() },
                 { "ApprovalStatus", isApproved ? "Onaylanmıştır" : "Reddedilmiştir" },
-                { "ApprovalStatusClass", isApproved ? "" : "reject" }
+                { "ApprovalStatusClass", isApproved ? "approved" : "reject" }
             };
             await _sender.SendEmailAsync(toEmail, $"İzin Talebi {variables["ApprovalStatus"]}", template, variables);
         }

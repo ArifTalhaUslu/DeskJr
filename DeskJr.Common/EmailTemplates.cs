@@ -50,8 +50,8 @@
                 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
                 body { font-family: 'Roboto', sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; }
                 .container { max-width: 600px; margin: 20px auto; padding: 20px; background-color: #ffffff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
-                .header { background-color: #28A745; color: #ffffff; padding: 20px; border-radius: 12px 12px 0 0; text-align: center; }
-                .header.reject { background-color: #DC3545; }
+                .approved { background-color: #28A745; color: #ffffff; padding: 20px; border-radius: 12px 12px 0 0; text-align: center; }
+                .reject { background-color: #DC3545; color: #ffffff; padding: 20px; border-radius: 12px 12px 0 0; text-align: center; }
                 .content { padding: 20px; color: #333333; }
                 .footer { margin-top: 20px; text-align: center; color: #888888; font-size: 12px; }
                 .button { display: inline-block; padding: 12px 24px; margin-top: 20px; background-color: #28A745; color: #ffffff; text-decoration: none; border-radius: 8px; font-weight: 500; transition: background-color 0.3s; }
@@ -61,12 +61,12 @@
         </head>
         <body>
             <div class='container'>
-                <div class='header {ApprovalStatusClass}'>
+                <div class='{ApprovalStatusClass}'>
                     <h2>DESKJR - İzin Talebi {ApprovalStatus}</h2>
                 </div>
                 <div class='content'>
                     <p>Merhaba {EmployeeName},</p>
-                    <p>İzin talebiniz {ApprovalStatus} edilmiştir.</p>
+                    <p>İzin talebiniz {ApprovalStatus}.</p>
                     <ul>
                         <li><strong>Başlangıç Tarihi:</strong> {StartDate}</li>
                         <li><strong>Bitiş Tarihi:</strong> {EndDate}</li>
