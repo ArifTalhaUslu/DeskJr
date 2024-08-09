@@ -72,7 +72,7 @@ const Leave: any = (props: any) => {
   };
 
   const isDeletable = (item: any) => {
-    if (item.statusOfLeave === status.Cancelled)
+    if (item.statusOfLeave === status.Cancelled || item.statusOfLeave === status.Pending)
       return true;
     return false;
   };
