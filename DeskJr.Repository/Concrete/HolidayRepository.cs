@@ -19,7 +19,7 @@ namespace DeskJr.Repository.Concrete
         {
             var now = DateTime.Now;
             return await _context.Holidays
-                .Where(x => x.EndDate >= now && x.StartDate <= now.AddMonths(1))
+                .Where(x => x.EndDate >= now)
                 .ToListAsync();
         }
     }
