@@ -71,6 +71,20 @@ namespace DeskJr.Repository.Concrete
                 .OrderByDescending(x => x.StartDate).ThenByDescending(x => x.EndDate)
                 .ToListAsync();
         }
+        public async Task<IEnumerable<Leave>> GetValidLeaves()
+        {
+            var now = DateTime.Now;
+            var oneMonthFromNow = now.AddMonths(1);
+
+            return await _context.Leaves
+                .Include(x => x.RequestingEmployee)
+                .Where(x =>
+                    x.StatusOfLeave == EnumStatusOfLeave.Approved &&
+                    x.EndDate > now &&
+                    x.StartDate < oneMonthFromNow)
+                .OrderBy(x => x.StartDate).ThenBy(x => x.EndDate)
+                .ToListAsync();
+        }
+
     }
 }
-
