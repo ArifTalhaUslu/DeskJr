@@ -6,9 +6,7 @@ import leaveService from "../../../services/LeaveService";
 import Button from "../../CommonComponents/Button";
 import { formatDate } from "date-fns";
 import { status } from "../../../types/status";
-import PendingIcon from "../../CommonComponents/StatusIcons/PendingIcon";
-import ApprovedIcon from "../../CommonComponents/StatusIcons/ApprovedIcon";
-import DeniedIcon from "../../CommonComponents/StatusIcons/DeniedIcon";
+import StatusIcon from "../../CommonComponents/StatusIcons/StatusIcon";
 
 const PendingLeaveRequest: any = (props: any) => {
   const [pendingLeaves, setPendingLeaves] = useState([]);
@@ -63,13 +61,7 @@ const PendingLeaveRequest: any = (props: any) => {
 
   const renderColumn = (column: string, value: any) => {
     if (column === "statusOfLeave") {
-      return value === status.Pending
-        ? <PendingIcon fill="orange" title="Pending" />
-        : value === status.Approved
-          ? <ApprovedIcon fill="green" title="Approved"/>
-          : value === status.Cancelled
-            ? <DeniedIcon fill="red" title="Denied"/>
-            : value;
+      return value || value == 0 ? <StatusIcon status={value} /> : value;
     } else if (column === "requestingEmployee") {
       return value && value.name;
     } else if (column === "startDate") {
