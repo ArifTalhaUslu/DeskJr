@@ -41,6 +41,16 @@ class LeaveService {
         const response = await api.get(`${baseUrl}/leaveByEmployeeId/${employeeId}`);
         return response.data;
     }
+
+    public async getPendingLeavesForApproverEmployeeByEmployeeId(currentUserId:any, role:any){
+        const response = await api.post(`${baseUrl}/pendingLeaves`, {currentUserId, role});
+        return response.data;
+    }
+
+    public async updateLeaveStatus(leaveId: any, newStatus: any, approvedById: any){
+        const response = await api.post(`${baseUrl}/updateStatus`, {leaveId, newStatus, approvedById});
+        return response.data;
+    }
 }
 
 export default new LeaveService();

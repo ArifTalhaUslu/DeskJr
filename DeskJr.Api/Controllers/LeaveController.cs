@@ -1,4 +1,5 @@
-﻿using DeskJr.Service.Dto;
+﻿using DeskJr.Entity.Types;
+using DeskJr.Service.Dto;
 using DeskJr.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -54,10 +55,25 @@ namespace DeskJr.Api.Controllers
 
             return Ok();
         }
+
         [HttpGet("leaveByEmployeeId/{employeeId}")]
         public async Task<ActionResult<IEnumerable<LeaveDTO>>> GetLeavesByEmployeeId(Guid employeeId)
         {
             var leaves = await _leaveService.GetLeavesByEmployeeIdAsync(employeeId);
+            return Ok(leaves);
+        }
+
+        [HttpPost("pendingLeaves")]
+        public async Task<ActionResult<IEnumerable<LeaveDTO>>> GetPendingLeavesForApproverEmployeeByEmployeeId(PendingLeaveRequestDto request)
+        {
+            var leaves = await _leaveService.GetPendingLeavesForApproverEmployeeByEmployeeId(request.currentUserId, (int)request.role);
+            return Ok(leaves);
+        }
+
+        [HttpPost("updateStatus")]
+        public async Task<ActionResult<IEnumerable<LeaveDTO>>> UpdateLeaveStatus(UpdateLeaveStatusDto request)
+        {
+            var leaves = await _leaveService.UpdateLeaveStatus(request);
             return Ok(leaves);
         }
     }

@@ -24,6 +24,8 @@ namespace DeskJr.Service.Mapping
             CreateMap<Leave, LeaveDTO>().ReverseMap();
             CreateMap<Leave, LeaveCreateDTO>().ReverseMap();
             CreateMap<Leave, LeaveUpdateDTO>().ReverseMap();
+            CreateMap<Leave, PendingLeaveRequestDto>().ReverseMap();
+            CreateMap<Leave, UpdateLeaveStatusDto>().ReverseMap();
             CreateMap<Holiday, HolidayDto>().ReverseMap();
             CreateMap<Holiday, AddOrUpdateHolidayDto>().ReverseMap();
         }

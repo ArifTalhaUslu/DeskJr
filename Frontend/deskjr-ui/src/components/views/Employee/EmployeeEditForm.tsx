@@ -5,6 +5,7 @@ import employeeService from "../../../services/EmployeeService";
 import { showErrorToast, showSuccessToast } from "../../../utils/toastHelper";
 import teamService from "../../../services/TeamService";
 import employeeTitleService from "../../../services/EmployeeTitleService";
+import { Roles } from "../../../types/Roles";
 const EmployeeEditForm: any = (props: any) => {
   const [teams, setTeams] = useState([]);
   const [titles, setTitles] = useState([]);
@@ -15,11 +16,11 @@ const EmployeeEditForm: any = (props: any) => {
     { value: 0, label: "Male" },
   ]);
 
-  const [roleOptions] = useState([ //types ile yap
+  const [roleOptions] = useState([
     { value: "" },
-    { value: 2, label: "Employee" },
-    { value: 1, label: "Manager" },
-    { value: 0, label: "Admin" },
+    { value: Roles.Employee, label: Roles[Roles.Employee] }, // label as 'Employee'
+    { value: Roles.Manager, label: Roles[Roles.Manager] },   // label as 'Manager'
+    { value: Roles.Admin, label: Roles[Roles.Admin] },  
   ]);
 
   useEffect(() => {
@@ -109,9 +110,9 @@ const EmployeeEditForm: any = (props: any) => {
                 type="button"
                 className="close"
                 onClick={() => {
-                  props.onClose();
                   const close_button = document.getElementById("form-close");
                   close_button?.click();
+                  props.onClose();
                 }}
               >
                 <span aria-hidden="true">&times;</span>
@@ -218,7 +219,7 @@ const EmployeeEditForm: any = (props: any) => {
 
                   <label className="col-form-label">E-mail:</label>
                   <Input
-                    type="text"
+                    type="email"
                     name="email"
                     value={
                       props.selectedEmployee && props.selectedEmployee.email
