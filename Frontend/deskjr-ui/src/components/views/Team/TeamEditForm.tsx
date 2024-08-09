@@ -4,6 +4,7 @@ import Input from "../../CommonComponents/Input";
 import Button from "../../CommonComponents/Button";
 import { showErrorToast, showSuccessToast } from "../../../utils/toastHelper";
 import employeeService from "../../../services/EmployeeService";
+import { Roles } from "../../../types/Roles";
 
 const TeamEditForm: any = (props: any) => {
   const [managers, setManagers] = useState([]);
@@ -21,9 +22,7 @@ const TeamEditForm: any = (props: any) => {
     }
 
     employeeService.getAllEmployee().then((data) => {
-      const managers = data.filter(
-        (employee: any) => employee.employeeRole === 1
-      );
+      const managers = data.filter((employee: any) => (employee.employeeRole !== Roles.Employee));
       setManagers(managers);
     });
   }, [props, props.selectedItemId]);

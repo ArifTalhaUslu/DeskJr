@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Employee } from "../../types/employee";
 import Button from "./Button";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 
 interface NavigationBarProps {
     currentUser: Employee;
@@ -27,6 +27,14 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
     setCurrentUser,
 }) => {
     const navigate = useNavigate();
+
+
+    const handleLogout = () => {
+        setCurrentUser(null); 
+        Cookies.remove("id");
+        Cookies.remove("token");
+        window.location.reload(); // geçici çözüm
+    };
 
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -106,7 +114,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
                         })}
                     </ul>
                     <ul className="navbar-nav ml-auto">
-                        <li className="nav-item dropdown">
+                        <li className="nav-item dropdown ">
                             <a
                                 className="nav-link dropdown-toggle"
                                 href="#"
@@ -115,6 +123,10 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
                                 data-toggle="dropdown"
                                 aria-haspopup="true"
                                 aria-expanded="false"
+                                style={{
+                                    fontWeight: "bold",
+                                    textTransform: "capitalize",
+                                }}
                             >
                                 <i className="bi bi-person "></i>{" "}
                                 {currentUser
@@ -128,8 +140,8 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
                                 <Link className="dropdown-item " to="/myInfo">
                                     Profile
                                 </Link>
-                                <Link className="dropdown-item" to="/settings">
-                                    Settings
+                                <Link className="dropdown-item" to="/changePassword">
+                                    Change Password
                                 </Link>
                                 <div className="dropdown-divider"></div>
                                 <Button
@@ -137,12 +149,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
                                     type="button"
                                     className="dropdown-item btn btn-danger"
                                     style={{ color: "red", fontWeight: "bold" }}
-                                    onClick={() => {
-                                        setCurrentUser(null);
-                                        Cookies.remove("id");
-                                        Cookies.remove("token");
-                                        navigate("/login");
-                                    }}
+                                    onClick={handleLogout}
                                 />
                             </div>
                         </li>

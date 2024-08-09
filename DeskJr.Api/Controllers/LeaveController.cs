@@ -1,4 +1,5 @@
-﻿using DeskJr.Service.Dto;
+﻿using DeskJr.Entity.Types;
+using DeskJr.Service.Dto;
 using DeskJr.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -28,8 +29,6 @@ namespace DeskJr.Api.Controllers
         public async Task<IActionResult> GetLeaveById(Guid id)
         {
             var leave = await _leaveService.GetLeaveByIdAsync(id);
-            if (leave == null)
-                return NotFound();
 
             return Ok(leave);
         }
@@ -38,43 +37,51 @@ namespace DeskJr.Api.Controllers
         public async Task<IActionResult> CreateLeave(LeaveCreateDTO leaveDTO)
         {
             var result = await _leaveService.CreateLeaveAsync(leaveDTO);
-            if (result)
-            {
-                return Ok();
-            }
-            return BadRequest();
+
+            return Ok();
         }
 
         [HttpPut]
         public async Task<IActionResult> UpdateLeave(LeaveUpdateDTO leaveDTO)
         {
             var result = await _leaveService.UpdateLeaveAsync(leaveDTO);
-            if (result)
-            {
-                return Ok();
-            }
-            return BadRequest();
+            return Ok();
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLeave(Guid id)
         {
             var result = await _leaveService.DeleteLeaveAsync(id);
-            if (result)
-            {
-                return Ok();
-            }
-            return NotFound();
+
+            return Ok();
         }
-        [HttpGet("employee/{employeeId}")]
+
+        [HttpGet("leaveByEmployeeId/{employeeId}")]
         public async Task<ActionResult<IEnumerable<LeaveDTO>>> GetLeavesByEmployeeId(Guid employeeId)
         {
             var leaves = await _leaveService.GetLeavesByEmployeeIdAsync(employeeId);
-            if (leaves == null || !leaves.Any())
-            {
-                return NotFound("jlnvfv");
-            }
             return Ok(leaves);
+        }
+
+        [HttpPost("pendingLeaves")]
+        public async Task<ActionResult<IEnumerable<LeaveDTO>>> GetPendingLeavesForApproverEmployeeByEmployeeId(PendingLeaveRequestDto request)
+        {
+            var leaves = await _leaveService.GetPendingLeavesForApproverEmployeeByEmployeeId(request.currentUserId, (int)request.role);
+            return Ok(leaves);
+        }
+
+        [HttpPost("updateStatus")]
+        public async Task<ActionResult<IEnumerable<LeaveDTO>>> UpdateLeaveStatus(UpdateLeaveStatusDto request)
+        {
+            var leaves = await _leaveService.UpdateLeaveStatus(request);
+            return Ok(leaves);
+        }
+
+        [HttpGet("recentValidLeaves")]
+        public async Task<IActionResult> GetRecentValidLeaves()
+        {
+            var validLeaves = await _leaveService.GetValidLeaves();
+            return Ok(validLeaves);
         }
     }
 }

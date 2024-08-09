@@ -18,11 +18,6 @@ class TeamService{
         return response.data;
       }
     
-    //   public async updateTeam(id: any) {
-    //     const response = await api.put(`${baseUrl}/${id}`);
-    //     return response.data;
-    //   }
-    
       public async deleteTeam(id: any) {
         const response = await api.delete(`${baseUrl}/${id}`);
         return response.data;

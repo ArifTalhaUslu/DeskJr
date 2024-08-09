@@ -27,21 +27,14 @@ namespace DeskJr.Api.Controllers
         public async Task<ActionResult> CreateLeaveType(LeaveTypeUpdateDTO leaveTypeUpdateDto)
         {
             var result = await _leaveTypeservice.AddOrUpdateLeaveTypeAsync(leaveTypeUpdateDto);
-            if (result)
-            {
-                return Ok();
-            }
-            return BadRequest();
+
+            return Ok();
         }
 
         [HttpDelete]
         public async Task<ActionResult> DeleteEmployee(LeaveTypeDeleteDto leaveTypeDeleteDto)
         {
             var result = await _leaveTypeservice.DeleteLeaveTypeAsync(leaveTypeDeleteDto.Id);
-            if (!result)
-            {
-                return NotFound();
-            }
 
             return Ok();
         }
@@ -50,6 +43,7 @@ namespace DeskJr.Api.Controllers
         public async Task<ActionResult> GetAllLeaveTypes()
         {
             var leaveTypes = await _leaveTypeservice.GetAllLeaveTypesAsync();
+           
             return Ok(leaveTypes);
         }
 
@@ -57,6 +51,7 @@ namespace DeskJr.Api.Controllers
         public async Task<ActionResult> GetLeaveTypeById(Guid id)
         {
             var leaveType = await _leaveTypeservice.GetLeaveTypeByIdAsync(id);
+           
             return Ok(leaveType);
         }
 
@@ -64,11 +59,8 @@ namespace DeskJr.Api.Controllers
         public async Task<ActionResult> UpdateLeaveType(LeaveTypeUpdateDTO LeaveTypeDto)
         {
             var result = await _leaveTypeservice.UpdateLeaveTypeAsync(LeaveTypeDto);
-            if (result)
-            {
-                return Ok();
-            }
-            return BadRequest();
+
+            return Ok();
         }
     }
 }

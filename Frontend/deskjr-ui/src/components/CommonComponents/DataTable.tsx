@@ -13,6 +13,8 @@ interface DataTableProps {
   renderColumn?: (column: string, value: any) => JSX.Element | string;
   dataTarget?: string;
   columnNames?: { [key: string]: string };
+  hideActions?: string;
+  customElementOfActions?:(item: any) => JSX.Element;
 }
 
 function DataTable({
@@ -26,6 +28,8 @@ function DataTable({
   renderColumn,
   dataTarget,
   columnNames = {},
+  hideActions = 'false',
+  customElementOfActions,
 }: DataTableProps) {
   const [records, setRecords] = useState<any>([]);
   const [columns, setColumns] = useState<string[]>([]);
@@ -73,27 +77,28 @@ function DataTable({
           style={{
             padding: "10px 20px",
             verticalAlign: "top",
-          }}
-        >
-          {isEditable && isEditable(record) && onEdit && (
-            <Button
-              text="Edit"
-              className={"btn btn-warning mr-2"}
-              onClick={() => onEdit(record)}
-              isModalTrigger={true}
-              dataTarget={dataTarget}
-            ></Button>
-          )}
-          {isDeletable && isDeletable(record) && onDelete && (
-            <Button
-              text="Delete"
-              className={"btn btn-danger"}
-              onClick={() => onDelete(record)}
-              isModalTrigger={true}
-              dataTarget={"delete-confirm"}
-            ></Button>
-          )}
-        </td>
+          }}>
+            {isEditable && isEditable(record) && onEdit && (
+              <Button
+                text="Edit"
+                className={"btn btn-warning mr-2"}
+                onClick={() => onEdit(record)}
+                isModalTrigger={true}
+                dataTarget={dataTarget}
+              ></Button>
+            )}
+            {isDeletable && isDeletable(record) && onDelete && (
+              <Button
+                text="Delete"
+                className={"btn btn-danger"}
+                onClick={() => onDelete(record)}
+                isModalTrigger={true}
+                dataTarget={"delete-confirm"}
+              ></Button>
+            )}
+            {customElementOfActions && customElementOfActions(record)}
+          </td>
+        }
       </tr>
     ));
     setRecords([...newRecords]);
@@ -168,7 +173,7 @@ function DataTable({
   return (
     <div>
       <table
-        className={tableClassName ? tableClassName : "table table-bordered"}
+        className={tableClassName ? tableClassName : "table table-bordered table-hover"}
         style={tableStyle}
       >
         <thead>
