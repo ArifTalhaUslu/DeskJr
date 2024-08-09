@@ -13,5 +13,6 @@ namespace DeskJr.Services.Interfaces
         Task<IEnumerable<LeaveDTO>> GetLeavesByEmployeeIdAsync(Guid employeeId);
         Task<IEnumerable<LeaveDTO>> GetPendingLeavesForApproverEmployeeByEmployeeId(Guid currentUserId, int role);
         Task<bool> UpdateLeaveStatus(UpdateLeaveStatusDto request);
+        Task<List<LeaveDTO>> GetValidLeaves();
     }
 }
