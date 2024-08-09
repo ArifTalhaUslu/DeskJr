@@ -7,6 +7,11 @@ class HolidayService {
     return response.data;
   }
 
+  public async getUpComingHoliday() {
+    const response = await api.get(`${baseUrl}/upComing`);
+    return response.data;
+  }
+
   public async getHolidayById(id: any) {
     const response = await api.get(`${baseUrl}/${id}`);
     return response.data;

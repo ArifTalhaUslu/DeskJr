@@ -28,6 +28,14 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
 }) => {
     const navigate = useNavigate();
 
+
+    const handleLogout = () => {
+        setCurrentUser(null); 
+        Cookies.remove("id");
+        Cookies.remove("token");
+        window.location.reload(); // geçici çözüm
+    };
+
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container-fluid">
@@ -141,12 +149,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
                                     type="button"
                                     className="dropdown-item btn btn-danger"
                                     style={{ color: "red", fontWeight: "bold" }}
-                                    onClick={() => {
-                                        setCurrentUser(null);
-                                        Cookies.remove("id");
-                                        Cookies.remove("token");
-                                        navigate("/login");
-                                    }}
+                                    onClick={handleLogout}
                                 />
                             </div>
                         </li>

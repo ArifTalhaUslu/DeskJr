@@ -1,5 +1,4 @@
-﻿using DeskJr.Common.Exceptions;
-using DeskJr.Service.Abstract;
+﻿using DeskJr.Service.Abstract;
 using DeskJr.Service.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -55,6 +54,13 @@ namespace DeskJr.Api.Controllers
         {
             var employees = await _employeeService.GetEmployeesByTeamIdAsync(teamId);
             
+            return Ok(employees);
+        }
+        [HttpGet("upcoming-birthdays")]
+        public async Task<IActionResult> GetUpcomingBirthdaysAsync()
+        {
+            var employees = await _employeeService.GetUpcomingBirthdaysAsync();
+
             return Ok(employees);
         }
 

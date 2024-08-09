@@ -42,6 +42,14 @@ namespace DeskJr.Api.Controllers
             return Ok(holidays);
         }
 
+        [HttpGet("upComing")]
+        public async Task<ActionResult> GetUpcomingHolidaysAsync()
+        {
+            var holidays = await _holidayService.GetUpcomingHolidaysAsync();
+            
+            return Ok(holidays);
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult> GetHolidayById(Guid id)
         {
