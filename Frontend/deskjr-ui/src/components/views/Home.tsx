@@ -64,13 +64,13 @@ const Home = (props: any) => {
         name: "Name",
         dayOfBirth: "Birthday"
     };
-    
+
     const renderColumnLeave = (column: string, value: any) => {
         if (column === "name") {
-            return value; 
+            return value;
         } else if (column === "startDate" || column === "endDate") {
-            return formatDate(new Date(value), "dd/MM/yyyy"); 
-        } else if (column === "requestingEmployee"){
+            return formatDate(new Date(value), "dd/MM/yyyy");
+        } else if (column === "requestingEmployee") {
             return value.name
         }
         return null;
@@ -109,7 +109,7 @@ const Home = (props: any) => {
             <div className="row">
                 <div className="col-12">
                     <div className="p-3 my-3 bg-primary text-white card">
-                        <h1 className="mt-4" style={{textTransform: 'capitalize'}}>
+                        <h1 className="mt-4" style={{ textTransform: 'capitalize' }}>
                             <h1> {props.currentUser?.name} <span className="text-sm"> ({props.currentUser?.team?.name} Team) </span> </h1>
                             <h2>{props.currentUser?.employeeTitle?.titleName}</h2>
                         </h1>
@@ -121,7 +121,7 @@ const Home = (props: any) => {
                             items={recentValidLeaves}
                             isEditable={() => { return false; }}
                             isDeletable={() => { return false; }}
-                            hiddenColumns={["id", "password", "teamId", "employeeRole", "gender", "employeeTitle", "team", "email","leaveTypeId","requestingEmployeeId","leaveType","requestComments","statusOfLeave","approvedById","approvedBy"]}
+                            hiddenColumns={["id", "password", "teamId", "employeeRole", "gender", "employeeTitle", "team", "email", "leaveTypeId", "requestingEmployeeId", "leaveType", "requestComments", "statusOfLeave", "approvedById", "approvedBy"]}
                             renderColumn={renderColumnLeave}
                             columnNames={columnNamesEmployeeLeaves}
                             hideActions={'true'}
