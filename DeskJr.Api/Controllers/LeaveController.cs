@@ -76,6 +76,13 @@ namespace DeskJr.Api.Controllers
             var leaves = await _leaveService.UpdateLeaveStatus(request);
             return Ok(leaves);
         }
+
+        [HttpGet("recentValidLeaves")]
+        public async Task<IActionResult> GetRecentValidLeaves()
+        {
+            var validLeaves = await _leaveService.GetValidLeaves();
+            return Ok(validLeaves);
+        }
     }
 }
 

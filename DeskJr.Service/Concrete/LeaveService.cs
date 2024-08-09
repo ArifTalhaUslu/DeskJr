@@ -164,6 +164,12 @@ namespace DeskJr.Services.Concrete
 
             return result;
         }
+        public async Task<List<LeaveDTO>> GetValidLeaves()
+        {
+            var validLeaves = await _leaveRepository.GetValidLeaves();
+            return _mapper.Map<List<LeaveDTO>>(validLeaves);
+        }
+
 
         private async Task SendLeaveRequestNotificationAsync(string toEmail, string teamLeaderName, string employeeName, DateTime startDate, DateTime endDate)
         {
