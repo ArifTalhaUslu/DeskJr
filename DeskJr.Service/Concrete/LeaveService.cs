@@ -23,7 +23,7 @@ namespace DeskJr.Services.Concrete
         private readonly EmailSender _sender;
         private readonly ITeamRepository _teamRepository;
 
-        public LeaveService(ILeaveRepository leaveRepository, IEmployeeRepository employeeRepository, AppDbContext context, IMapper mapper, ILeaveTypeRepository leaveTypeRepository, ITeamRepository teamRepository)
+        public LeaveService(ILeaveRepository leaveRepository, IEmployeeRepository employeeRepository, AppDbContext context, IMapper mapper, ILeaveTypeRepository leaveTypeRepository, ITeamRepository teamRepository, EmailSender emailSender)
         {
             _leaveRepository = leaveRepository;
             _employeeRepository = employeeRepository;
@@ -31,14 +31,13 @@ namespace DeskJr.Services.Concrete
             _mapper = mapper;
             _leaveTypeRepository = leaveTypeRepository;
             _teamRepository = teamRepository;
+            _sender = emailSender;
         }
 
         public async Task<bool> CreateLeaveAsync(LeaveCreateDTO leaveDTO)
         {
             var leave = _mapper.Map<Leave>(leaveDTO);
-            var requestingEmployee = await _employeeRepository.GetByIdAsync(leaveDTO.RequestingEmployeeId);
-            var requestingEmployeeTeam = requestingEmployee?.Team;
-            var manager = requestingEmployeeTeam?.Manager;
+            var requestingEmployee = _employeeRepository.GetByIdWithInclude(leaveDTO.RequestingEmployeeId);
 
             if (requestingEmployee == null)
             {
@@ -56,9 +55,14 @@ namespace DeskJr.Services.Concrete
 
             var result = await _leaveRepository.AddAsync(leave);
 
-            if (manager is not null)
+            var requestingEmployeeTeam = requestingEmployee.Team;
+            if (requestingEmployeeTeam is not null && requestingEmployeeTeam.ManagerId is not null)
             {
-                await SendLeaveRequestNotificationAsync(manager.Email, manager.Name, requestingEmployee.Name, leave.StartDate, leave.EndDate);
+                var manager = await _employeeRepository.GetByIdAsync(requestingEmployeeTeam.ManagerId.Value);
+                if (manager is not null)
+                {
+                    await SendLeaveRequestNotificationAsync(manager.Email, manager.Name, requestingEmployee.Name, leave.StartDate, leave.EndDate);
+                }
             }
 
             return result;
@@ -146,7 +150,19 @@ namespace DeskJr.Services.Concrete
                 leaveToBeUpdated.ApprovedBy = await _context.Employees.FirstOrDefaultAsync(e => e.ID == request.ApprovedById);
             }
 
-            return await _leaveRepository.UpdateAsync(leaveToBeUpdated);
+            var result = await _leaveRepository.UpdateAsync(leaveToBeUpdated);
+
+            var requestingEmployee = _employeeRepository.GetByIdWithInclude(leaveToBeUpdated.RequestingEmployeeId);
+            var requestingEmployeeTeam = requestingEmployee?.Team;
+            var manager = await _employeeRepository.GetByIdAsync(requestingEmployeeTeam is not null ? requestingEmployeeTeam.ManagerId.HasValue ? requestingEmployeeTeam.ManagerId.Value : Guid.Empty : Guid.Empty);
+            var isApproved = (request.NewStatus == EnumStatusOfLeave.Approved);
+
+            if (manager is not null && requestingEmployee is not null)
+            {
+                await SendLeaveRequestResponseAsync(requestingEmployee.Email, requestingEmployee.Name, leaveToBeUpdated.StartDate, leaveToBeUpdated.EndDate, isApproved);
+            }
+
+            return result;
         }
 
         private async Task SendLeaveRequestNotificationAsync(string toEmail, string teamLeaderName, string employeeName, DateTime startDate, DateTime endDate)
@@ -154,22 +170,22 @@ namespace DeskJr.Services.Concrete
             string template = EmailTemplates.LeaveRequestNotificationTemplate;
             var variables = new Dictionary<string, string>
             {
-                { "TemaLeaderName", teamLeaderName },
+                { "TeamLeaderName", teamLeaderName },
                 { "EmployeeName", employeeName },
-                { "StartDate", startDate.ToString("yyyy-MM-dd") },
-                { "EndDate", endDate.ToString("yyyy-MM-dd") }
+                { "StartDate", startDate.ToShortDateString() },
+                { "EndDate", endDate.ToShortDateString() }
             };
             await _sender.SendEmailAsync(toEmail, "İzin Talebi Bildirimi", template, variables);
         }
 
-        public async Task SendLeaveRequestResponseAsync(string toEmail, string employeeName, string startDate, string endDate, bool isApproved)
+        public async Task SendLeaveRequestResponseAsync(string toEmail, string employeeName, DateTime startDate, DateTime endDate, bool isApproved)
         {
             string template = EmailTemplates.LeaveRequestResponseTemplate;
             var variables = new Dictionary<string, string>
             {
                 { "EmployeeName", employeeName },
-                { "StartDate", startDate },
-                { "EndDate", endDate },
+                { "StartDate", startDate.ToShortDateString() },
+                { "EndDate", endDate.ToShortDateString() },
                 { "ApprovalStatus", isApproved ? "Onaylanmıştır" : "Reddedilmiştir" },
                 { "ApprovalStatusClass", isApproved ? "" : "reject" }
             };
