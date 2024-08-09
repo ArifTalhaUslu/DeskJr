@@ -42,6 +42,11 @@ namespace DeskJr.Services.Concrete
             leave.RequestingEmployee = requestingEmployee;
             leave.StatusOfLeave = (int)EnumStatusOfLeave.Pending;
 
+            if (leave.StartDate > leave.EndDate)
+            {
+                throw new ArgumentException("StartDate cannot be later than the EndDate");
+            }
+
             return await _leaveRepository.AddAsync(leave);
         }
 
@@ -85,6 +90,11 @@ namespace DeskJr.Services.Concrete
                 throw new NotFoundException("No leave exists with the provided identifier.");
             }
 
+            if (leave.StartDate > leave.EndDate)
+            {
+                throw new ArgumentException("StartDate cannot be later than the EndDate");
+            }
+
             return await _leaveRepository.UpdateAsync(leave);
         }
         public async Task<IEnumerable<LeaveDTO>> GetLeavesByEmployeeIdAsync(Guid employeeId)
@@ -97,9 +107,9 @@ namespace DeskJr.Services.Concrete
 
             return _mapper.Map<IEnumerable<LeaveDTO>>(leaves);
         }
-        public async Task<IEnumerable<LeaveDTO>> GetPendingLeavesForApproverEmployeeByEmployeeId(Guid currentUserId)
+        public async Task<IEnumerable<LeaveDTO>> GetPendingLeavesForApproverEmployeeByEmployeeId(Guid currentUserId, int role)
         {
-            var leaves = await _leaveRepository.GetPendingLeavesForApproverEmployeeByEmployeeId(currentUserId);
+            var leaves = await _leaveRepository.GetPendingLeavesForApproverEmployeeByEmployeeId(currentUserId, role);
             if (leaves == null)
             {
                 throw new NotFoundException("No leaves exists with the provided employee identifier.");

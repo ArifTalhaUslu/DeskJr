@@ -81,7 +81,8 @@ const Home = (props: any) => {
                 <div className="col-12">
                     <div className="p-3 my-3 bg-primary text-white card">
                         <h1 className="mt-4" style={{textTransform: 'capitalize'}}>
-                            {props.currentUser?.name}
+                            <h1> {props.currentUser?.name} <span className="text-sm"> ({props.currentUser?.team?.name} Team) </span> </h1>
+                            <h2>{props.currentUser?.employeeTitle?.titleName}</h2>
                         </h1>
                     </div>
                 </div>

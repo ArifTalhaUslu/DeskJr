@@ -5,7 +5,10 @@ import { showErrorToast, showSuccessToast } from "../../../utils/toastHelper";
 import leaveService from "../../../services/LeaveService";
 import Button from "../../CommonComponents/Button";
 import { formatDate } from "date-fns";
-import { statusOfLeave } from "../../../types/statusOfLeave";
+import { status } from "../../../types/status";
+import PendingIcon from "../../CommonComponents/StatusIcons/PendingIcon";
+import ApprovedIcon from "../../CommonComponents/StatusIcons/ApprovedIcon";
+import DeniedIcon from "../../CommonComponents/StatusIcons/DeniedIcon";
 
 const PendingLeaveRequest: any = (props: any) => {
   const [pendingLeaves, setPendingLeaves] = useState([]);
@@ -17,7 +20,7 @@ const PendingLeaveRequest: any = (props: any) => {
 
   const getList = async () => {
     await leaveService
-      .getPendingLeavesForApproverEmployeeByEmployeeId(props.currentUser?.id)
+      .getPendingLeavesForApproverEmployeeByEmployeeId(props.currentUser?.id, props.currentUser?.employeeRole)
       .then((data) => {
         setPendingLeaves(data);
       })
@@ -27,7 +30,7 @@ const PendingLeaveRequest: any = (props: any) => {
   }
 
   const Approve = (leave: any) => {
-    leaveService.updateLeaveStatus(leave.id, statusOfLeave.Approved, props.currentUser?.id)
+    leaveService.updateLeaveStatus(leave.id, status.Approved, props.currentUser?.id)
       .then(() => {
         showSuccessToast('Successfully Confirmed!');
         setIsTrigger(!isTrigger);
@@ -37,7 +40,7 @@ const PendingLeaveRequest: any = (props: any) => {
   }
 
   const Deny = (leave: any) => {
-    leaveService.updateLeaveStatus(leave.id, statusOfLeave.Cancelled, props.currentUser?.id)
+    leaveService.updateLeaveStatus(leave.id, status.Cancelled, props.currentUser?.id)
       .then(() => {
         showSuccessToast('Successfully Rejected!');
         setIsTrigger(!isTrigger);
@@ -60,12 +63,12 @@ const PendingLeaveRequest: any = (props: any) => {
 
   const renderColumn = (column: string, value: any) => {
     if (column === "statusOfLeave") {
-      return value === statusOfLeave.Pending
-        ? "Pending"
-        : value === statusOfLeave.Approved
-          ? "Approved"
-          : value === statusOfLeave.Cancelled
-            ? "Cancelled"
+      return value === status.Pending
+        ? <PendingIcon fill="orange" title="Pending" />
+        : value === status.Approved
+          ? <ApprovedIcon fill="green" title="Approved"/>
+          : value === status.Cancelled
+            ? <DeniedIcon fill="red" title="Denied"/>
             : value;
     } else if (column === "requestingEmployee") {
       return value && value.name;

@@ -110,9 +110,9 @@ const EmployeeEditForm: any = (props: any) => {
                 type="button"
                 className="close"
                 onClick={() => {
-                  props.onClose();
                   const close_button = document.getElementById("form-close");
                   close_button?.click();
+                  props.onClose();
                 }}
               >
                 <span aria-hidden="true">&times;</span>
@@ -219,7 +219,7 @@ const EmployeeEditForm: any = (props: any) => {
 
                   <label className="col-form-label">E-mail:</label>
                   <Input
-                    type="text"
+                    type="email"
                     name="email"
                     value={
                       props.selectedEmployee && props.selectedEmployee.email

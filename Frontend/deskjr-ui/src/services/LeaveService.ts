@@ -42,8 +42,8 @@ class LeaveService {
         return response.data;
     }
 
-    public async getPendingLeavesForApproverEmployeeByEmployeeId(currentUserId:any){
-        const response = await api.post(`${baseUrl}/pendingLeaves`, {currentUserId});
+    public async getPendingLeavesForApproverEmployeeByEmployeeId(currentUserId:any, role:any){
+        const response = await api.post(`${baseUrl}/pendingLeaves`, {currentUserId, role});
         return response.data;
     }
 

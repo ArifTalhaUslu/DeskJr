@@ -66,7 +66,7 @@ namespace DeskJr.Api.Controllers
         [HttpPost("pendingLeaves")]
         public async Task<ActionResult<IEnumerable<LeaveDTO>>> GetPendingLeavesForApproverEmployeeByEmployeeId(PendingLeaveRequestDto request)
         {
-            var leaves = await _leaveService.GetPendingLeavesForApproverEmployeeByEmployeeId(request.currentUserId);
+            var leaves = await _leaveService.GetPendingLeavesForApproverEmployeeByEmployeeId(request.currentUserId, (int)request.role);
             return Ok(leaves);
         }
 

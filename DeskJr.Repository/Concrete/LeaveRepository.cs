@@ -43,8 +43,15 @@ namespace DeskJr.Repository.Concrete
                                  .ToListAsync();
         }
 
-        public async Task<IEnumerable<Leave>> GetPendingLeavesForApproverEmployeeByEmployeeId(Guid currentUserId)
+        public async Task<IEnumerable<Leave>> GetPendingLeavesForApproverEmployeeByEmployeeId(Guid currentUserId , int role)
         {
+            if (role == (int)EnumRole.Administrator)
+            {
+                return await _context.Leaves.Include(x => x.RequestingEmployee).Include(x => x.LeaveType).Where(x =>
+                    x.StatusOfLeave == (int)EnumStatusOfLeave.Pending &&
+                    x.RequestingEmployeeId != currentUserId).ToListAsync();
+            }
+            
             return await _context.Leaves
                 .Include(x => x.RequestingEmployee)
                 .ThenInclude(x => x.Team)

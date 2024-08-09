@@ -6,12 +6,15 @@ import Board from "../../CommonComponents/Board";
 import ConfirmDelete from "../../CommonComponents/ConfirmDelete";
 import LeaveEditForm from "./LeaveEditForm";
 import { formatDate } from "date-fns";
-import { statusOfLeave } from "../../../types/statusOfLeave";
+import { status } from "../../../types/status";
+import ApprovedIcon from "../../CommonComponents/StatusIcons/ApprovedIcon";
+import DeniedIcon from "../../CommonComponents/StatusIcons/DeniedIcon";
+import PendingIcon from "../../CommonComponents/StatusIcons/PendingIcon";
 
 const Leave: any = (props: any) => {
   const [items, setItems] = useState([]);
   const [selectedItemId, setSelectedItemId] = useState("");
-  const [selectedLeave, setSelectedLeave] = useState();
+  const [selectedLeave, setSelectedLeave] = useState("");
   const [modalModeName, setModalModeName] = useState("");
   const [modalDataTarget] = useState("leaveAddModal");
   const [isTrigger, setIsTrigger] = useState(false);
@@ -65,20 +68,20 @@ const Leave: any = (props: any) => {
   };
 
   const isEditable = (item: any) => {
-    if (item.statusOfLeave === statusOfLeave.Pending)
+    if (item.statusOfLeave === status.Pending)
       return true;
     return false;
   };
 
   const isDeletable = (item: any) => {
-    if (item.statusOfLeave === statusOfLeave.Cancelled)
+    if (item.statusOfLeave === status.Cancelled)
       return true;
     return false;
   };
 
   const onModalClose = () => {
     setSelectedItemId("");
-    setSelectedLeave(null);
+    setSelectedLeave("");
     setModalModeName("");
     setIsTrigger(false);
     const close_button = document.getElementById(formToBeClosed);
@@ -88,12 +91,12 @@ const Leave: any = (props: any) => {
 
   const renderColumn = (column: string, value: any) => {
     if (column === "statusOfLeave") {
-      return value === statusOfLeave.Pending
-        ? "Pending"
-        : value === statusOfLeave.Approved
-          ? "Approved"
-          : value === statusOfLeave.Cancelled
-            ? "Cancelled"
+      return value === status.Pending
+        ? <PendingIcon fill="orange" title="Pending"/>
+        : value === status.Approved
+          ? <ApprovedIcon fill="green" title="Approved"/>
+          : value === status.Cancelled
+            ? <DeniedIcon fill="red" title="Denied"/>
             : value;
     } else if (column === "startDate") {
       return formatDate(new Date(value), "dd/MM/yyyy");
@@ -114,7 +117,7 @@ const Leave: any = (props: any) => {
     leaveType: "Leave Type",
     requestComments: "Request Comments",
     statusOfLeave: "Leave Status",
-    approvedBy: "Approved By"
+    approvedBy: "Approved/Denied By"
   };
 
   return (
