@@ -82,6 +82,7 @@ namespace DeskJr.Repository.Concrete
                     x.StatusOfLeave == EnumStatusOfLeave.Approved &&
                     x.EndDate > now &&
                     x.StartDate < oneMonthFromNow)
+                .OrderBy(x => x.StartDate).ThenBy(x => x.EndDate)
                 .ToListAsync();
         }
 
