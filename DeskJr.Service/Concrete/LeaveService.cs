@@ -134,5 +134,11 @@ namespace DeskJr.Services.Concrete
 
             return await _leaveRepository.UpdateAsync(leaveToBeUpdated);
         }
+        public async Task<List<LeaveDTO>> GetValidLeaves()
+        {
+            var validLeaves = await _leaveRepository.GetValidLeaves();
+            return _mapper.Map<List<LeaveDTO>>(validLeaves);
+        }
+
     }
 }

@@ -10,6 +10,7 @@ namespace DeskJr.Repository.Abstract
         Task<List<Leave>> GetLeavesByDateRangeAsync(DateTime startDate, DateTime endDate);
         Task<IEnumerable<Leave>> GetLeavesByEmployeeIdAsync(Guid employeeId);
         Task<IEnumerable<Leave>> GetPendingLeavesForApproverEmployeeByEmployeeId(Guid currentUserId, int role);
+        Task<IEnumerable<Leave>> GetValidLeaves();
     }
 }
 

@@ -61,8 +61,21 @@ namespace DeskJr.Repository.Concrete
                     x.RequestingEmployeeId != currentUserId && 
                     x.RequestingEmployee.Team != null && 
                     x.RequestingEmployee.Team.ManagerId == currentUserId)
+             .ToListAsync();
+        }
+        public async Task<IEnumerable<Leave>> GetValidLeaves()
+        {
+            var now = DateTime.Now;
+            var oneMonthFromNow = now.AddMonths(1);
+
+            return await _context.Leaves
+                .Include(x => x.RequestingEmployee)
+                .Where(x =>
+                    x.StatusOfLeave == EnumStatusOfLeave.Approved &&
+                    x.EndDate > now &&
+                    x.StartDate < oneMonthFromNow)
                 .ToListAsync();
         }
+
     }
 }
-

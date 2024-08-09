@@ -5,16 +5,17 @@ import Board from "../CommonComponents/Board";
 import { formatDate } from "date-fns";
 import HolidayService from "../../services/HolidayService";
 import Card from "../CommonComponents/Card";
+import LeaveService from "../../services/LeaveService";
 
 const Home = (props: any) => {
-    const [employees, setEmployees] = useState<any[]>([]);
     const [holidays, setHolidays] = useState<any[]>([]);
     const [upcomingBirthdays, setUpcomingBirthdays] = useState<any[]>([]);
+    const [recentValidLeaves, setRecentValidLeaves] = useState<any[]>([]);
 
-    const fetchAllEmployees = () => {
-        EmployeeService.getAllEmployee()
+    const fetchRecentValidLeaves = () => {
+        LeaveService.getRecentValidLeaves()
             .then((data) => {
-                setEmployees(data);
+                setRecentValidLeaves(data);
             })
             .catch((err) => {
                 showErrorToast(err);
@@ -43,14 +44,15 @@ const Home = (props: any) => {
 
     useEffect(() => {
         fetchAllHolidays();
-        fetchAllEmployees();
+        fetchRecentValidLeaves();
         fetchUpcomingBirthdays();
     }, []);
 
 
-    const columnNamesEmployee = {
-        name: "Employee Name",
-        dayOfBirth: "Birthday"
+    const columnNamesEmployeeLeaves = {
+        requestingEmployee: "Employee Name",
+        startDate: "Start Date",
+        endDate: "End Date"
     };
 
     const columnNamesHoliday = {
@@ -63,6 +65,24 @@ const Home = (props: any) => {
         dayOfBirth: "Birthday"
     };
     
+    const renderColumnLeave = (column: string, value: any) => {
+        if (column === "name") {
+            return value; 
+        } else if (column === "startDate" || column === "endDate") {
+            return formatDate(new Date(value), "dd/MM/yyyy"); 
+        } else if (column === "requestingEmployee"){
+            return value.name
+        }
+        return null;
+    };
+    const renderColumnHoliday = (column: string, value: any) => {
+        if (column === "startDate") {
+            return formatDate(new Date(value), "dd/MM/yyyy");
+        } else if (column === "endDate") {
+            return formatDate(new Date(value), "dd/MM/yyyy");
+        }
+        return value;
+    };
     const renderColumnEmployee = (column: string, value: any) => {
         if (column === "employeeRole") {
             return value === 2
@@ -83,14 +103,6 @@ const Home = (props: any) => {
         }
         return value;
     };
-    const renderColumnHoliday = (column: string, value: any) => {
-        if (column === "startDate") {
-            return formatDate(new Date(value), "dd/MM/yyyy");
-        } else if (column === "endDate") {
-            return formatDate(new Date(value), "dd/MM/yyyy");
-        }
-        return value;
-    };
 
     return (
         <div className="container">
@@ -106,12 +118,12 @@ const Home = (props: any) => {
                 <div className="col-sm-6">
                     <Card title="Employees On Leaves">
                         <Board
-                            items={employees}
+                            items={recentValidLeaves}
                             isEditable={() => { return false; }}
                             isDeletable={() => { return false; }}
-                            hiddenColumns={["id", "password", "teamId", "employeeTitleId", "employeeRole", "gender", "employeeTitle", "team", "email"]}
-                            renderColumn={renderColumnEmployee}
-                            columnNames={columnNamesEmployee}
+                            hiddenColumns={["id", "password", "teamId", "employeeRole", "gender", "employeeTitle", "team", "email","leaveTypeId","requestingEmployeeId","leaveType","requestComments","statusOfLeave","approvedById","approvedBy"]}
+                            renderColumn={renderColumnLeave}
+                            columnNames={columnNamesEmployeeLeaves}
                             hideActions={'true'}
                         />
                     </Card>

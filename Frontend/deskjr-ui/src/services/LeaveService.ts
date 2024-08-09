@@ -51,6 +51,11 @@ class LeaveService {
         const response = await api.post(`${baseUrl}/updateStatus`, {leaveId, newStatus, approvedById});
         return response.data;
     }
+
+    public async getRecentValidLeaves() {
+        const response = await api.get(`${baseUrl}/recentValidLeaves`);
+        return response.data;
+    }
 }
 
 export default new LeaveService();
