@@ -154,7 +154,7 @@ namespace DeskJr.Services.Concrete
             string template = EmailTemplates.LeaveRequestNotificationTemplate;
             var variables = new Dictionary<string, string>
             {
-                { "TemaLeaderName", teamLeaderName },
+                { "TeamLeaderName", teamLeaderName },
                 { "EmployeeName", employeeName },
                 { "StartDate", startDate.ToString("yyyy-MM-dd") },
                 { "EndDate", endDate.ToString("yyyy-MM-dd") }
