@@ -8,7 +8,7 @@ import ConfirmDelete from "../../CommonComponents/ConfirmDelete";
 import { showErrorToast, showSuccessToast } from "../../../utils/toastHelper";
 import { Roles } from "../../../types/Roles";
 
-const Employee: any = () => {
+const Employee: any = (props: any) => {
   const [items, setItems] = useState([]);
   const [selectedItemId, setSelectedItemId] = useState("");
   const [selectedEmployee, setSelectedEmployee] = useState("");
@@ -60,7 +60,7 @@ const Employee: any = () => {
 
   const isEditable = (item: any) => true;
 
-  const isDeletable = (item: any) => true;
+  const isDeletable = (item: any) => props.currentUser.employeeRole === Roles.Admin;
 
   const renderColumn = (column: string, value: any) => {
     if (column === "employeeRole") {
@@ -115,7 +115,7 @@ const Employee: any = () => {
           hiddenColumns={["id", "password", "teamId", "employeeTitleId"]}
           renderColumn={renderColumn}
           columnNames={columnNames}
-          hasNewRecordButton={true}
+          hasNewRecordButton={props.currentUser.employeeRole === Roles.Admin}
           newRecordButtonOnClick={() => {
             setModalModeName("Add");
             setFormToBeClosed("form-close");
@@ -132,6 +132,7 @@ const Employee: any = () => {
         setSelectedEmployee={setSelectedEmployee}
         getList={getList}
         onClose={onModalClose}
+        currentUser={props.currentUser}
       />
       <ConfirmDelete
         onConfirm={(e) => onConfirmDelete(e)}

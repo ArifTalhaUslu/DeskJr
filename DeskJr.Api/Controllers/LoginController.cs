@@ -66,11 +66,11 @@ namespace DeskJr.Api.Controllers
 
             var claims = new[]
             {
-                new Claim(ClaimTypes.NameIdentifier, employee.Name),
+                new Claim(ClaimTypes.NameIdentifier, employee.ID.ToString()),
                 new Claim(ClaimTypes.Email, employee.Email),
-                new Claim(ClaimTypes.Role, employee.EmployeeRole.ToString())
+                new Claim(ClaimTypes.Role, employee.EmployeeRole.ToString()),
             };
-
+            
             var token = new JwtSecurityToken(
                 issuer: _jwtSettings.Issuer,
                 audience: _jwtSettings.Audience,

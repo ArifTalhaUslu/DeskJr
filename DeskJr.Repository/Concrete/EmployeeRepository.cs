@@ -15,9 +15,13 @@ namespace DeskJr.Repository.Concrete
             _context = context;
         }
 
-        public async Task<IEnumerable<Employee?>> GetEmployeesByTeamIdAsync(Guid teamId)
+        public async Task<IEnumerable<Employee?>> GetTeamEmployeesByIdAsync(Guid managerId)
         {
-            return await _context.Employees.Where(e => e.TeamId == teamId).ToListAsync();
+           return await _context.Employees
+                .Include(e => e.EmployeeTitle)
+                .Include(e => e.Team)
+                .Where(e => e.Team != null && e.Team.ManagerId == managerId)
+                .ToListAsync();
         }
         public async Task<Employee?> GetEmployeeByEmailAsync(string email)
         {

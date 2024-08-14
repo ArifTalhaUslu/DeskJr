@@ -42,8 +42,9 @@ const App: React.FC = () => {
         {
           name: "Employee List",
           to: "/employees",
-          visible: currentUser?.employeeRole === Roles.Admin,
+          visible: currentUser?.employeeRole === Roles.Admin || currentUser?.employeeRole === Roles.Manager,
         },
+        
         {
           name: "Leave",
           visible: true,
@@ -158,8 +159,14 @@ const App: React.FC = () => {
             )}
             {currentUser && currentUser.employeeRole === Roles.Admin && (
               <>
-                <Route path="/employees" element={<Employee />} />
+                <Route path="/employees" element={<Employee currentUser={currentUser} />} />
                 <Route path="/teams" element={<Team />} />
+              </>
+            )}
+            {currentUser && currentUser.employeeRole === Roles.Manager && (
+              <>
+                <Route path="/employees" element={<Employee currentUser={currentUser} />} />
+                
               </>
             )}
             {!currentUser && (
