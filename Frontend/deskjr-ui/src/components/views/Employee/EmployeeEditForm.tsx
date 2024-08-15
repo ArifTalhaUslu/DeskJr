@@ -66,7 +66,8 @@ const EmployeeEditForm: any = (props: any) => {
       .addOrUpdateEmployee({
         ...props.selectedEmployee,
         teamId: props.selectedEmployee.teamId,
-        employeeTitleId: props.selectedEmployee.employeeTitleId || null
+        employeeTitleId: props.selectedEmployee.employeeTitleId || null,
+        employeeRole: props.selectedEmployee.employeeRole,
       })
       .then(() => {
         showSuccessToast('Successful!');

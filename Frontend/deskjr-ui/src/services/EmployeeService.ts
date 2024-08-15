@@ -44,6 +44,11 @@ class EmployeeService {
     return response.data;
   }
   
+  public async getEmployeesByManagerId(managerId: any) {
+    const response = await api.get(`${baseUrl}/employeesByManagerId/${managerId}`);
+    return response.data;
+  }
+  
 }
 
 export default new EmployeeService();

@@ -15,7 +15,7 @@ namespace DeskJr.Repository.Concrete
             _context = context;
         }
 
-        public async Task<IEnumerable<Employee?>> GetTeamEmployeesByIdAsync(Guid managerId)
+        public async Task<IEnumerable<Employee?>> GetEmployeesByManagerIdAsync(Guid managerId)
         {
            return await _context.Employees
                 .Include(e => e.EmployeeTitle)
@@ -31,7 +31,7 @@ namespace DeskJr.Repository.Concrete
                 .FirstOrDefaultAsync(e => e.Email == email);
         }
 
-        public IEnumerable<Employee> GetListWithIncludeEmployeeAsync()
+        public IEnumerable<Employee> GetListWithIncludeEmployee()
         {
             return _context.Employees
                 .Include(x => x.EmployeeTitle)

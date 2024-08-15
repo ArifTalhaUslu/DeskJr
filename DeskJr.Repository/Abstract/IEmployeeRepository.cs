@@ -5,9 +5,9 @@ namespace DeskJr.Repository.Abstract;
 public interface IEmployeeRepository: IGenericRepository<Employee>
 {
     
-    public Task<IEnumerable<Employee?>> GetTeamEmployeesByIdAsync(Guid managerId);
+    public Task<IEnumerable<Employee?>> GetEmployeesByManagerIdAsync(Guid managerId);
     public Employee? GetByIdWithInclude(Guid id);
     public Task<Employee?> GetEmployeeByEmailAsync(string email);
-    public IEnumerable<Employee> GetListWithIncludeEmployeeAsync();
+    public IEnumerable<Employee> GetListWithIncludeEmployee();
     public Task<IEnumerable<Employee>> GetUpcomingBirthdaysAsync();
 }

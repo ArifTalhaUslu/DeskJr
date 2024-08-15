@@ -15,69 +15,75 @@ namespace DeskJr.Service.Concrete
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
 
-        public EmployeeService(IEmployeeRepository employeeRepository, IMapper mapper, IUserService userervice)
+        public EmployeeService(IEmployeeRepository employeeRepository, IMapper mapper, IUserService userservice)
         {
             _employeeRepository = employeeRepository;
             _mapper = mapper;
-            _userService = userervice;
+            _userService = userservice;
         }
 
         public async Task<bool> AddOrUpdateEmployeeAsync(AddOrUpdateEmployeeDto employeeDto)
         {
-            var currentUserRole = _userService.GetCurrentUserRole();
+            var currentUser = _userService.GetCurrentUser();
 
-            if (currentUserRole != EnumRole.Administrator.ToString() && currentUserRole != EnumRole.Manager.ToString())
+            if (currentUser.Role != EnumRole.Administrator && currentUser.Role != EnumRole.Manager)
             {
                 throw new UnauthorizedAccessException("You do not have permission to perform this action.");
             }
-            if (employeeDto.ID == null && currentUserRole == EnumRole.Administrator.ToString())
+
+            var employee = _mapper.Map<Employee>(employeeDto);
+
+            if (employeeDto.ID == null && currentUser.Role == EnumRole.Administrator)
             {
-                employeeDto.Password = Encrypter.EncryptString(employeeDto.Password);
-                return await _employeeRepository.AddAsync(_mapper.Map<Employee>(employeeDto));
+                employee.Password = Encrypter.EncryptString(employeeDto.Password);
+                return await _employeeRepository.AddAsync(employee);
             }
 
-            return await _employeeRepository.UpdateAsync(_mapper.Map<Employee>(employeeDto));
-
+            return await _employeeRepository.UpdateAsync(employee);
         }
 
 
         public async Task<bool> DeleteEmployeeAsync(Guid id)
         {
-            var currentUserRole = _userService.GetCurrentUserRole();
-            if (id == null)
+            var currentUser = _userService.GetCurrentUser();
+
+            if (id == Guid.Empty)
             {
                 throw new NotFoundException("No employee exists with the provided identifier.");
             }
-            if (currentUserRole != EnumRole.Administrator.ToString())
+
+            if (currentUser.Role != EnumRole.Administrator)
             {
                 throw new UnauthorizedAccessException("You do not have permission to perform this action.");
             }
+
             return await _employeeRepository.DeleteAsync(id);
         }
-            
+
         public async Task<IEnumerable<EmployeeDto>> GetAllEmployeesAsync()
         {
-            var currentUserRole = _userService.GetCurrentUserRole();
-            var currentUserIdString = _userService.GetCurrentUserId();
-            var currentUserId = new Guid(currentUserIdString);
+            var currentUser = _userService.GetCurrentUser();
             IEnumerable<Employee> employees;
 
-            if (currentUserRole != EnumRole.Administrator.ToString() && currentUserRole != EnumRole.Manager.ToString())
+            if (currentUser.Role != EnumRole.Administrator && currentUser.Role != EnumRole.Manager)
             {
-                throw new Exception("The requested operation could not be completed. Unauthorized role.");
+                throw new UnauthorizedAccessException("The requested operation could not be completed. Unauthorized role.");
             }
 
-            if (currentUserRole == EnumRole.Administrator.ToString())
+            if (currentUser.Role == EnumRole.Administrator)
             {
-                employees = _employeeRepository.GetListWithIncludeEmployeeAsync();
-                return _mapper.Map<IEnumerable<EmployeeDto>>(employees); ;
+                employees = _employeeRepository.GetListWithIncludeEmployee();
             }
-            if (currentUserRole == EnumRole.Manager.ToString())
+            else if (currentUser.Role == EnumRole.Manager)
             {
-                employees = await _employeeRepository.GetTeamEmployeesByIdAsync(currentUserId);
-                return _mapper.Map<IEnumerable<EmployeeDto>>(employees);
+                employees = await _employeeRepository.GetEmployeesByManagerIdAsync(currentUser.UserId);
             }
-            return Enumerable.Empty<EmployeeDto>();
+            else
+            {
+                return Enumerable.Empty<EmployeeDto>();
+            }
+
+            return _mapper.Map<IEnumerable<EmployeeDto>>(employees);
         }
 
         public EmployeeDto? GetEmployeeByIdAsync(Guid id)
@@ -91,9 +97,9 @@ namespace DeskJr.Service.Concrete
             return _mapper.Map<EmployeeDto>(employee);
         }
 
-        public async Task<IEnumerable<EmployeeDto>> GetTeamEmployeesByIdAsync(Guid managerId)
+        public async Task<IEnumerable<EmployeeDto>> GetEmployeesByManagerIdAsync(Guid managerId)
         {
-            var employees = await _employeeRepository.GetTeamEmployeesByIdAsync(managerId);
+            var employees = await _employeeRepository.GetEmployeesByManagerIdAsync(managerId);
             if (employees == null)
             {
                 throw new NotFoundException("No employee exists with the provided team identifier.");

@@ -1,9 +1,8 @@
-﻿namespace DeskJr.Service.Abstract
+﻿using static DeskJr.Service.Concrete.UserService;
+namespace DeskJr.Service.Abstract
 {
     public interface IUserService
     {
-        public string? GetCurrentUserRole();
-        public string? GetCurrentUserId();
-
+        CurrentUser GetCurrentUser();
     }
 }

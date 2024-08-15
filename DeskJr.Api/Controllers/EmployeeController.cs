@@ -49,10 +49,10 @@ namespace DeskJr.Api.Controllers
             return Ok(employee);
         }
 
-        [HttpGet("teams/{managerId}/employees")]
-        public async Task<IActionResult> GetTeamEmployeesByIdAsync(Guid managerId)
+        [HttpGet("employeesByManagerId/{managerId}")]
+        public async Task<IActionResult> GetEmployeesByManagerIdAsync(Guid managerId)
         {
-            var employees = await _employeeService.GetTeamEmployeesByIdAsync(managerId);
+            var employees = await _employeeService.GetEmployeesByManagerIdAsync(managerId);
             return Ok(employees);
         }
 
