@@ -1,11 +1,7 @@
 ﻿using DeskJr.Service.Abstract;
-using DeskJr.Service.Concrete;
 using DeskJr.Service.Dto;
-
 using DeskJr.Service.Dto.EmployeeTitleDtos;
-
 using Microsoft.AspNetCore.Authorization;
-
 using Microsoft.AspNetCore.Mvc;
 
 namespace DeskJr.Api.Controllers
@@ -26,7 +22,7 @@ namespace DeskJr.Api.Controllers
         public async Task<ActionResult> CreateEmployeeTitle(UpdateEmployeeTitleDto employeeTitleDto)
         {
             var result = await _employeeTitleService.AddOrUpdateEmployeeAsync(employeeTitleDto);
-            
+
             return Ok();
         }
 
@@ -50,7 +46,7 @@ namespace DeskJr.Api.Controllers
         public async Task<ActionResult> GetEmployeeTitleById(Guid id)
         {
             var employeeTitle = await _employeeTitleService.GetEmployeeTitleByIdAsync(id);
-            
+
             return Ok(employeeTitle);
         }
 
@@ -58,7 +54,7 @@ namespace DeskJr.Api.Controllers
         public async Task<ActionResult> UpdateEmployeeTitle(UpdateEmployeeTitleDto employeeTitleDto)
         {
             var result = await _employeeTitleService.UpdateEmployeeTitleAsync(employeeTitleDto);
-                
+
             return Ok();
         }
     }

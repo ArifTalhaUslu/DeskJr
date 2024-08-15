@@ -1,5 +1,4 @@
-﻿using DeskJr.Entity.Types;
-using DeskJr.Service.Dto;
+﻿using DeskJr.Service.Dto;
 using DeskJr.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -82,6 +81,14 @@ namespace DeskJr.Api.Controllers
         {
             var validLeaves = await _leaveService.GetValidLeaves();
             return Ok(validLeaves);
+        }
+
+
+        [HttpGet("pendingLeaveRequests/{currentUserId}")]
+        public async Task<ActionResult<IEnumerable<LeaveDTO>>> GetAllLeavesWithIncludeByManagerId(Guid currentUserId)
+        {
+            var leaves = await _leaveService.GetAllLeavesByManagerId(currentUserId);
+            return Ok(leaves);
         }
     }
 }

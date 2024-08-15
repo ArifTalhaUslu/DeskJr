@@ -14,8 +14,10 @@ interface BoardProps {
   hasNewRecordButton?: boolean;
   newRecordButtonOnClick?: () => void;
   newRecordModalDataTarget?: string;
-  hideActions?:string;
-  customElementOfActions?:(item: any) => JSX.Element;
+  hideActions?: string;
+  customElementOfActions?: (item: any) => JSX.Element;
+  leftTopContent?: React.ReactNode;
+  rightTopContent?: React.ReactNode;
 }
 
 function Board({
@@ -31,8 +33,10 @@ function Board({
   hasNewRecordButton,
   newRecordButtonOnClick,
   newRecordModalDataTarget,
-  hideActions = 'false',
-  customElementOfActions
+  hideActions = "false",
+  customElementOfActions,
+  // leftTopContent,
+  // rightTopContent,
 }: BoardProps) {
   const renderedItems = items ?? [];
 
@@ -42,6 +46,8 @@ function Board({
         hasNewRecordButton={hasNewRecordButton}
         newRecordButtonOnClick={newRecordButtonOnClick}
         dataTarget={newRecordModalDataTarget}
+        // leftContent={leftTopContent}
+        // rightContent={rightTopContent}
       />
       {hasDataTable ? (
         <DataTable

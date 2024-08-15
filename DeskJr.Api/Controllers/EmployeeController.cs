@@ -63,7 +63,5 @@ namespace DeskJr.Api.Controllers
 
             return Ok(employees);
         }
-
-        //employee Managerları çekecek endpoint gerekli
     }
 }

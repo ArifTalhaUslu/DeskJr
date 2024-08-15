@@ -5,7 +5,6 @@ using DeskJr.Data;
 using DeskJr.Entity.Models;
 using DeskJr.Entity.Types;
 using DeskJr.Repository.Abstract;
-using DeskJr.Service.Abstract;
 using DeskJr.Service.Concrete;
 using DeskJr.Service.Dto;
 using DeskJr.Services.Interfaces;
@@ -196,6 +195,16 @@ namespace DeskJr.Services.Concrete
                 { "ApprovalStatusClass", isApproved ? "approved" : "reject" }
             };
             await _sender.SendEmailAsync(toEmail, $"İzin Talebi {variables["ApprovalStatus"]}", template, variables);
+        }
+        public async Task<IEnumerable<LeaveDTO>> GetAllLeavesByManagerId(Guid currentUserId)
+        {
+            var leaves = await _leaveRepository.GetAllLeavesWithIncludeByManagerId(currentUserId);
+            if (leaves == null)
+            {
+                throw new NotFoundException("No leaves exists with the provided employee identifier.");
+            }
+
+            return _mapper.Map<IEnumerable<LeaveDTO>>(leaves);
         }
     }
 }

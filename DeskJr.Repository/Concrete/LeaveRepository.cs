@@ -27,14 +27,6 @@ namespace DeskJr.Repository.Concrete
                .ToListAsync();
         }
 
-        //public async Task<List<LeaveRequest>> GetLeaveRequestsByEmployeeIdAsync(Guid employeeId)
-        //{
-        //return await _context.LeaveRequests
-        //     .Where(lr => lr.RequestingEmployeeId == employeeId)
-        //       .ToListAsync();
-        //}
-
-
         public async Task<IEnumerable<Leave>> GetLeavesByEmployeeIdAsync(Guid employeeId)
         {
             return await _context.Leaves
@@ -83,6 +75,20 @@ namespace DeskJr.Repository.Concrete
                     x.EndDate > now &&
                     x.StartDate < oneMonthFromNow)
                 .OrderBy(x => x.StartDate).ThenBy(x => x.EndDate)
+                .ToListAsync();
+        }
+        
+        public async Task<IEnumerable<Leave>> GetAllLeavesWithIncludeByManagerId(Guid currentUserId)
+        {
+            return await _context.Leaves
+                .Include(x => x.RequestingEmployee)
+                .ThenInclude(x => x.Team)
+                .Include(x => x.LeaveType)
+                .Where(x =>
+                    x.RequestingEmployeeId != currentUserId &&
+                    x.RequestingEmployee.Team != null &&
+                    x.RequestingEmployee.Team.ManagerId == currentUserId)
+                .OrderByDescending(x => x.StartDate).ThenByDescending(x => x.EndDate)
                 .ToListAsync();
         }
 
