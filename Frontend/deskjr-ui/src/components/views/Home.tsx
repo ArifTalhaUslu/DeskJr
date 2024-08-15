@@ -6,11 +6,28 @@ import { formatDate } from "date-fns";
 import HolidayService from "../../services/HolidayService";
 import Card from "../CommonComponents/Card";
 import LeaveService from "../../services/LeaveService";
+import Cookies from "js-cookie";
 
-const Home = (props: any) => {
+const Home = () => {
     const [holidays, setHolidays] = useState<any[]>([]);
     const [upcomingBirthdays, setUpcomingBirthdays] = useState<any[]>([]);
     const [recentValidLeaves, setRecentValidLeaves] = useState<any[]>([]);
+    const [currentUser, setCurrentUser] = useState<any>();
+    
+    const fetchEmployee = (id: string) => {
+        EmployeeService.getEmployeeById(id)
+        .then((data) => {
+            setCurrentUser(data);
+        })
+        .catch((err) => {
+            showErrorToast(err);
+        })
+    };
+    const [idFromLocalStr] = useState(Cookies.get("id"));
+    
+      useEffect(() => {
+        fetchEmployee(idFromLocalStr);
+      }, [idFromLocalStr]);
 
     const fetchRecentValidLeaves = () => {
         LeaveService.getRecentValidLeaves()
@@ -110,8 +127,8 @@ const Home = (props: any) => {
                 <div className="col-12">
                     <div className="p-3 my-3 bg-primary text-white card">
                         <h1 className="mt-4" style={{ textTransform: 'capitalize' }}>
-                            <h1> {props.currentUser?.name} <span className="text-sm"> ({props.currentUser?.team?.name}) </span> </h1>
-                            <h2>{props.currentUser?.employeeTitle?.titleName}</h2>
+                            <h1> {currentUser?.name} <span className="text-sm"> ({currentUser?.team?.name}) </span> </h1>
+                            <h2>{currentUser?.employeeTitle?.titleName}</h2>
                         </h1>
                     </div>
                 </div>

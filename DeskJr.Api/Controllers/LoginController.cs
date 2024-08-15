@@ -52,8 +52,6 @@ namespace DeskJr.Api.Controllers
                 Expires = DateTime.Now.AddDays(7)
             };
 
-            Response.Cookies.Append("token", token, cookieOptions);
-
             return Ok(response);
         }
 

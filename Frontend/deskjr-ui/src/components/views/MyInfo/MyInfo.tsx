@@ -1,12 +1,28 @@
-import React from 'react';
-import { User } from '../../../types/user';
+import React, { useEffect, useState } from 'react';
 import { Roles } from '../../../types/Roles';
+import EmployeeService from '../../../services/EmployeeService';
+import { showErrorToast } from '../../../utils/toastHelper';
+import Cookies from 'js-cookie';
 
-interface MyInfoProps {
-    currentUser: User;
-}
 
-const MyInfo: React.FC<MyInfoProps> = ({ currentUser }) => {
+const MyInfo: React.FC = () => {
+    const [currentUser, setCurrentUser] = useState<any>();
+    
+    const fetchEmployee = (id: string) => {
+        EmployeeService.getEmployeeById(id)
+        .then((data) => {
+            setCurrentUser(data);
+        })
+        .catch((err) => {
+            showErrorToast(err);
+        })
+    };
+    const [idFromLocalStr] = useState(Cookies.get("id"));
+    
+      useEffect(() => {
+        fetchEmployee(idFromLocalStr);
+      }, [idFromLocalStr]);
+      
 
     return (
         <div className="container mt-4">
@@ -28,39 +44,39 @@ const MyInfo: React.FC<MyInfoProps> = ({ currentUser }) => {
                                 <tbody>
                                     <tr>
                                         <th>Name:</th>
-                                        <td>{currentUser.name}</td>
+                                        <td>{currentUser?.name}</td>
                                     </tr>
                                     <tr>
                                         <th>Date of Birth:</th>
-                                        <td>{new Date(currentUser.dayOfBirth).toLocaleDateString()}</td>
+                                        <td>{new Date(currentUser?.dayOfBirth).toLocaleDateString()}</td>
                                     </tr>
                                     <tr>
                                         <th>Email:</th>
-                                        <td>{currentUser.email}</td>
+                                        <td>{currentUser?.email}</td>
                                     </tr>
                                     <tr>
                                         <th>Gender:</th>
-                                        <td>{currentUser.gender === 0 ? "Male" : "Female"}</td>
+                                        <td>{currentUser?.gender === 0 ? "Male" : "Female"}</td>
                                     </tr>
                                     <tr>
                                         <th>Role:</th>
                                         <td>
-                                            {currentUser.employeeRole === Roles.Employee
+                                            {currentUser?.employeeRole === Roles.Employee
                                                 ? "Employee"
-                                                : currentUser.employeeRole === Roles.Manager
+                                                : currentUser?.employeeRole === Roles.Manager
                                                     ? "Manager"
-                                                    : currentUser.employeeRole === Roles.Admin
+                                                    : currentUser?.employeeRole === Roles.Admin
                                                         ? "Admin"
                                                         : "Unknown"}
                                         </td>
                                     </tr>
                                     <tr>
                                         <th>Title:</th>
-                                        <td>{currentUser.employeeTitle?.titleName || "N/A"}</td>
+                                        <td>{currentUser?.employeeTitle?.titleName || "N/A"}</td>
                                     </tr>
                                     <tr>
                                         <th>Team:</th>
-                                        <td>{currentUser.team?.name || "N/A"}</td>
+                                        <td>{currentUser?.team?.name || "N/A"}</td>
                                     </tr>
                                 </tbody>
                             </table>
