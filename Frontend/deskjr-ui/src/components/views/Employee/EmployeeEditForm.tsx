@@ -169,8 +169,7 @@ const EmployeeEditForm: any = (props: any) => {
                       </option>
                     ))}
                   </select>
-                  {(props.currentUser.employeeRole === Roles.Admin)&& (
-                    <>
+                  
                       <label className="col-form-label">Role:</label>
                       <select
                         required
@@ -180,6 +179,7 @@ const EmployeeEditForm: any = (props: any) => {
                           props.selectedEmployee &&
                           props.selectedEmployee.employeeRole
                         }
+                        disabled ={props.currentUser.employeeRole !== Roles.Admin}
                         onChange={(e: any) => handleChange(e)}
                       >
                         {roleOptions.map((option: any) => (
@@ -197,6 +197,7 @@ const EmployeeEditForm: any = (props: any) => {
                         name="title"
                         className="form-control"
                         value={props.selectedEmployee?.employeeTitleId || ""}
+                        disabled ={props.currentUser.employeeRole !== Roles.Admin}
                         onChange={(e: any) => handleChange(e)}
                       >
                         <option value=""></option>
@@ -211,6 +212,7 @@ const EmployeeEditForm: any = (props: any) => {
                         className="form-control"
                         value={props.selectedEmployee?.teamId || ""}
                         onChange={(e: any) => handleChange(e)}
+                        disabled ={props.currentUser.employeeRole !== Roles.Admin}
                         required
                       >
                         <option value=""></option>
@@ -218,8 +220,8 @@ const EmployeeEditForm: any = (props: any) => {
                           <option key={team.id} value={team.id}>{team.name}</option>
                         ))}
                       </select>
-                    </>
-                  )}
+                 
+                  
 
                   <label className="col-form-label">E-mail:</label>
                   <Input

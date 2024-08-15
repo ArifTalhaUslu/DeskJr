@@ -31,7 +31,7 @@ namespace DeskJr.Repository.Concrete
                 .FirstOrDefaultAsync(e => e.Email == email);
         }
 
-        public IEnumerable<Employee> GetListWithIncludeEmployee()
+        public IEnumerable<Employee> GetListWithInclude()
         {
             return _context.Employees
                 .Include(x => x.EmployeeTitle)

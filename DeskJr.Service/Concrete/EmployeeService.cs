@@ -72,7 +72,7 @@ namespace DeskJr.Service.Concrete
 
             if (currentUser.Role == EnumRole.Administrator)
             {
-                employees = _employeeRepository.GetListWithIncludeEmployee();
+                employees = _employeeRepository.GetListWithInclude();
             }
             else if (currentUser.Role == EnumRole.Manager)
             {
