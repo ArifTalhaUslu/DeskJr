@@ -56,17 +56,17 @@ namespace DeskJr.Api.Controllers
             return Ok();
         }
 
-        [HttpGet("leaveByEmployeeId/{employeeId}")]
-        public async Task<ActionResult<IEnumerable<LeaveDTO>>> GetLeavesByEmployeeId(Guid employeeId)
+        [HttpGet("leaveByEmployeeId")]
+        public async Task<ActionResult<IEnumerable<LeaveDTO>>> GetLeavesByEmployeeId()
         {
-            var leaves = await _leaveService.GetLeavesByEmployeeIdAsync(employeeId);
+            var leaves = await _leaveService.GetLeavesByEmployeeIdAsync();
             return Ok(leaves);
         }
 
         [HttpPost("pendingLeaves")]
-        public async Task<ActionResult<IEnumerable<LeaveDTO>>> GetPendingLeavesForApproverEmployeeByEmployeeId(PendingLeaveRequestDto request)
+        public async Task<ActionResult<IEnumerable<LeaveDTO>>> GetPendingLeavesForApproverEmployeeByEmployeeId()
         {
-            var leaves = await _leaveService.GetPendingLeavesForApproverEmployeeByEmployeeId(request.currentUserId, (int)request.role);
+            var leaves = await _leaveService.GetPendingLeavesForApproverEmployeeByEmployeeId();
             return Ok(leaves);
         }
 
