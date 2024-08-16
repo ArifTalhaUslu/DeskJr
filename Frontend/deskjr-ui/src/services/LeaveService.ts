@@ -57,7 +57,7 @@ class LeaveService {
         return response.data;
     }
     public async getAllLeavesByManagerId(currentUserId:any){
-        const response = await api.get(`${baseUrl}/pendingLeaveRequests/${currentUserId}`);
+        const response = await api.get(`${baseUrl}/leaveApproval/${currentUserId}`);
         return response.data;
     }
 }

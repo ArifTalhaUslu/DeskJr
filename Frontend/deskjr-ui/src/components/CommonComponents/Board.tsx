@@ -35,8 +35,8 @@ function Board({
   newRecordModalDataTarget,
   hideActions = "false",
   customElementOfActions,
-  // leftTopContent,
-  // rightTopContent,
+  leftTopContent,
+  rightTopContent,
 }: BoardProps) {
   const renderedItems = items ?? [];
 
@@ -46,8 +46,8 @@ function Board({
         hasNewRecordButton={hasNewRecordButton}
         newRecordButtonOnClick={newRecordButtonOnClick}
         dataTarget={newRecordModalDataTarget}
-        // leftContent={leftTopContent}
-        // rightContent={rightTopContent}
+        leftContent={leftTopContent}
+        rightContent={rightTopContent}
       />
       {hasDataTable ? (
         <DataTable

@@ -84,7 +84,7 @@ namespace DeskJr.Api.Controllers
         }
 
 
-        [HttpGet("pendingLeaveRequests/{currentUserId}")]
+        [HttpGet("leaveApproval/{currentUserId}")]
         public async Task<ActionResult<IEnumerable<LeaveDTO>>> GetAllLeavesWithIncludeByManagerId(Guid currentUserId)
         {
             var leaves = await _leaveService.GetAllLeavesByManagerId(currentUserId);

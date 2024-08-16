@@ -4,18 +4,18 @@ interface TopContentProps {
   hasNewRecordButton?: boolean;
   newRecordButtonOnClick?: () => void;
   dataTarget?: string;
-  // leftContent?: React.ReactNode;
-  // rightContent?: React.ReactNode;
+  leftContent?: React.ReactNode;
+  rightContent?: React.ReactNode;
 }
 
 function TopContents(props: TopContentProps) {
   return (
     <div className="row mb-3">
       <div className="col-md-6 d-flex align-items-center">
-        {/* {props.leftContent} */}
+        {props.leftContent}
       </div>
       <div className="col-md-6 d-flex justify-content-end align-items-center">
-        {/* {props.rightContent} */}
+        {props.rightContent}
         {props.hasNewRecordButton && (
           <div className="text-right">
             <Button

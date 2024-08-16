@@ -8,16 +8,16 @@ import { formatDate } from "date-fns";
 import { status } from "../../../types/status";
 import StatusIcon from "../../CommonComponents/StatusIcons/StatusIcon";
 
-const PendingLeaveRequest: any = (props: any) => {
+const LeaveApproval: any = (props: any) => {
   const [leaves, setLeaves] = useState([]);
   const [isTrigger, setIsTrigger] = useState(false);
   const [showPendings, setShowPendings] = useState(false);
 
   useEffect(() => {
-    getList();
+    getPendingLeavesWithIncludeByManagerId();
   }, [isTrigger]);
 
-  const getList = async () => {
+  const getPendingLeavesWithIncludeByManagerId = async () => {
     await leaveService
       .getPendingLeavesForApproverEmployeeByEmployeeId(
         props.currentUser?.id,
@@ -57,24 +57,26 @@ const PendingLeaveRequest: any = (props: any) => {
 
   const customElementOfActions = (item: any) => (
     <>
-      <div className="container">
-        <div className="row">
-          <Button
-            text="Approve"
-            className="btn btn-success m-1 p-2 w-100"
-            onClick={() => Approve(item)}
-          />
-          <Button
-            text="Deny"
-            className="btn btn-danger m-1 p-2 w-100"
-            onClick={() => Deny(item)}
-          />
+      {item.statusOfLeave === status.Pending && (
+        <div className="container">
+          <div className="row">
+            <Button
+              text="Approve"
+              className="btn btn-success m-1 p-2 w-100"
+              onClick={() => Approve(item)}
+            />
+            <Button
+              text="Deny"
+              className="btn btn-danger m-1 p-2 w-100"
+              onClick={() => Deny(item)}
+            />
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 
-  const getListLeaves = async () => {
+  const getAllLeavesWithIncludeByManagerID = async () => {
     await leaveService
       .getAllLeavesByManagerId(props.currentUser?.id)
       .then((data) => {
@@ -122,9 +124,9 @@ const PendingLeaveRequest: any = (props: any) => {
         }
         onClick={() => {
           if (showPendings) {
-            getList();
+            getPendingLeavesWithIncludeByManagerId();
           } else {
-            getListLeaves();
+            getAllLeavesWithIncludeByManagerID();
           }
           togglePendings();
         }}
@@ -134,7 +136,7 @@ const PendingLeaveRequest: any = (props: any) => {
 
   return (
     <>
-      <Card title={"Pending Leave Request"}>
+      <Card title={"Leave Approval"}>
         <Board
           items={leaves}
           isEditable={() => {
@@ -153,11 +155,11 @@ const PendingLeaveRequest: any = (props: any) => {
           renderColumn={renderColumn}
           columnNames={columnNames}
           customElementOfActions={customElementOfActions}
-          // rightTopContent={topRightContent}
+          rightTopContent={topRightContent}
         />
       </Card>
     </>
   );
 };
 
-export default PendingLeaveRequest;
+export default LeaveApproval;
