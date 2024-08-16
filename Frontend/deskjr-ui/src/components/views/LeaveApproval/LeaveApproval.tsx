@@ -14,10 +14,10 @@ const LeaveApproval: any = (props: any) => {
   const [showPendings, setShowPendings] = useState(false);
 
   useEffect(() => {
-    getPendingLeavesWithIncludeByManagerId();
+    getPendingLeavesWithInclude();
   }, [isTrigger]);
 
-  const getPendingLeavesWithIncludeByManagerId = async () => {
+  const getPendingLeavesWithInclude = async () => {
     await leaveService
       .getPendingLeavesForApproverEmployeeByEmployeeId(
         props.currentUser?.id,
@@ -76,7 +76,7 @@ const LeaveApproval: any = (props: any) => {
     </>
   );
 
-  const getAllLeavesWithIncludeByManagerID = async () => {
+  const getLeaves = async () => {
     await leaveService
       .getAllLeavesByManagerId(props.currentUser?.id)
       .then((data) => {
@@ -124,9 +124,9 @@ const LeaveApproval: any = (props: any) => {
         }
         onClick={() => {
           if (showPendings) {
-            getPendingLeavesWithIncludeByManagerId();
+            getPendingLeavesWithInclude();
           } else {
-            getAllLeavesWithIncludeByManagerID();
+            getLeaves();
           }
           togglePendings();
         }}

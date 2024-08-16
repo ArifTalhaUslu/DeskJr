@@ -85,11 +85,12 @@ namespace DeskJr.Api.Controllers
 
 
         [HttpGet("leaveApproval/{currentUserId}")]
-        public async Task<ActionResult<IEnumerable<LeaveDTO>>> GetAllLeavesWithIncludeByManagerId(Guid currentUserId)
+        public async Task<ActionResult<IEnumerable<LeaveDTO>>> GetLeavesWithIncludeByManagerId(Guid currentUserId)
         {
-            var leaves = await _leaveService.GetAllLeavesByManagerId(currentUserId);
+            var leaves = await _leaveService.GetLeavesByManagerId(currentUserId);
             return Ok(leaves);
         }
     }
 }
+
 

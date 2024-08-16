@@ -196,9 +196,9 @@ namespace DeskJr.Services.Concrete
             };
             await _sender.SendEmailAsync(toEmail, $"İzin Talebi {variables["ApprovalStatus"]}", template, variables);
         }
-        public async Task<IEnumerable<LeaveDTO>> GetAllLeavesByManagerId(Guid currentUserId)
+        public async Task<IEnumerable<LeaveDTO>> GetLeavesByManagerId(Guid currentUserId)
         {
-            var leaves = await _leaveRepository.GetAllLeavesWithIncludeByManagerId(currentUserId);
+            var leaves = await _leaveRepository.GetLeavesWithIncludeByManagerId(currentUserId);
             if (leaves == null)
             {
                 throw new NotFoundException("No leaves exists with the provided employee identifier.");

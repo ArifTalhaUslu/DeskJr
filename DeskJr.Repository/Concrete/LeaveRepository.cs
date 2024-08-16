@@ -78,7 +78,7 @@ namespace DeskJr.Repository.Concrete
                 .ToListAsync();
         }
         
-        public async Task<IEnumerable<Leave>> GetAllLeavesWithIncludeByManagerId(Guid currentUserId)
+        public async Task<IEnumerable<Leave>> GetLeavesWithIncludeByManagerId(Guid currentUserId)
         {
             return await _context.Leaves
                 .Include(x => x.RequestingEmployee)
