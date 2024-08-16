@@ -1,5 +1,4 @@
 ﻿using DeskJr.Entity.Models;
-using DeskJr.Entity.Types;
 
 namespace DeskJr.Repository.Abstract
 {
@@ -11,6 +10,8 @@ namespace DeskJr.Repository.Abstract
         Task<IEnumerable<Leave>> GetLeavesByEmployeeIdAsync(Guid employeeId);
         Task<IEnumerable<Leave>> GetPendingLeavesForApproverEmployeeByEmployeeId(Guid currentUserId, int role);
         Task<IEnumerable<Leave>> GetValidLeaves();
+        Task<IEnumerable<Leave>> GetLeavesWithIncludeByManagerId(Guid currentUserId);
+
     }
 }
 
