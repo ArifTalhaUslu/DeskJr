@@ -1,5 +1,11 @@
 import { ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
+
+export interface EmployeeState {
+    data: User[];
+    loading: boolean;
+    error: string;
+}
 export interface User {
     id: string;
     name: string;

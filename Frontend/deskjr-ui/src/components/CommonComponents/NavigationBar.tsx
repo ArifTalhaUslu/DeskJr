@@ -1,11 +1,11 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Employee } from "../../types/employee";
 import Button from "./Button";
 import Cookies from "js-cookie";
+import { User } from "../../types/user";
 
 interface NavigationBarProps {
-    currentUser: Employee;
+    currentUser: User;
     setCurrentUser: any;
     brand: {
         name: string;
