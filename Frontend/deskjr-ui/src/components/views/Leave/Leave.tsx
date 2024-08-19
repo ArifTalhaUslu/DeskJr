@@ -8,6 +8,7 @@ import LeaveEditForm from "./LeaveEditForm";
 import { formatDate } from "date-fns";
 import { status } from "../../../types/status";
 import StatusIcon from "../../CommonComponents/StatusIcons/StatusIcon";
+import Button from "../../CommonComponents/Button";
 
 const Leave: any = (props: any) => {
   const [items, setItems] = useState([]);
@@ -23,9 +24,11 @@ const Leave: any = (props: any) => {
   }, [isTrigger]);
 
   const getList = async () => {
-    leaveService.getLeavesByEmployeeId(props.currentUser?.id).then((data) => {
-      setItems(data);
-    })
+    leaveService
+      .getLeavesByEmployeeId(props.currentUser?.id)
+      .then((data) => {
+        setItems(data);
+      })
       .catch((err) => {
         showErrorToast(err);
       });
@@ -38,7 +41,7 @@ const Leave: any = (props: any) => {
       leaveService
         .deleteLeave(selectedItemId)
         .then(() => {
-          showSuccessToast('Successful!');
+          showSuccessToast("Successful!");
           setIsTrigger(true);
         })
         .catch((err) => {
@@ -66,13 +69,15 @@ const Leave: any = (props: any) => {
   };
 
   const isEditable = (item: any) => {
-    if (item.statusOfLeave === status.Pending)
-      return true;
+    if (item.statusOfLeave === status.Pending) return true;
     return false;
   };
 
   const isDeletable = (item: any) => {
-    if (item.statusOfLeave === status.Cancelled || item.statusOfLeave === status.Pending)
+    if (
+      item.statusOfLeave === status.Cancelled ||
+      item.statusOfLeave === status.Pending
+    )
       return true;
     return false;
   };
@@ -109,7 +114,7 @@ const Leave: any = (props: any) => {
     leaveType: "Leave Type",
     requestComments: "Request Comments",
     statusOfLeave: "Leave Status",
-    approvedBy: "Approved/Denied By"
+    approvedBy: "Approved/Denied By",
   };
 
   return (
@@ -121,7 +126,13 @@ const Leave: any = (props: any) => {
           onDelete={handleDelete}
           isEditable={isEditable}
           isDeletable={isDeletable}
-          hiddenColumns={["id", "requestingEmployeeId", "approvedById", "leaveTypeId", "requestingEmployee"]}
+          hiddenColumns={[
+            "id",
+            "requestingEmployeeId",
+            "approvedById",
+            "leaveTypeId",
+            "requestingEmployee",
+          ]}
           renderColumn={renderColumn}
           columnNames={columnNames}
           hasNewRecordButton={true}

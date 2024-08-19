@@ -2,6 +2,7 @@
 using DeskJr.Common;
 using DeskJr.Common.Exceptions;
 using DeskJr.Entity.Models;
+using DeskJr.Entity.Types;
 using DeskJr.Repository.Abstract;
 using DeskJr.Service.Abstract;
 using DeskJr.Service.Dto;
@@ -12,33 +13,48 @@ namespace DeskJr.Service.Concrete
     {
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IMapper _mapper;
+        private readonly IUserService _userService;
 
-        public EmployeeService(IEmployeeRepository employeeRepository, IMapper mapper)
+        public EmployeeService(IEmployeeRepository employeeRepository, IMapper mapper, IUserService userservice)
         {
             _employeeRepository = employeeRepository;
             _mapper = mapper;
+            _userService = userservice;
         }
 
         public async Task<bool> AddOrUpdateEmployeeAsync(AddOrUpdateEmployeeDto employeeDto)
         {
-            if (employeeDto.ID == null)
-            {
-                if (string.IsNullOrEmpty(employeeDto.Password))
-                    throw new BadRequestException("Password is not null field!");
+            var currentUser = _userService.GetCurrentUser();
 
-                employeeDto.Password = Encrypter.EncryptString(employeeDto.Password);
-                return await _employeeRepository.AddAsync(_mapper.Map<Employee>(employeeDto));
+            if (currentUser.Role != EnumRole.Administrator && currentUser.Role != EnumRole.Manager)
+            {
+                throw new UnauthorizedAccessException("You do not have permission to perform this action.");
             }
 
-            return await _employeeRepository.UpdateAsync(_mapper.Map<Employee>(employeeDto));
+            var employee = _mapper.Map<Employee>(employeeDto);
+
+            if (employeeDto.ID == null && currentUser.Role == EnumRole.Administrator)
+            {
+                employee.Password = Encrypter.EncryptString(employeeDto.Password);
+                return await _employeeRepository.AddAsync(employee);
+            }
+
+            return await _employeeRepository.UpdateAsync(employee);
         }
 
 
         public async Task<bool> DeleteEmployeeAsync(Guid id)
         {
-            if (id == null)
+            var currentUser = _userService.GetCurrentUser();
+
+            if (id == Guid.Empty)
             {
                 throw new NotFoundException("No employee exists with the provided identifier.");
+            }
+
+            if (currentUser.Role != EnumRole.Administrator)
+            {
+                throw new UnauthorizedAccessException("You do not have permission to perform this action.");
             }
 
             return await _employeeRepository.DeleteAsync(id);
@@ -46,10 +62,25 @@ namespace DeskJr.Service.Concrete
 
         public async Task<IEnumerable<EmployeeDto>> GetAllEmployeesAsync()
         {
-            var employees = _employeeRepository.GetListWithIncludeEmployeeAsync();
-            if (employees == null)
+            var currentUser = _userService.GetCurrentUser();
+            IEnumerable<Employee> employees;
+
+            if (currentUser.Role != EnumRole.Administrator && currentUser.Role != EnumRole.Manager)
             {
-                throw new Exception("The requested operation could not be completed.");
+                throw new UnauthorizedAccessException("The requested operation could not be completed. Unauthorized role.");
+            }
+
+            if (currentUser.Role == EnumRole.Administrator)
+            {
+                employees = _employeeRepository.GetListWithInclude();
+            }
+            else if (currentUser.Role == EnumRole.Manager)
+            {
+                employees = await _employeeRepository.GetEmployeesByManagerIdAsync(currentUser.UserId);
+            }
+            else
+            {
+                return Enumerable.Empty<EmployeeDto>();
             }
 
             return _mapper.Map<IEnumerable<EmployeeDto>>(employees);
@@ -66,9 +97,9 @@ namespace DeskJr.Service.Concrete
             return _mapper.Map<EmployeeDto>(employee);
         }
 
-        public async Task<IEnumerable<EmployeeDto>> GetEmployeesByTeamIdAsync(Guid teamId)
+        public async Task<IEnumerable<EmployeeDto>> GetEmployeesByManagerIdAsync(Guid managerId)
         {
-            var employees = await _employeeRepository.GetEmployeesByTeamIdAsync(teamId);
+            var employees = await _employeeRepository.GetEmployeesByManagerIdAsync(managerId);
             if (employees == null)
             {
                 throw new NotFoundException("No employee exists with the provided team identifier.");
