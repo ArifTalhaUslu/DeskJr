@@ -12,7 +12,9 @@
                     .container { max-width: 600px; margin: 20px auto; padding: 0; background-color: #ffffff; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); overflow: hidden; }
                     .header { background-color: #002855; color: #ffffff; padding: 20px; text-align: center; }
                     .content { padding: 20px; color: #333333; position: relative; }
-                    .content img { position: absolute; bottom: 20px; right: 1px; width: 100px; height: auto; opacity: 0.9; }
+                    .image-container { width:600px display: grid; place-items: center; margin-top: 20px;}
+                    .italic { font-style: italic; border: 1px}
+                    .content img { width: 100px; height: auto; opacity: 0.9; }
                     .footer { margin-top: 20px; text-align: center; color: #888888; font-size: 12px; padding: 10px 20px; background-color: #f4f4f4; }
                 </style>
             </head>
@@ -22,16 +24,20 @@
                         <h2>DESKJR - İzin Talebi Bildirimi</h2>
                     </div>
                     <div class='content'>
-                        <p>Merhaba {TeamLeaderName},</p>
-                        <p>Çalışan {EmployeeName} aşağıdaki tarihler için izin talebinde bulunmuştur:</p>
+                        <p>Merhaba <strong> {TeamLeaderName},</strong></p>
+                        <p>Çalışan <strong>{EmployeeName}</strong> aşağıdaki tarihler için izin talebinde bulunmuştur:</p>
                         <ul>
                             <li><strong>Başlangıç Tarihi:</strong> {StartDate}</li>
                             <li><strong>Bitiş Tarihi:</strong> {EndDate}</li>
                         </ul>
+                        <p><strong>İzin Açıklaması:</strong></p>
+                        <p class='italic'> {RequestComments}</p>    
                         <p>Lütfen talebi inceleyip onaylayın veya reddedin.</p>
                         <p>Teşekkürler,</p>
                         <p><strong>DESKJR</strong></p>
-                        <img src='https://forte.com.tr/assets/imgs/fav/logo.png' alt='Forte Bilgi İletişim Teknolojileri ve Savunma Sanayi A.Ş'
+                        <div class='image-container'>
+                        <img src='https://forte.com.tr/assets/imgs/fav/logo.png' alt='Forte Bilgi İletişim Teknolojileri ve Savunma Sanayi A.Ş'/>
+                        </div>
                     </div>
                     <div class='footer'>
                         <p>Bu bir otomatik mesajdır, lütfen yanıtlamayın.</p>
