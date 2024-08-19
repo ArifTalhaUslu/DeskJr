@@ -25,7 +25,7 @@ const Leave: any = (props: any) => {
 
   const getList = async () => {
     leaveService
-      .getLeavesByEmployeeId(props.currentUser?.id)
+      .getLeavesByEmployeeId()
       .then((data) => {
         setItems(data);
       })
@@ -55,10 +55,9 @@ const Leave: any = (props: any) => {
     setSelectedItemId(leave.id);
     setModalModeName("Update");
     setFormToBeClosed("form-close");
-    if (props.currentUser?.id) {
+    if (props.currentUser) {
       setSelectedLeave((prevState: any) => ({
-        ...prevState,
-        requestingEmployeeId: props.currentUser?.id,
+        ...prevState
       }));
     }
   };
@@ -140,10 +139,9 @@ const Leave: any = (props: any) => {
             setModalModeName("Add");
             setFormToBeClosed("form-close");
             setIsTrigger(true);
-            if (props.currentUser?.id) {
+            if (props.currentUser) {
               setSelectedLeave((prevState: any) => ({
-                ...prevState,
-                requestingEmployeeId: props.currentUser?.id,
+                ...prevState
               }));
             }
           }}
