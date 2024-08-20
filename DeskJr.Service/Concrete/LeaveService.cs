@@ -51,6 +51,7 @@ namespace DeskJr.Services.Concrete
             leave.RequestingEmployee = requestingEmployee;
             leave.StatusOfLeave = (int)EnumStatusOfLeave.Pending;
 
+
             if (leave.StartDate > leave.EndDate)
             {
                 throw new ArgumentException("StartDate cannot be later than the EndDate");
@@ -64,7 +65,7 @@ namespace DeskJr.Services.Concrete
                 var manager = await _employeeRepository.GetByIdAsync(requestingEmployeeTeam.ManagerId.Value);
                 if (manager is not null)
                 {
-                    await SendLeaveRequestNotificationAsync(manager.Email, manager.Name, requestingEmployee.Name, leave.StartDate, leave.EndDate);
+                    await SendLeaveRequestNotificationAsync(manager.Email, manager.Name, requestingEmployee.Name, leave.StartDate, leave.EndDate, leave.RequestComments);
                 }
             }
 
@@ -177,7 +178,7 @@ namespace DeskJr.Services.Concrete
         }
 
 
-        private async Task SendLeaveRequestNotificationAsync(string toEmail, string teamLeaderName, string employeeName, DateTime startDate, DateTime endDate)
+        private async Task SendLeaveRequestNotificationAsync(string toEmail, string teamLeaderName, string employeeName, DateTime startDate, DateTime endDate, string requestComments)
         {
             string template = EmailTemplates.LeaveRequestNotificationTemplate;
             var variables = new Dictionary<string, string>
@@ -185,7 +186,8 @@ namespace DeskJr.Services.Concrete
                 { "TeamLeaderName", teamLeaderName },
                 { "EmployeeName", employeeName },
                 { "StartDate", startDate.ToShortDateString() },
-                { "EndDate", endDate.ToShortDateString() }
+                { "EndDate", endDate.ToShortDateString() },
+                { "RequestComments", requestComments },
             };
             await _sender.SendEmailAsync(toEmail, "İzin Talebi Bildirimi", template, variables);
         }
