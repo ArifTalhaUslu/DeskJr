@@ -9,10 +9,10 @@ namespace DeskJr.Services.Interfaces
         Task<bool> CreateLeaveAsync(LeaveCreateDTO leaveDTO);
         Task<bool> UpdateLeaveAsync(LeaveUpdateDTO leaveDTO);
         Task<bool> DeleteLeaveAsync(Guid id);
-        Task<IEnumerable<LeaveDTO>> GetLeavesByEmployeeIdAsync(Guid employeeId);
-        Task<IEnumerable<LeaveDTO>> GetPendingLeavesForApproverEmployeeByEmployeeId(Guid currentUserId, int role);
+        Task<IEnumerable<LeaveDTO>> GetLeavesByEmployeeIdAsync();
+        Task<IEnumerable<LeaveDTO>> GetPendingLeavesForApproverEmployeeByEmployeeId();
         Task<bool> UpdateLeaveStatus(UpdateLeaveStatusDto request);
         Task<List<LeaveDTO>> GetValidLeaves();
-        Task<IEnumerable<LeaveDTO>> GetLeavesByManagerId(Guid currentUserId);
+        Task<IEnumerable<LeaveDTO>> GetLeavesByManagerId();
     }
 }

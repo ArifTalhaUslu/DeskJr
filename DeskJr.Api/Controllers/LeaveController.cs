@@ -2,6 +2,7 @@
 using DeskJr.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static DeskJr.Service.Concrete.UserService;
 
 namespace DeskJr.Api.Controllers
 {
@@ -55,17 +56,17 @@ namespace DeskJr.Api.Controllers
             return Ok();
         }
 
-        [HttpGet("leaveByEmployeeId/{employeeId}")]
-        public async Task<ActionResult<IEnumerable<LeaveDTO>>> GetLeavesByEmployeeId(Guid employeeId)
+        [HttpGet("leaveByEmployeeId")]
+        public async Task<ActionResult<IEnumerable<LeaveDTO>>> GetLeavesByEmployeeId()
         {
-            var leaves = await _leaveService.GetLeavesByEmployeeIdAsync(employeeId);
+            var leaves = await _leaveService.GetLeavesByEmployeeIdAsync();
             return Ok(leaves);
         }
 
         [HttpPost("pendingLeaves")]
-        public async Task<ActionResult<IEnumerable<LeaveDTO>>> GetPendingLeavesForApproverEmployeeByEmployeeId(PendingLeaveRequestDto request)
+        public async Task<ActionResult<IEnumerable<LeaveDTO>>> GetPendingLeavesForApproverEmployeeByEmployeeId()
         {
-            var leaves = await _leaveService.GetPendingLeavesForApproverEmployeeByEmployeeId(request.currentUserId, (int)request.role);
+            var leaves = await _leaveService.GetPendingLeavesForApproverEmployeeByEmployeeId();
             return Ok(leaves);
         }
 
@@ -84,10 +85,10 @@ namespace DeskJr.Api.Controllers
         }
 
 
-        [HttpGet("leaveApproval/{currentUserId}")]
-        public async Task<ActionResult<IEnumerable<LeaveDTO>>> GetLeavesWithIncludeByManagerId(Guid currentUserId)
+        [HttpGet("leaveApproval/")]
+        public async Task<ActionResult<IEnumerable<LeaveDTO>>> GetLeavesWithIncludeByManagerId()
         {
-            var leaves = await _leaveService.GetLeavesByManagerId(currentUserId);
+            var leaves = await _leaveService.GetLeavesByManagerId();
             return Ok(leaves);
         }
     }
