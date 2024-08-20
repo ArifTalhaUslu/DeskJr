@@ -5,6 +5,7 @@ using DeskJr.Data;
 using DeskJr.Entity.Models;
 using DeskJr.Entity.Types;
 using DeskJr.Repository.Abstract;
+using DeskJr.Service.Abstract;
 using DeskJr.Service.Concrete;
 using DeskJr.Service.Dto;
 using DeskJr.Services.Interfaces;
@@ -21,8 +22,9 @@ namespace DeskJr.Services.Concrete
         private readonly IMapper _mapper;
         private readonly EmailSender _sender;
         private readonly ITeamRepository _teamRepository;
+        private readonly IUserService _userService;
 
-        public LeaveService(ILeaveRepository leaveRepository, IEmployeeRepository employeeRepository, AppDbContext context, IMapper mapper, ILeaveTypeRepository leaveTypeRepository, ITeamRepository teamRepository, EmailSender emailSender)
+        public LeaveService(ILeaveRepository leaveRepository, IEmployeeRepository employeeRepository, AppDbContext context, IMapper mapper, ILeaveTypeRepository leaveTypeRepository, ITeamRepository teamRepository, EmailSender emailSender, IUserService userservice)
         {
             _leaveRepository = leaveRepository;
             _employeeRepository = employeeRepository;
@@ -31,12 +33,14 @@ namespace DeskJr.Services.Concrete
             _leaveTypeRepository = leaveTypeRepository;
             _teamRepository = teamRepository;
             _sender = emailSender;
+            _userService = userservice;
         }
 
         public async Task<bool> CreateLeaveAsync(LeaveCreateDTO leaveDTO)
         {
+            var requestingEmployeeId = _userService.GetCurrentUser().UserId;
             var leave = _mapper.Map<Leave>(leaveDTO);
-            var requestingEmployee = _employeeRepository.GetByIdWithInclude(leaveDTO.RequestingEmployeeId);
+            var requestingEmployee = _employeeRepository.GetByIdWithInclude(requestingEmployeeId);
 
             if (requestingEmployee == null)
             {
@@ -115,8 +119,9 @@ namespace DeskJr.Services.Concrete
 
             return await _leaveRepository.UpdateAsync(leave);
         }
-        public async Task<IEnumerable<LeaveDTO>> GetLeavesByEmployeeIdAsync(Guid employeeId)
+        public async Task<IEnumerable<LeaveDTO>> GetLeavesByEmployeeIdAsync()
         {
+            var employeeId = _userService.GetCurrentUser().UserId;
             var leaves = await _leaveRepository.GetLeavesByEmployeeIdAsync(employeeId);
             if (leaves == null)
             {
@@ -125,9 +130,10 @@ namespace DeskJr.Services.Concrete
 
             return _mapper.Map<IEnumerable<LeaveDTO>>(leaves);
         }
-        public async Task<IEnumerable<LeaveDTO>> GetPendingLeavesForApproverEmployeeByEmployeeId(Guid currentUserId, int role)
+        public async Task<IEnumerable<LeaveDTO>> GetPendingLeavesForApproverEmployeeByEmployeeId()
         {
-            var leaves = await _leaveRepository.GetPendingLeavesForApproverEmployeeByEmployeeId(currentUserId, role);
+            var currentUser = _userService.GetCurrentUser();
+            var leaves = await _leaveRepository.GetPendingLeavesForApproverEmployeeByEmployeeId(currentUser.UserId, (int)currentUser.Role);
             if (leaves == null)
             {
                 throw new NotFoundException("No leaves exists with the provided employee identifier.");
@@ -138,16 +144,17 @@ namespace DeskJr.Services.Concrete
 
         public async Task<bool> UpdateLeaveStatus(UpdateLeaveStatusDto request)
         {
+            var currentUser = _userService.GetCurrentUser();
             var leaveToBeUpdated = await _context.Leaves.FirstOrDefaultAsync(x => x.ID == request.LeaveId);
             if (leaveToBeUpdated == null)
                 throw new NotFoundException("No leave exists");
 
             leaveToBeUpdated.StatusOfLeave = request.NewStatus;
-            leaveToBeUpdated.ApprovedById = request.ApprovedById;
+            leaveToBeUpdated.ApprovedById = currentUser.UserId;
 
-            if (request.ApprovedById.HasValue)
+            if (leaveToBeUpdated.ApprovedById.HasValue)
             {
-                leaveToBeUpdated.ApprovedBy = await _context.Employees.FirstOrDefaultAsync(e => e.ID == request.ApprovedById);
+                leaveToBeUpdated.ApprovedBy = await _context.Employees.FirstOrDefaultAsync(e => e.ID == currentUser.UserId);
             }
 
             var result = await _leaveRepository.UpdateAsync(leaveToBeUpdated);
@@ -198,8 +205,9 @@ namespace DeskJr.Services.Concrete
             };
             await _sender.SendEmailAsync(toEmail, $"İzin Talebi {variables["ApprovalStatus"]}", template, variables);
         }
-        public async Task<IEnumerable<LeaveDTO>> GetLeavesByManagerId(Guid currentUserId)
+        public async Task<IEnumerable<LeaveDTO>> GetLeavesByManagerId()
         {
+            var currentUserId = _userService.GetCurrentUser().UserId;
             var leaves = await _leaveRepository.GetLeavesWithIncludeByManagerId(currentUserId);
             if (leaves == null)
             {

@@ -19,10 +19,7 @@ const LeaveApproval: any = (props: any) => {
 
   const getPendingLeavesWithInclude = async () => {
     await leaveService
-      .getPendingLeavesForApproverEmployeeByEmployeeId(
-        props.currentUser?.id,
-        props.currentUser?.employeeRole
-      )
+      .getPendingLeavesForApproverEmployeeByEmployeeId()
       .then((data) => {
         setLeaves(data);
       })
@@ -33,7 +30,7 @@ const LeaveApproval: any = (props: any) => {
 
   const Approve = (leave: any) => {
     leaveService
-      .updateLeaveStatus(leave.id, status.Approved, props.currentUser?.id)
+      .updateLeaveStatus(leave.id, status.Approved)
       .then(() => {
         showSuccessToast("Successfully Confirmed!");
         setIsTrigger(!isTrigger);
@@ -45,7 +42,7 @@ const LeaveApproval: any = (props: any) => {
 
   const Deny = (leave: any) => {
     leaveService
-      .updateLeaveStatus(leave.id, status.Cancelled, props.currentUser?.id)
+      .updateLeaveStatus(leave.id, status.Cancelled)
       .then(() => {
         showSuccessToast("Successfully Rejected!");
         setIsTrigger(!isTrigger);
@@ -78,7 +75,7 @@ const LeaveApproval: any = (props: any) => {
 
   const getLeaves = async () => {
     await leaveService
-      .getAllLeavesByManagerId(props.currentUser?.id)
+      .getAllLeavesByManagerId()
       .then((data) => {
         setLeaves(data);
       })
