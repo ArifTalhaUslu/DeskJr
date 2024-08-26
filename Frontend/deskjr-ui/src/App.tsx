@@ -25,7 +25,7 @@ import { Roles } from "./types/Roles";
 import EmployeeTitle from "./components/views/EmployeeTitle/EmployeeTitle";
 import LeaveType from "./components/views/LeaveType/LeaveType";
 import ChangePassword from "./components/views/ChangePassword/ChangePassword";
-import OrganizationalChart from "./components/views/OrganizationalChart/OrganizationalChart";
+import OrganizationCharts from "./components/views/OrganizationChart/OrganizationCharts";
 
 const App: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<any>();
@@ -91,8 +91,8 @@ const App: React.FC = () => {
           ],
         },
         {
-          name:"Organizational Chart",
-          to : "/organizationalCharts",
+          name:"Organization Chart",
+          to : "/organizationCharts",
           visible : currentUser !== null,
         },
       ],
@@ -159,7 +159,7 @@ const App: React.FC = () => {
                 <Route path="/titles" element={<EmployeeTitle />} />
                 <Route path="*" element={<>Not Found</>} />
                 <Route path="/leaveTypes" element={<LeaveType />} />
-                <Route path="/organizationalCharts" element={<OrganizationalChart currentUser={currentUser}/>}/>
+                <Route path="/organizationCharts" element={<OrganizationCharts currentUser={currentUser}/>}/>
                 <Route path="/changePassword" element={<ChangePassword currentUser={currentUser} />} />
                 
               </>
