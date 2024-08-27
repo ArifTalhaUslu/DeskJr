@@ -47,8 +47,8 @@ class LeaveService {
         return response.data;
     }
 
-    public async updateLeaveStatus(leaveId: any, newStatus: any){
-        const response = await api.post(`${baseUrl}/updateStatus`, {leaveId, newStatus});
+    public async updateLeaveStatus(leaveId: any, newStatus: any, confirmDescription?: string){
+        const response = await api.post(`${baseUrl}/updateStatus`, {leaveId, newStatus, confirmDescription});
         return response.data;
     }
 
