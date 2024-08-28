@@ -22,7 +22,6 @@ class LeaveService {
     }
 
     public async createLeave(leave: any){
-        debugger;
         const response = await api.post(baseUrl,leave);
         return response.data;
     }

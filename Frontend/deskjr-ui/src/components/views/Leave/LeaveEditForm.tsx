@@ -50,22 +50,18 @@ const LeaveEditForm: any = (props: any) => {
     };
 
     if (props.modalModeName === "Add") {
-      debugger;
       leaveService
         .createLeave(leaveData)
         .then(() => {
-          debugger;
           showSuccessToast("Successful!");
           props.getList();
           props.onClose();
         })
         .catch((err) => {
-          debugger;
           showErrorToast(err);
         });
     }
     if (props.modalModeName === "Update") {
-      debugger;
       leaveService
         .updateLeave(leaveData)
         .then(() => {
