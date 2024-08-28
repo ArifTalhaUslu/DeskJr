@@ -72,7 +72,7 @@
                 </div>
                 <div class='content'>
                     <p>Merhaba {EmployeeName},</p>
-                    <p>İzin talebiniz <strong>{ConfirmDescription}</strong>{ApprovalStatus}.</p>
+                    <p>İzin talebiniz {ConfirmDescription} {ApprovalStatus}.</p>
                     <ul>
                         <li><strong>Başlangıç Tarihi:</strong> {StartDate}</li>
                         <li><strong>Bitiş Tarihi:</strong> {EndDate}</li>
