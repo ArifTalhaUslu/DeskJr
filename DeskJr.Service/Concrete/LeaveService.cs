@@ -151,6 +151,7 @@ namespace DeskJr.Services.Concrete
 
             leaveToBeUpdated.StatusOfLeave = request.NewStatus;
             leaveToBeUpdated.ApprovedById = currentUser.UserId;
+            leaveToBeUpdated.ConfirmDescription = request.ConfirmDescription;
 
             if (leaveToBeUpdated.ApprovedById.HasValue)
             {
@@ -166,7 +167,7 @@ namespace DeskJr.Services.Concrete
 
             if (manager is not null && requestingEmployee is not null)
             {
-                await SendLeaveRequestResponseAsync(requestingEmployee.Email, requestingEmployee.Name, leaveToBeUpdated.StartDate, leaveToBeUpdated.EndDate, isApproved);
+                await SendLeaveRequestResponseAsync(requestingEmployee.Email, requestingEmployee.Name, leaveToBeUpdated.StartDate, leaveToBeUpdated.EndDate, isApproved, leaveToBeUpdated.ConfirmDescription);
             }
 
             return result;
@@ -192,7 +193,7 @@ namespace DeskJr.Services.Concrete
             await _sender.SendEmailAsync(toEmail, "İzin Talebi Bildirimi", template, variables);
         }
 
-        public async Task SendLeaveRequestResponseAsync(string toEmail, string employeeName, DateTime startDate, DateTime endDate, bool isApproved)
+        public async Task SendLeaveRequestResponseAsync(string toEmail, string employeeName, DateTime startDate, DateTime endDate, bool isApproved, string? confirmDescription)
         {
             string template = EmailTemplates.LeaveRequestResponseTemplate;
             var variables = new Dictionary<string, string>
@@ -201,7 +202,8 @@ namespace DeskJr.Services.Concrete
                 { "StartDate", startDate.ToShortDateString() },
                 { "EndDate", endDate.ToShortDateString() },
                 { "ApprovalStatus", isApproved ? "Onaylanmıştır" : "Reddedilmiştir" },
-                { "ApprovalStatusClass", isApproved ? "approved" : "reject" }
+                { "ApprovalStatusClass", isApproved ? "approved" : "reject" },
+                { "ConfirmDescription", isApproved ? "": $"<strong>{confirmDescription}</strong> açıklaması ile" }
             };
             await _sender.SendEmailAsync(toEmail, $"İzin Talebi {variables["ApprovalStatus"]}", template, variables);
         }
