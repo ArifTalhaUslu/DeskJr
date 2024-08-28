@@ -8,7 +8,6 @@ import LeaveEditForm from "./LeaveEditForm";
 import { formatDate } from "date-fns";
 import { status } from "../../../types/status";
 import StatusIcon from "../../CommonComponents/StatusIcons/StatusIcon";
-import Button from "../../CommonComponents/Button";
 
 const Leave: any = (props: any) => {
   const [items, setItems] = useState([]);
