@@ -23,8 +23,6 @@ const AdvancedSettingEditForm: any = ({ settings }) => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    console.log(updatedSettings);
-
     try {
       await AdvancedSettingService.updateMultipleSettings(updatedSettings);
     } catch (error) {}
