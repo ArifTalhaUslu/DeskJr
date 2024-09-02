@@ -95,7 +95,8 @@ namespace DeskJr.Data.Migrations
                     LeaveTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RequestComments = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StatusOfLeave = table.Column<int>(type: "int", nullable: false),
-                    ApprovedById = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    ApprovedById = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ConfirmDescription = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {

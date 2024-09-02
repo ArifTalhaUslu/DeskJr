@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DeskJr.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240826141753_v3")]
-    partial class v3
+    [Migration("20240902113533_v1")]
+    partial class v1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -160,6 +160,25 @@ namespace DeskJr.Data.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("LeaveTypes");
+                });
+
+            modelBuilder.Entity("DeskJr.Entity.Models.Setting", b =>
+                {
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Settings");
                 });
 
             modelBuilder.Entity("DeskJr.Entity.Models.Team", b =>
