@@ -15,6 +15,7 @@ namespace DeskJr.Data
         public DbSet<Leave> Leaves { get; set; }
         public DbSet<LeaveType> LeaveTypes { get; set; }
         public DbSet<Holiday> Holidays { get; set; }
+        public DbSet<Setting> Settings { get; set; }
 
 
 

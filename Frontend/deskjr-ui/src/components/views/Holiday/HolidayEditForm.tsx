@@ -5,10 +5,10 @@ import holidayService from "../../../services/HolidayService";
 import { showErrorToast, showSuccessToast } from "../../../utils/toastHelper";
 
 const HolidayEditForm: any = (props: any) => {
-
   useEffect(() => {
     if (props.selectedItemId) {
-      holidayService.getHolidayById(props.selectedItemId)
+      holidayService
+        .getHolidayById(props.selectedItemId)
         .then((data) => {
           props.setSelectedHoliday(data);
         })
@@ -33,7 +33,7 @@ const HolidayEditForm: any = (props: any) => {
         ...props.selectedHoliday,
       })
       .then(() => {
-        showSuccessToast('Successful!');
+        showSuccessToast("Successful!");
         props.getList();
         props.onClose();
       })
@@ -94,9 +94,7 @@ const HolidayEditForm: any = (props: any) => {
                   <Input
                     type="text"
                     name="name"
-                    value={
-                      props.selectedHoliday && props.selectedHoliday.name
-                    }
+                    value={props.selectedHoliday && props.selectedHoliday.name}
                     onChange={(e: any) => handleChange(e)}
                     required
                   />

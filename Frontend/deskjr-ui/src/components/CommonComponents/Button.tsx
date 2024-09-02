@@ -1,5 +1,4 @@
 function Button(props: any) {
-
   return (
     <>
       <button
@@ -8,11 +7,11 @@ function Button(props: any) {
         className={
           props.className ? props.className : "btn btn-primary btn-block"
         }
-        data-toggle={props.isModalTrigger ? 'modal' : ''} 
-        data-target={'#' + props.dataTarget}
+        data-toggle={props.isModalTrigger ? "modal" : ""}
+        data-target={"#" + props.dataTarget}
         style={props.style}
       >
-        {props.text ? props.text : 'Click'}
+        {props.text ? props.text : "Click"}
       </button>
     </>
   );

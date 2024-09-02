@@ -2,6 +2,7 @@
 using DeskJr.Entity.Models;
 using DeskJr.Service.Dto;
 
+
 namespace DeskJr.Service.Mapping
 {
     public class MapperProfile : Profile
@@ -28,6 +29,8 @@ namespace DeskJr.Service.Mapping
             CreateMap<Leave, UpdateLeaveStatusDto>().ReverseMap();
             CreateMap<Holiday, HolidayDto>().ReverseMap();
             CreateMap<Holiday, AddOrUpdateHolidayDto>().ReverseMap();
+            CreateMap<Setting, SettingDto>().ReverseMap();
+            CreateMap<Setting, AddOrUpdateSettingDto>().ReverseMap();
         }
     }
 }

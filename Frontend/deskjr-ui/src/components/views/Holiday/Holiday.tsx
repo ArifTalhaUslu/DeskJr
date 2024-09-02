@@ -21,7 +21,8 @@ const Holiday: any = () => {
   }, [isTrigger]);
 
   const getList = async () => {
-    holidayService.getAllHoliday()
+    holidayService
+      .getAllHoliday()
       .then((data) => {
         setItems(data);
       })
@@ -37,7 +38,7 @@ const Holiday: any = () => {
       holidayService
         .deleteHoliday(selectedItemId)
         .then(() => {
-          showSuccessToast('Successful!');
+          showSuccessToast("Successful!");
           setIsTrigger(true);
         })
         .catch((err) => {

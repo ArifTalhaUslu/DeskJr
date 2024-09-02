@@ -23,11 +23,11 @@ const Employee: any = (props: any) => {
 
   const getList = async () => {
     employeeService.getAllEmployee().then((data) => {
-      setItems(data);
-    })
-    .catch((err) => {
-      showErrorToast(err);
-    });
+        setItems(data);
+      })
+      .catch((err) => {
+        showErrorToast(err);
+      });
   };
 
   const onConfirmDelete = async (e: any) => {
@@ -37,7 +37,7 @@ const Employee: any = (props: any) => {
       employeeService
         .deleteEmployee(selectedItemId)
         .then(() => {
-          showSuccessToast('Successful!');
+          showSuccessToast("Successful!");
           setIsTrigger(true);
         })
         .catch((err) => {
@@ -77,8 +77,8 @@ const Employee: any = (props: any) => {
       return formatDate(new Date(value), "dd/MM/yyyy");
     } else if (column === "employeeTitle") {
       return value && value.titleName;
-    }else if (column === "team") {
-      return value && value.name;
+    } else if (column === "team") {
+       return value && value.name;
     }
     return value;
   };

@@ -5,7 +5,7 @@ import {
   BrowserRouter as Router,
   Route,
   Routes,
-  redirect
+  redirect,
 } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import MyInfo from "./components/views/MyInfo/MyInfo";
@@ -14,6 +14,7 @@ import Leaves from "./components/views/Leave/Leave";
 import LeaveApproval from "./components/views/LeaveApproval/LeaveApproval";
 
 import Holidays from "./components/views/Holiday/Holiday";
+import AdvancedSetting from "./components/views/AdvancedSetting/AdvancedSetting";
 
 import "react-toastify/dist/ReactToastify.css";
 import Team from "./components/views/Team/Team";
@@ -42,9 +43,11 @@ const App: React.FC = () => {
         {
           name: "Employee List",
           to: "/employees",
-          visible: currentUser?.employeeRole === Roles.Admin || currentUser?.employeeRole === Roles.Manager,
+          visible:
+            currentUser?.employeeRole === Roles.Admin ||
+            currentUser?.employeeRole === Roles.Manager,
         },
-        
+
         {
           name: "Leave",
           visible: true,
@@ -58,7 +61,9 @@ const App: React.FC = () => {
             {
               name: "Leave Approval",
               to: "/leaveApproval",
-              visible: currentUser?.employeeRole === Roles.Admin || currentUser?.employeeRole === Roles.Manager,
+              visible:
+                currentUser?.employeeRole === Roles.Admin ||
+                currentUser?.employeeRole === Roles.Manager,
             },
           ],
         },
@@ -85,6 +90,11 @@ const App: React.FC = () => {
             {
               name: "Teams",
               to: "/teams",
+              visible: currentUser?.employeeRole === Roles.Admin,
+            },
+            {
+              name: "Advanced Setting",
+              to: "/advancedSetting",
               visible: currentUser?.employeeRole === Roles.Admin,
             },
           ],
@@ -138,35 +148,46 @@ const App: React.FC = () => {
           <Routes>
             {currentUser && currentUser.id && (
               <>
+                <Route path="/" element={<Home currentUser={currentUser} />} />
                 <Route
-                  path="/"
-                  element={<Home currentUser={currentUser} />}
+                  path="/myInfo"
+                  element={<MyInfo currentUser={currentUser} />}
                 />
-                <Route path="/myInfo" element={<MyInfo currentUser={currentUser} />} />
 
-                <Route path="/leaves" element={<Leaves currentUser={currentUser} />} />
+                <Route
+                  path="/leaves"
+                  element={<Leaves currentUser={currentUser} />}
+                />
                 <Route
                   path="/leaveApproval"
-                  element={<LeaveApproval currentUser={currentUser}/>}
+                  element={<LeaveApproval currentUser={currentUser} />}
                 />
                 <Route path="/holidays" element={<Holidays />} />
                 <Route path="/titles" element={<EmployeeTitle />} />
                 <Route path="*" element={<>Not Found</>} />
                 <Route path="/leaveTypes" element={<LeaveType />} />
-                <Route path="/changePassword" element={<ChangePassword currentUser={currentUser} />} />
-                
+                <Route
+                  path="/changePassword"
+                  element={<ChangePassword currentUser={currentUser} />}
+                />
               </>
             )}
             {currentUser && currentUser.employeeRole === Roles.Admin && (
               <>
-                <Route path="/employees" element={<Employee currentUser={currentUser} />} />
+                <Route
+                  path="/employees"
+                  element={<Employee currentUser={currentUser} />}
+                />
                 <Route path="/teams" element={<Team />} />
+                <Route path="advancedSetting" element={<AdvancedSetting />} />
               </>
             )}
             {currentUser && currentUser.employeeRole === Roles.Manager && (
               <>
-                <Route path="/employees" element={<Employee currentUser={currentUser} />} />
-                
+                <Route
+                  path="/employees"
+                  element={<Employee currentUser={currentUser} />}
+                />
               </>
             )}
             {!currentUser && (
