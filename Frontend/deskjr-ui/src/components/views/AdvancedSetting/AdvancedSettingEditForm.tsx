@@ -4,7 +4,6 @@ import { showErrorToast, showSuccessToast } from "../../../utils/toastHelper";
 import { Setting } from "../../../types/advancedSetting";
 import AdvancedSettingService from "../../../services/AdvancedSettingService";
 import NumberInput from "../../CommonComponents/NumberInput";
-import { cwd } from "process";
 
 type AdvancedSettingEditFormProps = {
   settings: Setting[];
@@ -27,11 +26,8 @@ const AdvancedSettingEditForm: any = ({ settings }) => {
     console.log(updatedSettings);
 
     try {
-      console.log(56);
       await AdvancedSettingService.updateMultipleSettings(updatedSettings);
-    } catch (error) {
-      console.log(1);
-    }
+    } catch (error) {}
   };
 
   useEffect(() => {
