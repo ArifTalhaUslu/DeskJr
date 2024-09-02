@@ -7,12 +7,15 @@ import Button from "../../CommonComponents/Button";
 import { formatDate } from "date-fns";
 import { status } from "../../../types/status";
 import StatusIcon from "../../CommonComponents/StatusIcons/StatusIcon";
+import ConfirmModal from "../../CommonComponents/ConfirmModal";
 
 const LeaveApproval: any = (props: any) => {
   const [leaves, setLeaves] = useState([]);
+  const [selectedItemId, setSelectedItemId] = useState("");
+  const [selectedLeave, setSelectedLeave] = useState<any>({});
   const [isTrigger, setIsTrigger] = useState(false);
   const [showPendings, setShowPendings] = useState(false);
-
+  const [formToBeClosed, setFormToBeClosed] = useState("");
   useEffect(() => {
     getPendingLeavesWithInclude();
   }, [isTrigger]);
@@ -28,28 +31,69 @@ const LeaveApproval: any = (props: any) => {
       });
   };
 
-  const Approve = (leave: any) => {
-    leaveService
-      .updateLeaveStatus(leave.id, status.Approved)
-      .then(() => {
-        showSuccessToast("Successfully Confirmed!");
-        setIsTrigger(!isTrigger);
-      })
-      .catch((err) => {
-        showErrorToast(err);
-      });
+  const Approve = async (e: any) => {
+    e.preventDefault();
+
+    if (selectedItemId) {
+      leaveService
+        .updateLeaveStatus(selectedItemId, status.Approved)
+        .then(() => {
+          showSuccessToast("Successfully Confirmed!");
+          setIsTrigger(!isTrigger);
+        })
+        .catch((err) => {
+          showErrorToast(err);
+        });
+    }
+    onModalClose();
   };
 
-  const Deny = (leave: any) => {
-    leaveService
-      .updateLeaveStatus(leave.id, status.Cancelled)
-      .then(() => {
-        showSuccessToast("Successfully Rejected!");
-        setIsTrigger(!isTrigger);
-      })
-      .catch((err) => {
-        showErrorToast(err);
-      });
+  const Deny = async (e: any) => {
+    e.preventDefault();
+    if (selectedItemId) {
+      leaveService
+        .updateLeaveStatus(
+          selectedItemId,
+          status.Cancelled,
+          selectedLeave.confirmDescription
+        )
+        .then(() => {
+          showSuccessToast("Successfully Rejected!");
+          setIsTrigger(!isTrigger);
+        })
+        .catch((err) => {
+          showErrorToast(err);
+        });
+    }
+    onModalClose();
+  };
+
+  const handleApprove = (leave: any) => {
+    setSelectedItemId(leave.id);
+    setFormToBeClosed("form-closed-approve-confirm");
+    if (props.currentUser) {
+      setSelectedLeave((prevState: any) => ({
+        ...prevState,
+      }));
+    }
+  };
+  const handleDeny = (leave: any) => {
+    setSelectedItemId(leave.id);
+    setFormToBeClosed("form-closed-deny-confirm");
+    if (props.currentUser) {
+      setSelectedLeave((prevState: any) => ({
+        ...prevState,
+      }));
+    }
+  };
+
+  const onModalClose = () => {
+    setSelectedItemId("");
+    setSelectedLeave({});
+    setIsTrigger(false);
+    const close_button = document.getElementById(formToBeClosed);
+    close_button?.click();
+    setFormToBeClosed("");
   };
 
   const customElementOfActions = (item: any) => (
@@ -60,13 +104,17 @@ const LeaveApproval: any = (props: any) => {
             <Button
               text="Approve"
               className="btn btn-success m-1 p-2 w-100"
-              onClick={() => Approve(item)}
-            />
+              onClick={() => handleApprove(item)}
+              isModalTrigger={true}
+              dataTarget={"approve-confirm"}
+            ></Button>
             <Button
               text="Deny"
               className="btn btn-danger m-1 p-2 w-100"
-              onClick={() => Deny(item)}
-            />
+              onClick={() => handleDeny(item)}
+              isModalTrigger={true}
+              dataTarget={"deny-confirm"}
+            ></Button>
           </div>
         </div>
       )}
@@ -110,6 +158,7 @@ const LeaveApproval: any = (props: any) => {
     leaveType: "Leave Type",
     requestComments: "Request Comments",
     statusOfLeave: "Leave Status",
+    confirmDescription: "Confirm Description",
   };
 
   const topRightContent = (
@@ -130,6 +179,14 @@ const LeaveApproval: any = (props: any) => {
       />
     </>
   );
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setSelectedLeave((prevState: any) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
 
   return (
     <>
@@ -155,6 +212,37 @@ const LeaveApproval: any = (props: any) => {
           rightTopContent={topRightContent}
         />
       </Card>
+      <ConfirmModal
+        modalId="approve-confirm"
+        selectedItemId={selectedItemId}
+        selectedLeave={selectedLeave}
+        setSelectedLeave={setSelectedLeave}
+        title={"Onayla"}
+        message="Emin misiniz?"
+        onConfirm={(e) => Approve(e)}
+        onClose={onModalClose}
+      />
+      <ConfirmModal
+        modalId="deny-confirm"
+        selectedItemId={selectedItemId}
+        selectedLeave={selectedLeave}
+        setSelectedLeave={setSelectedLeave}
+        title={"Reddet"}
+        message="Emin misiniz? Lütfen aciklama giriniz"
+        context={
+          <>
+            <textarea
+              className="form-control"
+              name="confirmDescription"
+              value={selectedLeave.confirmDescription}
+              onChange={(e: any) => handleChange(e)}
+              required
+            />
+          </>
+        }
+        onConfirm={(e) => Deny(e)}
+        onClose={onModalClose}
+      />
     </>
   );
 };

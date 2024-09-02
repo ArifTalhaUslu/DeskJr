@@ -9,5 +9,6 @@ namespace DeskJr.Service.Dto
         public Guid LeaveId { get; set; }
         public EnumStatusOfLeave NewStatus { get; set; }
         public EmployeeDto? ApprovedBy { get; set; }
+        public string? ConfirmDescription { get; set; } 
     }
 }
