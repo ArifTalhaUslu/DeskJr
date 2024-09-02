@@ -51,35 +51,6 @@ namespace DeskJr.Data
                         await context.SaveChangesAsync();
                     }
                 }
-                if (!context.Settings.Any())
-                {
-                    var settingId = Guid.NewGuid();
-                    context.Settings.Add(new Setting()
-                    {
-                        ID = settingId,
-                        Key = "Leave Entitlement",
-                        Value = "40",
-
-                    });
-                    var settingId2 = Guid.NewGuid();
-                    context.Settings.Add(new Setting()
-                    {
-                        ID = settingId2,
-                        Key = "Employee Salary",
-                        Value = "70000",
-
-                    });
-                    var settingId3 = Guid.NewGuid();
-                    context.Settings.Add(new Setting()
-                    {
-                        ID = settingId3,
-                        Key = "Meneger Salary",
-                        Value = "1100000",
-
-                    });
-
-                    await context.SaveChangesAsync();
-                }
             }
         }
     }
