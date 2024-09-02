@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DeskJr.Data.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class v1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -48,6 +48,19 @@ namespace DeskJr.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Settings",
+                columns: table => new
+                {
+                    ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Key = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Settings", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Employees",
                 columns: table => new
                 {
@@ -80,9 +93,7 @@ namespace DeskJr.Data.Migrations
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LeaveTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    DateRequested = table.Column<DateTime>(type: "datetime2", nullable: false),
                     RequestComments = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DateActioned = table.Column<DateTime>(type: "datetime2", nullable: false),
                     StatusOfLeave = table.Column<int>(type: "int", nullable: false),
                     ApprovedById = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
@@ -187,6 +198,9 @@ namespace DeskJr.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Leaves");
+
+            migrationBuilder.DropTable(
+                name: "Settings");
 
             migrationBuilder.DropTable(
                 name: "LeaveTypes");
