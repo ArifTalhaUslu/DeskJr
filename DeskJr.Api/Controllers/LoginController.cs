@@ -52,7 +52,6 @@ namespace DeskJr.Api.Controllers
                 Expires = DateTime.Now.AddDays(7)
             };
 
-
             return Ok(response);
         }
 
