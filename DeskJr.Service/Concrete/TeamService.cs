@@ -40,7 +40,7 @@ namespace DeskJr.Service.Concrete
                 }
                 return await _teamRepository.AddAsync(team);
             }
-            if (!teamDto.UpTeamId.HasValue && baseTeamExist)
+            if (!teamDto.UpTeamId.HasValue && baseTeamExist && !allTeams.Where(x=>!x.UpTeamId.HasValue && x.ID == team.ID).Any())
             {
                 throw new InvalidOperationException("Sadece bir base unit olabilir.");
             }

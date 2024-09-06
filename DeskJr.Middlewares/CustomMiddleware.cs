@@ -23,30 +23,13 @@ namespace DeskJr.Middlewares
 
         public async Task InvokeAsync(HttpContext context)
         {
-            var requestBody = await ReadRequestBodyAsync(context.Request);
-            var originalBodyStream = context.Response.Body;
-
-            using (var responseBody = new MemoryStream())
+            try
             {
-                context.Response.Body = responseBody;
-                try
-                {
-                    await _next(context);
-                }
-                catch (Exception ex)
-                {
-                    await HandleExceptionAsync(context, ex);
-                }
-                finally
-                {
-                    CurrentUser currentUser = null;
-                    if (!context.Request.Path.Value.StartsWith("/api/login", StringComparison.OrdinalIgnoreCase))
-                    {
-                        currentUser = _userService.GetCurrentUser();
-                    }
-
-                    await LogAndReturnResponseAsync(context, requestBody, responseBody, originalBodyStream, currentUser);
-                }
+                await _next(context);
+            }
+            catch (Exception ex)
+            {
+                await HandleExceptionAsync(context, ex);
             }
         }
 
@@ -116,7 +99,7 @@ namespace DeskJr.Middlewares
                 StatusCode = context.Response.StatusCode,
                 ResponseBody = maskedResponseBody,
                 CurrentUser = currentUser?.UserId.ToString() ?? "Unknown User",
-                IPAddress = ipAddress 
+                IPAddress = ipAddress
             };
 
             string logMessage = context.Response.StatusCode >= 400 ? "Request failed" : "Request succeeded";
