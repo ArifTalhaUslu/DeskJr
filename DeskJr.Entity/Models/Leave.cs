@@ -22,5 +22,6 @@ namespace DeskJr.Entity.Models
         [ForeignKey("ApprovedById")]
         public Guid? ApprovedById { get; set; }
         public Employee? ApprovedBy { get; set; }
+        public string? ConfirmDescription { get; set; } 
     }
 }
