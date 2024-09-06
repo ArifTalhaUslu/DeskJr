@@ -20,14 +20,16 @@ const EmployeeEditForm: any = (props: any) => {
     { value: "" },
     { value: Roles.Employee, label: Roles[Roles.Employee] },
     { value: Roles.Manager, label: Roles[Roles.Manager] },
-    { value: Roles.Admin, label: Roles[Roles.Admin] },  
+    { value: Roles.Admin, label: Roles[Roles.Admin] },
   ]);
 
   useEffect(() => {
     if (props.selectedItemId) {
-      employeeService.getEmployeeById(props.selectedItemId).then((data) => {
-        props.setSelectedEmployee(data);
-      })
+      employeeService
+        .getEmployeeById(props.selectedItemId)
+        .then((data) => {
+          props.setSelectedEmployee(data);
+        })
         .catch((err) => {
           showErrorToast(err);
         });
@@ -35,11 +37,10 @@ const EmployeeEditForm: any = (props: any) => {
 
     teamService.getAllTeam().then((data) => {
       setTeams(data);
-    })
+    });
     employeeTitleService.getAllEmployeeTitle().then((data) => {
       setTitles(data);
-    })
-
+    });
   }, [props.selectedItemId]);
 
   const handleChange = (e: any) => {
@@ -49,13 +50,12 @@ const EmployeeEditForm: any = (props: any) => {
         ...prev,
         [name]: parseInt(value, 10),
       }));
-    }
-    else {
+    } else {
       props.setSelectedEmployee((prev: any) => ({
         ...prev,
         [name]: value,
-        teamId: name === 'team' ? value : prev.teamId,
-        employeeTitleId: name === 'title' ? value : prev.employeeTitleId,
+        teamId: name === "team" ? value : prev.teamId,
+        employeeTitleId: name === "title" ? value : prev.employeeTitleId,
       }));
     }
   };
@@ -70,7 +70,7 @@ const EmployeeEditForm: any = (props: any) => {
         employeeRole: props.selectedEmployee.employeeRole,
       })
       .then(() => {
-        showSuccessToast('Successful!');
+        showSuccessToast("Successful!");
         props.getList();
         props.onClose();
       })
@@ -148,7 +148,7 @@ const EmployeeEditForm: any = (props: any) => {
                     onChange={(e: any) => handleChange(e)}
                     required
                   />
-                  
+
                   <label className="col-form-label">Gender:</label>
                   <select
                     required
@@ -169,59 +169,61 @@ const EmployeeEditForm: any = (props: any) => {
                       </option>
                     ))}
                   </select>
-                  
-                      <label className="col-form-label">Role:</label>
-                      <select
-                        required
-                        name="employeeRole"
-                        className="form-control"
-                        value={
-                          props.selectedEmployee &&
-                          props.selectedEmployee.employeeRole
-                        }
-                        disabled ={props.currentUser.employeeRole !== Roles.Admin}
-                        onChange={(e: any) => handleChange(e)}
-                      >
-                        {roleOptions.map((option: any) => (
-                          <option
-                            key={option.value}
-                            value={option.value}
-                            hidden={option.value === ""}
-                          >
-                            {option.label}
-                          </option>
-                        ))}
-                      </select>
-                      <label className="col-form-label">Title:</label>
-                      <select
-                        name="title"
-                        className="form-control"
-                        value={props.selectedEmployee?.employeeTitleId || ""}
-                        disabled ={props.currentUser.employeeRole !== Roles.Admin}
-                        onChange={(e: any) => handleChange(e)}
-                      >
-                        <option value=""></option>
-                        {titles.map((title: any) => (
-                          <option key={title.id} value={title.id}>{title.titleName}</option>
-                        ))}
-                      </select>
 
-                      <label className="col-form-label">Team:</label>
-                      <select
-                        name="team"
-                        className="form-control"
-                        value={props.selectedEmployee?.teamId || ""}
-                        onChange={(e: any) => handleChange(e)}
-                        disabled ={props.currentUser.employeeRole !== Roles.Admin}
-                        required
+                  <label className="col-form-label">Role:</label>
+                  <select
+                    required
+                    name="employeeRole"
+                    className="form-control"
+                    value={
+                      props.selectedEmployee &&
+                      props.selectedEmployee.employeeRole
+                    }
+                    disabled={props.currentUser.employeeRole !== Roles.Admin}
+                    onChange={(e: any) => handleChange(e)}
+                  >
+                    {roleOptions.map((option: any) => (
+                      <option
+                        key={option.value}
+                        value={option.value}
+                        hidden={option.value === ""}
                       >
-                        <option value=""></option>
-                        {teams.map((team: any) => (
-                          <option key={team.id} value={team.id}>{team.name}</option>
-                        ))}
-                      </select>
-                 
-                  
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                  <label className="col-form-label">Title:</label>
+                  <select
+                    name="title"
+                    className="form-control"
+                    value={props.selectedEmployee?.employeeTitleId || ""}
+                    disabled={props.currentUser.employeeRole !== Roles.Admin}
+                    onChange={(e: any) => handleChange(e)}
+                  >
+                    <option value=""></option>
+                    {titles.map((title: any) => (
+                      <option key={title.id} value={title.id}>
+                        {title.titleName}
+                      </option>
+                    ))}
+                  </select>
+
+                  <label className="col-form-label">Team:</label>
+                  <select
+                    name="team"
+                    className="form-control"
+                    value={props.selectedEmployee?.teamId || ""}
+                    onChange={(e: any) => handleChange(e)}
+                    disabled={props.currentUser.employeeRole !== Roles.Admin}
+                    required
+                  >
+                    <option value=""></option>
+                    {teams.map((team: any) => (
+                      <option key={team.id} value={team.id}>
+                        {team.name}
+                      </option>
+                    ))}
+                  </select>
 
                   <label className="col-form-label">E-mail:</label>
                   <Input

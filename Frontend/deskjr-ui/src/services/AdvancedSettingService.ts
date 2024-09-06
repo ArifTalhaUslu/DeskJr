@@ -12,7 +12,7 @@ class AdvancedSettingService {
     return response.data;
   }
 
-  public async addOrUpdateSetting(setting: any) {
+  public async addOrUpdateSetting(setting: any[]) {
     const response = await api.post(baseUrl, setting);
     return response.data;
   }

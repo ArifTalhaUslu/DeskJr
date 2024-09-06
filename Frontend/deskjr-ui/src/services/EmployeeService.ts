@@ -1,15 +1,14 @@
-import { SET_ERROR } from '../store/actions/actionTypes';
-import { ErrorResponseDto } from '../types/ErrorResponseDto';
-import { SetErrorAction } from '../store/actions/errorActions';
-import api from '../utils/axiosConfig';
+import { SET_ERROR } from "../store/actions/actionTypes";
+import { ErrorResponseDto } from "../types/ErrorResponseDto";
+import { SetErrorAction } from "../store/actions/errorActions";
+import api from "../utils/axiosConfig";
 
 const baseUrl = "/api/Employee";
 
 export const setError = (error: ErrorResponseDto): SetErrorAction => ({
-    type: SET_ERROR,
-    payload: error,
-  });
-
+  type: SET_ERROR,
+  payload: error,
+});
 
 class EmployeeService {
   public async getAllEmployee() {
@@ -38,17 +37,18 @@ class EmployeeService {
     });
     return response.data;
   }
-  
+
   public async getUpcomingBirthdays() {
     const response = await api.get(`${baseUrl}/upcoming-birthdays`);
     return response.data;
   }
-  
+
   public async getEmployeesByManagerId(managerId: any) {
-    const response = await api.get(`${baseUrl}/employeesByManagerId/${managerId}`);
+    const response = await api.get(
+      `${baseUrl}/employeesByManagerId/${managerId}`
+    );
     return response.data;
   }
-  
 }
 
 export default new EmployeeService();
