@@ -10,4 +10,6 @@ public interface IEmployeeRepository: IGenericRepository<Employee>
     public Task<Employee?> GetEmployeeByEmailAsync(string email);
     public IEnumerable<Employee> GetListWithInclude();
     public Task<IEnumerable<Employee>> GetUpcomingBirthdaysAsync();
+    public List<Employee> GetEmployeesByTeamId(Guid teamId);
+    Task<List<Employee>> GetByTeamIdAsync(Guid teamId);
 }

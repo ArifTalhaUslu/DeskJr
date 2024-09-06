@@ -9,10 +9,14 @@ namespace DeskJr.Entity.Models
 
         [ForeignKey("ManagerId")]
         public Guid? ManagerId { get; set; }
-        
-
         [JsonIgnore]
         public Employee? Manager { get; set; }
+
+        [ForeignKey("UpTeam")]
+        public Guid? UpTeamId { get; set; }
+
+        [JsonIgnore]
+        public Team? UpTeam { get; set; }
     }
 
 }

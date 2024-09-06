@@ -126,6 +126,7 @@ namespace DeskJr
             builder.Services.AddScoped<IHolidayRepository, HolidayRepository>();
             builder.Services.AddScoped<EmailSender>();
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            builder.Services.AddScoped<IOrganizationUnitService, OrganizationUnitService>();
             builder.Services.AddTransient<IUserService, UserService>();
 
             builder.Services.AddDbContext<AppDbContext>(options =>

@@ -10,6 +10,7 @@ namespace DeskJr.Service.Abstract
         public Task<bool> DeleteTeamAsync(Guid id);
         public Task<List<TeamDto>> GetAllTeamsAsync();
         public Task<TeamDto?> GetTeamByIdAsync(Guid id);
+        public Task <TeamDto?> GetUpTeamByIdAsync(Guid upTeamId);
     }
 }
 

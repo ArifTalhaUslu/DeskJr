@@ -5,6 +5,7 @@ namespace DeskJr.Service.Dto
     {
         public string Name { get; set; }
         public Guid? ManagerId { get; set; }
+        public Guid? UpTeamId { get; set; }
     }
 }
 
