@@ -1,4 +1,5 @@
-﻿using DeskJr.Service.Abstract;
+﻿using DeskJr.Common.Exceptions;
+using DeskJr.Service.Abstract;
 using DeskJr.Service.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,11 @@ namespace DeskJr.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteTeam(Guid id)
         {
+            if (id == Guid.Empty)
+            {
+                return BadRequest("Invalid team identifier.");
+            }
+
             var result = await _teamService.DeleteTeamAsync(id);
 
             return Ok();
@@ -46,6 +52,14 @@ namespace DeskJr.Api.Controllers
         {
             var team = await _teamService.GetTeamByIdAsync(id);
             
+            return Ok(team);
+        }
+
+        [HttpGet("upTeamsById/{upTeamId}")]
+        public async Task<ActionResult> GetUpTeamById(Guid upTeamId)
+        {
+            var team = await _teamService.GetUpTeamByIdAsync(upTeamId);
+
             return Ok(team);
         }
 

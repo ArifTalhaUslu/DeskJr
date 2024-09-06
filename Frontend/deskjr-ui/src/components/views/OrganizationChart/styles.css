@@ -1,0 +1,95 @@
+/* src/commoncomponent/views/organizationchart/styles.css */
+.p-organizationchart {
+                    margin-top: 50px;
+                    width: 100%;
+                    border-spacing: 0;
+                    border-collapse: collapse;
+                    text-align: center;
+                    
+                }
+                    .p-organizationchart-node-content{
+                    padding: 0rem; /* İç boşluk */
+                    background: rgba(7, 144, 144, 0.133);
+                    border-radius: 5px;
+                    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+                    backdrop-filter: blur(5.3px);
+                    -webkit-backdrop-filter: blur(5.3px);
+                    border: 2px solid rgba(22, 235, 235, 0.061);
+                    width: 150px; /* Sabit genişlik */
+                    height: 51px; /* Sabit yükseklik */
+                    color: #02277e9f;
+                    }
+                    .node.team .p-panel-header .panel-header {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    position: relative;
+                    padding: 0.5rem;
+                    }
+                    
+                    .p-panel-header {
+                    background-color: #c4dfe818; /* Arka plan rengi */
+                    color: #02277e9f; /* Yazı rengi */
+                    }
+                
+                /* Buton arka plan rengini ve kenarlarını özelleştirir */
+                    .p-panel-header-icon {
+                    
+                    background:   #f4f4f4aa;
+                    border-radius: 16px;
+                    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.081);
+                    backdrop-filter: blur(10.7px);
+                    -webkit-backdrop-filter: blur(10.7px);
+                    border: 1px solid rgba(6, 121, 141, 0.142);
+                    padding: 0.5rem; /* İç boşluk */
+                    
+                    }
+                    .p-panel-header-icon:hover {
+                    background-color: rgba(7, 149, 174, 0.18); /* Hover durumundaki arka plan rengi */
+                    border-color: #ffffff; /* Hover durumundaki kenar rengi */
+                    }
+                
+                /* Buton tıklandığında renk değişimini sağlar */
+                    .p-panel-header-icon:active {
+                    background-color: rgba(2, 89, 104, 0.18); /* Tıklama durumundaki arka plan rengi */
+                    border-color: #ffffff; /* Tıklama durumundaki kenar rengi */
+                    }
+                /* Toggleable content container'ını özelleştirir */
+                    .p-toggleable-content {
+                    background-color: #f4f4f4; /* Arka plan rengi */
+                    border: 1px solid #ddd; /* Kenar rengi */
+                    border-radius: 5px; /* Kenar yuvarlaklığı */
+                    padding: 1rem; /* İç boşluk */
+                    margin: 0.5rem 0; /* Kenar boşluğu */
+                    transition: all 0.3s ease; /* Geçiş süresi ve türü */
+                    padding: 0; /* Padding boşluklarını kaldırır */
+                    margin: 0;
+                    font-size: 0.875rem;
+                    }
+                
+                /* İçerik panelini özelleştirir */
+                    .p-panel-content {
+                    padding: 0.5rem; /* İç boşluk */
+                    background-color: #0814ee00; /* Arka plan rengi */
+                    border-radius: 4px; /* Kenar yuvarlaklığı */
+                    }
+                /* Bireysel çalışanları temsil eden div'lerin stilini özelleştirir */
+                    .employee {
+                    
+                    background: rgba(127, 152, 157, 0.16);
+                    border-radius: 16px;
+                    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+                    backdrop-filter: blur(8.2px);
+                    -webkit-backdrop-filter: blur(8.2px);
+                    border: 1px solid rgba(127, 152, 157, 0.52);
+                    padding: 0.5rem; /* İç boşluk */
+                    margin-bottom: 10px; /* Alt boşluk */
+                    color: #808c97; /* Yazı rengi */
+                    font-size: 1rem; /* Font boyutu */
+                }
+                
+                
+                
+                
+                
+                

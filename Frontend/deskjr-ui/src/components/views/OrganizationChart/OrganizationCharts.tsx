@@ -1,107 +1,92 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { User } from "../../../types/user";
-import { OrganizationChart } from 'primereact/organizationchart';
-import { TreeNode } from 'primereact/treenode';
-import 'primereact/resources/themes/saga-blue/theme.css';
-import 'primereact/resources/primereact.min.css';
-import 'primeicons/primeicons.css';  
+import {
+  OrganizationChart,
+  OrganizationChartNodeData,
+} from "primereact/organizationchart";
+import { TreeNode } from "primereact/treenode";
+import "primereact/resources/themes/saga-blue/theme.css";
+import "primereact/resources/primereact.min.css";
+import "primeicons/primeicons.css";
+import OrganizationUnitService from "../../../services/OrganizationUnitService";
+import { Panel } from "primereact";
+import { classNames } from "primereact/utils";
+import "./styles.css";
 
 function OrganizationCharts(props: any) {
+  const [data, setData] = useState([]);
+  const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
 
-    const [selection, setSelection] = useState([]);
-    const data = [{
-        label: 'CEO',
-        type: 'person',
-        className: 'p-person',
-        expanded: true,
-        data: { name: 'Walter White' },
-        children: [
-            {
-                label: 'CFO',
-                type: 'person',
-                className: 'p-person',
-                expanded: true,
-                data: { name: 'Saul Goodman' },
-                children: [{
-                    label: 'Tax',
-                    className: 'department-cfo'
-                },
-                {
-                    label: 'Legal',
-                    className: 'department-cfo'
-                }],
-            },
-            {
-                label: 'COO',
-                type: 'person',
-                className: 'p-person',
-                expanded: true,
-                data: { name: 'Mike E.' },
-                children: [{
-                    label: 'Operations',
-                    className: 'department-coo'
-                }]
-            },
-            {
-                label: 'CTO',
-                type: 'person',
-                className: 'p-person',
-                expanded: true,
-                data: { name: 'Jesse Pinkman' },
-                children: [{
-                    label: 'Development',
-                    className: 'department-cto',
-                    expanded: true,
-                    children: [{
-                        label: 'Analysis',
-                        className: 'department-cto'
-                    },
-                    {
-                        label: 'Front End',
-                        className: 'department-cto'
-                    },
-                    {
-                        label: 'Back End',
-                        className: 'department-cto'
-                    }]
-                },
-                {
-                    label: 'QA',
-                    className: 'department-cto'
-                },
-                {
-                    label: 'R&D',
-                    className: 'department-cto'
-                }]
-            }
-        ]
-    }];
+  useEffect(() => {
+    const loadData = async () => {
+      await OrganizationUnitService.getAllOrganizationUnits()
+        .then((data) => {
+          setData(data);
+        })
+        .catch((err) => {
+          console.error("Error loading organization units", err);
+        });
+    };
 
-    const nodeTemplate = (node) => {
-        if (node.type === "person") {
-            return (
-                <div>
-                    <div className="node-header">{node.label}</div>
-                    <div className="node-content">
-                        <div>{node.data.name}</div>
-                    </div>
-                </div>
-            );
-        }
+    loadData();
+  }, []);
 
-        return node.label;
-    }
+  const toggleTeam = (teamName: string) => {
+    setSelectedTeam((prevTeam) => (prevTeam === teamName ? null : teamName));
+  };
+
+  const nodeTemplate = (node) => {
     return (
-        <div className="organizationchart-demo">
-            <div className="card">
-                <OrganizationChart value={data} nodeTemplate={nodeTemplate} selection={selection} selectionMode="multiple"
-                    onSelectionChange={event => setSelection(newFunction(event))} className="company"></OrganizationChart>
+      <div className={`node ${node.type}`}>
+        {node.type === "team" ? (
+          node.data.employees && node.data.employees.length > 0 ? ( // Yalnızca çalışan varsa panel toggleable olsun
+            <Panel
+              header={<div className="panel-header">{node.label}</div>}
+              toggleable
+              className="node team"
+              collapsed={selectedTeam !== node.label} // Seçilen takım açık olacak
+              onToggle={() => toggleTeam(node.label)} // Paneller arasında geçiş yapmak için
+            >
+              <div>
+                {node.data.employees.map((employee) => (
+                  <div
+                    key={employee.id}
+                    className={`employee ${employee.type}`}
+                    style={{ marginBottom: "5px" }}
+                  >
+                    {employee.name}
+                  </div>
+                ))}
+              </div>
+            </Panel>
+          ) : (
+            <div className="panel-header">{node.label}</div>
+          )
+        ) : (
+          node.type === "person" && (
+            <div className="employee-node">
+              <span className="font-bold">{node.label}</span>
             </div>
-        </div>
+          )
+        )}
+      </div>
     );
+  };
 
-    function newFunction(event): React.SetStateAction<any[]> {
-        return event.data;
-    }
+  return (
+    <div className="organizationchart-demo">
+      <div className="card overflow-x-auto">
+        {data && data.length > 0 ? (
+          <OrganizationChart
+            value={data}
+            nodeTemplate={nodeTemplate}
+            className="company"
+          />
+        ) : (
+          <p>Loading...</p> // boş veri mesajı
+        )}
+      </div>
+    </div>
+  );
 }
 export default OrganizationCharts;
