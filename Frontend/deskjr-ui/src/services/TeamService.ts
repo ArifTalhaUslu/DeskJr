@@ -7,9 +7,14 @@ class TeamService{
         const response = await api.get(baseUrl);
         return response.data;
       }
-    
+      
       public async getTeamById(id: any) {
         const response = await api.get(`${baseUrl}/${id}`);
+        return response.data;
+      }
+
+      public async GetUpTeamById(upTeamId: any) {
+        const response = await api.get(`${baseUrl}/upTeamsById/${upTeamId}`);
         return response.data;
       }
     

@@ -8,6 +8,8 @@ import { Roles } from "../../../types/Roles";
 
 const TeamEditForm: any = (props: any) => {
   const [managers, setManagers] = useState([]);
+  const [allTeams, setAllTeams] = useState<any[]>([]);
+
 
   useEffect(() => {
     if (props.selectedItemId) {
@@ -24,17 +26,22 @@ const TeamEditForm: any = (props: any) => {
       const managers = data.filter((employee: any) => (employee.employeeRole !== Roles.Employee));
       setManagers(managers);
     });
+    teamService.getAllTeam().then((data) => {
+      setAllTeams(data);
+    });
   }, [props.selectedItemId]);
 
+    
   const handleChange = (e: any) => {
     const { name, value } = e.target;
     props.setSelectedTeam((prevState: any) => ({
         ...prevState,
-        [name]: value,
-        managerId: name === 'manager' ? value : prevState.managerId,
-    }));
+        [name]: value ,
+        managerId: name === 'manager' ? value  : prevState.managerId,  
+        upTeamId: name === 'upTeam' ? value : prevState.upTeamId,  
+    }))
+    ;
 };
-
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -42,6 +49,7 @@ const TeamEditForm: any = (props: any) => {
       .addOrUpdateTeam({
         ...props.selectedTeam,
         managerId: props.selectedTeam.managerId || null,
+        upTeamId: props.selectedTeam.upTeamId || null,
       })
       .then(() => {
         showSuccessToast('Successful!');
@@ -91,6 +99,7 @@ const TeamEditForm: any = (props: any) => {
                   name="Id"
                   value={props.selectedTeam && props.selectedTeam.id}
                 />
+                
                 <div className="form-group">
                   <label className="col-form-label">Name:</label>
                   <Input
@@ -113,6 +122,19 @@ const TeamEditForm: any = (props: any) => {
                         {manager.name}
                       </option>))}
                   </select>
+                  <label className="col-form-label">UpTeam:</label>
+                  <select
+                    name="upTeam"
+                    className="form-control"
+                    value={props.selectedTeam && props.selectedTeam.upTeamId}
+                    onChange={(e: any) => handleChange(e)}
+                  >
+                    <option value=""></option>
+                    {allTeams.map((team:any) => (
+                      <option key={team.id} value={team.id}>
+                        {team.name}
+                      </option>))}
+                  </select>
                 </div>
               </div>
               <div className="modal-footer">
@@ -129,5 +151,4 @@ const TeamEditForm: any = (props: any) => {
     </>
   );
 };
-
 export default TeamEditForm;

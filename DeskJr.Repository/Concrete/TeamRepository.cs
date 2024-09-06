@@ -15,10 +15,16 @@ namespace DeskJr.Repository.Concrete
             _context = context;
         }
 
-        public  IEnumerable<Team> GetListWithIncludeManagerAsync()
+        public IEnumerable<Team> GetListWithIncludeManagerAsync()
         {
             return  _context.Teams.Include(x => x.Manager).ToList();
         }
+
+        public List<Team> GetSubTeamsById(Guid upTeamId)
+        {
+            return _context.Teams.Where(x => x.UpTeamId == upTeamId).ToList();
+        }
+
     }
 }
 

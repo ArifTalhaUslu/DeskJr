@@ -57,5 +57,18 @@ namespace DeskJr.Repository.Concrete
 
             return employees;
         }
+        public List<Employee> GetEmployeesByTeamId(Guid teamId)
+        {
+            return _context.Employees
+                       .Where(e => e.TeamId == teamId)
+                       .ToList();
+        }
+
+        public Task<List<Employee>> GetByTeamIdAsync(Guid teamId)
+        {
+            return  _context.Employees
+           .Where(e => e.TeamId == teamId)
+           .ToListAsync();
+        }
     }
 }

@@ -11,6 +11,5 @@ namespace DeskJr.Repository.Abstract
         public Task<List<T>> GetAllAsync();
         public Task<T?> GetByIdAsync(Guid id);
     }
-  
 }
 
