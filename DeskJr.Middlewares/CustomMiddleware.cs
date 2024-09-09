@@ -6,30 +6,40 @@ using Serilog;
 using System.Net;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using static DeskJr.Service.Concrete.UserService;
 
 namespace DeskJr.Middlewares
 {
     public class CustomMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly IUserService _userService;
 
-        public CustomMiddleware(RequestDelegate next, IUserService userService)
+        public CustomMiddleware(RequestDelegate next)
         {
             _next = next;
-            _userService = userService;
         }
 
         public async Task InvokeAsync(HttpContext context)
         {
-            try
+            using (var responseBody = new MemoryStream())
             {
-                await _next(context);
-            }
-            catch (Exception ex)
-            {
-                await HandleExceptionAsync(context, ex);
+                string requestBody = "";
+                var originalBodyStream = context.Response.Body;
+                context.Response.Body = responseBody;
+
+                try
+                {
+                    requestBody = await ReadRequestBodyAsync(context.Request);
+
+                    await _next(context);
+                }
+                catch (Exception ex)
+                {
+                    await HandleExceptionAsync(context, ex);
+                }
+                finally
+                {
+                    await LogAndReturnResponseAsync(context, requestBody, responseBody, originalBodyStream);
+                }
             }
         }
 
@@ -83,8 +93,8 @@ namespace DeskJr.Middlewares
 
             return context.Response.WriteAsync(result);
         }
-
-        private async Task LogAndReturnResponseAsync(HttpContext context, string requestBody, MemoryStream responseBody, Stream originalBodyStream, Service.Concrete.UserService.CurrentUser currentUser)
+        
+        private async Task LogAndReturnResponseAsync(HttpContext context, string requestBody, MemoryStream responseBody, Stream originalBodyStream)
         {
             var responseBodyText = await ReadStreamAsync(responseBody);
             var maskedResponseBody = MaskSensitiveData(responseBodyText);
@@ -98,14 +108,13 @@ namespace DeskJr.Middlewares
                 RequestBody = requestBody,
                 StatusCode = context.Response.StatusCode,
                 ResponseBody = maskedResponseBody,
-                CurrentUser = currentUser?.UserId.ToString() ?? "Unknown User",
-                IPAddress = ipAddress
+                IPAddress = ipAddress,
             };
 
             string logMessage = context.Response.StatusCode >= 400 ? "Request failed" : "Request succeeded";
 
-            Log.Information("Request {RequestMethod} {RequestUrl} with {RequestBody} responded with {StatusCode}. Response: {ResponseBody}. LogMessage: {LogMessage} CurrentUser: {CurrentUser} IpAdress: {IpAdress}",
-                logDetail.RequestMethod, logDetail.RequestUrl, logDetail.RequestBody, logDetail.StatusCode, logDetail.ResponseBody, logMessage, logDetail.CurrentUser, logDetail.IPAddress);
+            Log.Information("Request {RequestMethod} {RequestUrl} with {RequestBody} responded with {StatusCode}. Response: {ResponseBody}. LogMessage: {LogMessage} IpAdress: {IpAdress}",
+                logDetail.RequestMethod, logDetail.RequestUrl, logDetail.RequestBody, logDetail.StatusCode, logDetail.ResponseBody, logMessage, logDetail.IPAddress);
 
             responseBody.Seek(0, SeekOrigin.Begin);
             await responseBody.CopyToAsync(originalBodyStream);

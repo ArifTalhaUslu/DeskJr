@@ -18,8 +18,6 @@ using Serilog.Sinks.MSSqlServer;
 using System.Data;
 using System.Text;
 using System.Collections.ObjectModel;
-using Microsoft.OpenApi.Models;
-
 var builder = WebApplication.CreateBuilder(args);
 
 ConfigureSerilog(builder);
@@ -61,6 +59,7 @@ builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<ITeamRepository, TeamRepository>();
 builder.Services.AddScoped<ITeamService, TeamService>();
+builder.Services.AddScoped<IOrganizationUnitService, OrganizationUnitService>(); 
 builder.Services.AddScoped<IEmployeeTitleRepository, EmployeeTitleRepository>();
 builder.Services.AddScoped<IEmployeeTitleService, EmployeeTitleService>();
 builder.Services.AddScoped<ILeaveRepository, LeaveRepository>();
@@ -69,6 +68,8 @@ builder.Services.AddScoped<ILeaveTypeRepository, LeaveTypeRepository>();
 builder.Services.AddScoped<ILeaveTypeService, LeaveTypeService>();
 builder.Services.AddScoped<IHolidayService, HolidayService>();
 builder.Services.AddScoped<IHolidayRepository, HolidayRepository>();
+builder.Services.AddScoped<ISettingRepository, SettingRepository>();
+builder.Services.AddScoped<ISettingService, SettingService>();
 builder.Services.AddScoped<EmailSender>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddTransient<IUserService, UserService>();
@@ -122,7 +123,6 @@ void ConfigureSerilog(WebApplicationBuilder builder)
             new SqlColumn { ColumnName = "ResponseBody", DataType = SqlDbType.NVarChar, DataLength = -1 },
             new SqlColumn { ColumnName = "RequestUrl", DataType = SqlDbType.NVarChar, DataLength = 1024 },
             new SqlColumn { ColumnName = "StatusCode", DataType = SqlDbType.Int },
-            new SqlColumn { ColumnName = "CurrentUser", DataType = SqlDbType.NVarChar, DataLength = 4000 },
             new SqlColumn { ColumnName = "Ip", DataType = SqlDbType.NVarChar, DataLength = 4000 },
         }
     };
