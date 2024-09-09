@@ -50,8 +50,10 @@ namespace DeskJr.Service.Concrete
                 Label = team.Name,
                 Type = "team",
                 Expanded = true,
-                Data = new PersonDataDto { Name = team.Manager.Name,
-                                           Employees = employees.Where(e => e.TeamId == team.ID)
+                Data = new PersonDataDto
+                {
+                    Name = team.Manager is not null ? team.Manager.Name : "-",
+                    Employees = employees.Where(e => e.TeamId == team.ID)
                                             .Select(e => new SimplifiedEmployeeDto { Id = e.ID, Name = e.Name })
                                             .ToList()
                 },
