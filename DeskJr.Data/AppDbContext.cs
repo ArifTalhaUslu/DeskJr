@@ -10,9 +10,6 @@ namespace DeskJr.Data
         {
         }
 
-        public AppDbContext()
-        {
-        }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<EmployeeTitle> EmployeeTitles { get; set; }
