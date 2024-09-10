@@ -15,14 +15,15 @@ using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.MSSqlServer;
+using System.Collections.ObjectModel;
 using System.Data;
 using System.Text;
-using System.Collections.ObjectModel;
+
 var builder = WebApplication.CreateBuilder(args);
 
-ConfigureSerilog(builder);
 
-// Add services to the container
+// Add services to the container.
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("Smtp"));
@@ -36,7 +37,7 @@ builder.Services.AddCors(options =>
                           .AllowAnyMethod());
 });
 
-// Authentication and Authorization
+// Authentication Authorization
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -54,12 +55,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 // Dependency Injection
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
-builder.Services.AddControllers();
+
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<ITeamRepository, TeamRepository>();
 builder.Services.AddScoped<ITeamService, TeamService>();
-builder.Services.AddScoped<IOrganizationUnitService, OrganizationUnitService>(); 
+builder.Services.AddScoped<IOrganizationUnitService, OrganizationUnitService>();
 builder.Services.AddScoped<IEmployeeTitleRepository, EmployeeTitleRepository>();
 builder.Services.AddScoped<IEmployeeTitleService, EmployeeTitleService>();
 builder.Services.AddScoped<ILeaveRepository, LeaveRepository>();
@@ -79,9 +80,12 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddAutoMapper(typeof(MapperProfile));
 
+builder.Host.UseSerilog();
+
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline
+// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -92,6 +96,7 @@ app.UseMiddleware<CustomMiddleware>();
 
 app.UseCors("AllowSpecificOrigin");
 app.UseHttpsRedirection();
+
 app.UseRouting();
 
 app.UseAuthentication();
@@ -99,16 +104,29 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-// Seed Database
+ConfigureSerilog(builder);
+
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<AppDbContext>();
-    context.Database.Migrate();
-    await SeedData.Initialize(services);
+
+    try
+    {
+        var context = services.GetRequiredService<AppDbContext>();
+        context.Database.Migrate();
+        await SeedData.Initialize(services);
+    }
+    catch (Exception ex)
+    {
+        Log.Error(ex, "An error occurred while migrating or seeding the database.");
+    }
 }
 
-Log.Information("{LogMessage}", "Application Starting");
+app.Lifetime.ApplicationStarted.Register(() =>
+{
+    Log.Information("Application started");
+});
+
 app.Run();
 
 void ConfigureSerilog(WebApplicationBuilder builder)
@@ -130,21 +148,29 @@ void ConfigureSerilog(WebApplicationBuilder builder)
     columnOptions.Store.Remove(StandardColumn.MessageTemplate);
     columnOptions.Store.Remove(StandardColumn.Message);
 
-    Log.Logger = new LoggerConfiguration()
+    var logConfiguration = new LoggerConfiguration()
         .MinimumLevel.Information()
         .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
         .Enrich.FromLogContext()
-        .Enrich.WithClientIp()
-        .WriteTo.MSSqlServer(
-            connectionString: builder.Configuration.GetConnectionString("DefaultConnection"),
+        .Enrich.WithClientIp();
+
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    if (!string.IsNullOrEmpty(connectionString))
+    {
+        logConfiguration.WriteTo.MSSqlServer(
+            connectionString: connectionString,
             sinkOptions: new MSSqlServerSinkOptions
             {
                 AutoCreateSqlTable = true,
                 TableName = "Logs"
             },
             columnOptions: columnOptions,
-            restrictedToMinimumLevel: LogEventLevel.Information)
-        .CreateLogger();
+            restrictedToMinimumLevel: LogEventLevel.Information);
+    }
+    else
+    {
+        Log.Warning("Database connection string is empty. Logging to database is disabled.");
+    }
 
-    builder.Host.UseSerilog();
+    Log.Logger = logConfiguration.CreateLogger();
 }
