@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
 using DeskJr.Entity.Models;
 using DeskJr.Service.Dto;
+using DeskJr.Service.Dto.SurveyDto;
+using DeskJr.Service.Dto.SurveyQuestionDto;
+using DeskJr.Service.Dto.SurveyQuestionOptionsDto;
 
 
 namespace DeskJr.Service.Mapping
@@ -30,7 +33,13 @@ namespace DeskJr.Service.Mapping
             CreateMap<Holiday, HolidayDto>().ReverseMap();
             CreateMap<Holiday, AddOrUpdateHolidayDto>().ReverseMap();
             CreateMap<Setting, SettingDto>().ReverseMap();
-            CreateMap<Setting, AddOrUpdateSettingDto>().ReverseMap();
+            CreateMap<Survey, SurveyDto >().ReverseMap();
+            CreateMap<Survey, CreateSurveyDto >().ReverseMap();
+            CreateMap<SurveyQuestion, SurveyQuestionDto>().ReverseMap();
+            CreateMap<SurveyQuestion, CreateServeyQuestionDto>().ReverseMap();
+            CreateMap<SurveyQuestionOptions, SurveyQuestionOptionsDto>().ReverseMap();
+            CreateMap<SurveyQuestionOptions, CreateSurveyQuestionOptionsDto>().ReverseMap();
+
         }
     }
 }

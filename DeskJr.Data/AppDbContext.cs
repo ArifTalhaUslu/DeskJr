@@ -17,6 +17,10 @@ namespace DeskJr.Data
         public DbSet<LeaveType> LeaveTypes { get; set; }
         public DbSet<Holiday> Holidays { get; set; }
         public DbSet<Setting> Settings { get; set; }
+        public DbSet<Survey> Surveys { get; set; }
+        public DbSet<SurveyQuestion> SurveyQuestions { get; set; }
+        public DbSet<SurveyQuestionOptions> SurveyQuestionOptions { get; set; }
+        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -48,6 +52,17 @@ namespace DeskJr.Data
                 .WithMany()
                 .HasForeignKey(l => l.ApprovedById);
 
+            //modelBuilder.Entity<SurveyQuestionOptions>()
+            //    .HasOne(m => m.SurveyQuestion)
+            //    .WithMany()
+            //    .HasForeignKey(m => m.SurveyQuestionId);
+            
+            //modelBuilder.Entity<SurveyQuestion>()
+            //    .HasOne(m => m.Survey)
+            //    .WithMany()
+            //    .HasForeignKey(m => m.SurveyId);
+
+            
         }
     }
 }
