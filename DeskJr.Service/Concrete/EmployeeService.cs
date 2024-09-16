@@ -30,14 +30,17 @@ namespace DeskJr.Service.Concrete
             {
                 throw new UnauthorizedAccessException("You do not have permission to perform this action.");
             }
-
+          
             var employee = _mapper.Map<Employee>(employeeDto);
 
             if (employeeDto.ID == null && currentUser.Role == EnumRole.Administrator)
             {
                 employee.Password = Encrypter.EncryptString(employeeDto.Password);
+                employee.Base64Image = employeeDto.Base64Image;
                 return await _employeeRepository.AddAsync(employee);
             }
+
+            employee.Base64Image = employeeDto.Base64Image;
 
             return await _employeeRepository.UpdateAsync(employee);
         }

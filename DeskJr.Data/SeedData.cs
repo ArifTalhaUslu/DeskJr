@@ -46,6 +46,7 @@ namespace DeskJr.Data
                             Password = "202CB962AC59075B964B07152D234B70",
                             TeamId = team.ID,
                             EmployeeTitleId = title.ID,
+                            Base64Image = ""
                         });
 
                         await context.SaveChangesAsync();

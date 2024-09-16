@@ -106,6 +106,12 @@ app.MapControllers();
 
 ConfigureSerilog(builder);
 
+
+app.Lifetime.ApplicationStarted.Register(() =>
+{
+    Log.Information("Application started");
+});
+
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -122,13 +128,7 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-app.Lifetime.ApplicationStarted.Register(() =>
-{
-    Log.Information("Application started");
-});
-
 app.Run();
-
 void ConfigureSerilog(WebApplicationBuilder builder)
 {
     var columnOptions = new ColumnOptions

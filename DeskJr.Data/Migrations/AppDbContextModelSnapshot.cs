@@ -28,6 +28,10 @@ namespace DeskJr.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Base64Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("DayOfBirth")
                         .HasColumnType("datetime2");
 

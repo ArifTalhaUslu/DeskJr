@@ -101,9 +101,9 @@ const App: React.FC = () => {
           ],
         },
         {
-          name:"Organization Chart",
-          to : "/organizationCharts",
-          visible : currentUser !== null,
+          name: "Organization Chart",
+          to: "/organizationCharts",
+          visible: currentUser !== null,
         },
       ],
     };
@@ -172,9 +172,14 @@ const App: React.FC = () => {
                 <Route path="/titles" element={<EmployeeTitle />} />
                 <Route path="*" element={<>Not Found</>} />
                 <Route path="/leaveTypes" element={<LeaveType />} />
-                <Route path="/organizationCharts" element={<OrganizationCharts currentUser={currentUser}/>}/>
-                <Route path="/changePassword" element={<ChangePassword currentUser={currentUser} />} />
-                
+                <Route
+                  path="/organizationCharts"
+                  element={<OrganizationCharts currentUser={currentUser} />}
+                />
+                <Route
+                  path="/changePassword"
+                  element={<ChangePassword currentUser={currentUser} />}
+                />
               </>
             )}
             {currentUser && currentUser.employeeRole === Roles.Admin && (

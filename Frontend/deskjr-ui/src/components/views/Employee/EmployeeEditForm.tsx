@@ -6,10 +6,16 @@ import { showErrorToast, showSuccessToast } from "../../../utils/toastHelper";
 import teamService from "../../../services/TeamService";
 import employeeTitleService from "../../../services/EmployeeTitleService";
 import { Roles } from "../../../types/Roles";
+import ImageUpload from "../../CommonComponents/ImageUpload";
 const EmployeeEditForm: any = (props: any) => {
   const [teams, setTeams] = useState([]);
   const [titles, setTitles] = useState([]);
+  const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [imageBase64, setImageBase64] = useState(null);
 
+  const handleImageUpload = (imageBase64: string) => {
+    setImageBase64(imageBase64);
+  };
   const [genderOptions] = useState([
     { value: "" },
     { value: 1, label: "Female" },
@@ -29,12 +35,14 @@ const EmployeeEditForm: any = (props: any) => {
         .getEmployeeById(props.selectedItemId)
         .then((data) => {
           props.setSelectedEmployee(data);
+          setImageBase64(data.base64Image);
         })
         .catch((err) => {
           showErrorToast(err);
         });
+    } else if (props.selectedEmployee && props.selectedEmployee.image) {
+      setImageBase64(props.selectedEmployee.image);
     }
-
     teamService.getAllTeam().then((data) => {
       setTeams(data);
     });
@@ -65,6 +73,7 @@ const EmployeeEditForm: any = (props: any) => {
     employeeService
       .addOrUpdateEmployee({
         ...props.selectedEmployee,
+        base64Image: imageBase64,
         teamId: props.selectedEmployee.teamId,
         employeeTitleId: props.selectedEmployee.employeeTitleId || null,
         employeeRole: props.selectedEmployee.employeeRole,
@@ -252,6 +261,11 @@ const EmployeeEditForm: any = (props: any) => {
                   ) : (
                     <></>
                   )}
+                  <label className="col-form-label">Upload Image:</label>
+                  <ImageUpload
+                    onUpload={handleImageUpload}
+                    imageBase64={imageBase64}
+                  />
                 </div>
               </div>
               <div className="modal-footer">
