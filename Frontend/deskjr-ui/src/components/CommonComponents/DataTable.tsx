@@ -14,6 +14,7 @@ interface DataTableProps {
   columnNames?: { [key: string]: string };
   hideActions?: string;
   customElementOfActions?: (item: any) => JSX.Element;
+  customColumnOfActions?: (item: any) => JSX.Element;
 }
 
 function DataTable({
@@ -29,6 +30,7 @@ function DataTable({
   columnNames = {},
   hideActions = "false",
   customElementOfActions,
+  customColumnOfActions,
 }: DataTableProps) {
   const [records, setRecords] = useState<any>([]);
   const [columns, setColumns] = useState<string[]>([]);
@@ -41,7 +43,7 @@ function DataTable({
     setColumns([...newColumns]);
 
     if (hideActions && hideActions === "false") {
-      setColumns([...newColumns, "Actions"]);
+      setColumns([...newColumns, customColumnOfActions && columnNames["customColumnName"], "Actions"]);
     }
 
     const newRecords = items.map((record: any, index: any) => (
@@ -53,6 +55,7 @@ function DataTable({
               : record[column]}
           </td>
         ))}
+        {customColumnOfActions && <td>{customColumnOfActions(record)}</td>}
         {hideActions && hideActions.toString() === "false" && (
           <td className="text-center align-top">
             {isEditable && isEditable(record) && onEdit && (
@@ -78,6 +81,7 @@ function DataTable({
         )}
       </tr>
     ));
+
     if (newRecords && newRecords.length > 0) {
       setRecords([...newRecords]);
     } else {

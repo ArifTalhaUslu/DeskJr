@@ -18,7 +18,7 @@ namespace DeskJr.Service.Concrete
             _surveyQuestionOptionsRepository = surveyQuestionOptionsRepository;
             _mapper = mapper;
         }
-        public async Task<bool> AddSurveyQuestionOptionsAsync(CreateSurveyQuestionOptionsDto createSurveyQuestionOptionsDto)
+        public async Task<bool> AddSurveyQuestionOptionsAsync(AddOrUpdateSurveyQuestionOptionsDto createSurveyQuestionOptionsDto)
         {
             return await _surveyQuestionOptionsRepository.AddAsync(_mapper.Map<SurveyQuestionOptions>(createSurveyQuestionOptionsDto));
         }
@@ -62,19 +62,18 @@ namespace DeskJr.Service.Concrete
                 throw new NotFoundException("No SurvyQuestionOption exists with the provided identifier. ");
             }
 
-            var surveyQuestionOptions = await _surveyQuestionOptionsRepository.GetSurveyQuestionOptionsBySurveyQuestionsAsync(surveyQuestionId);
+            var surveyQuestionOptions = await _surveyQuestionOptionsRepository.GetSurveyQuestionOptionsBySurveyQuestionIdAsync(surveyQuestionId);
             return _mapper.Map<List<SurveyQuestionOptionsDto>>(surveyQuestionOptions);
         }
 
-        public async Task<bool> UpdateSurveyQuestionOptionsAsync(SurveyQuestionOptionsDto surveyQuestionOptionsDto)
+        public async Task<bool> UpdateSurveyQuestionOptionsAsync(AddOrUpdateSurveyQuestionOptionsDto surveyQuestionOptionsDto)
         {
-            var surveyQuestionOptions = _mapper.Map<SurveyQuestionOptions>(surveyQuestionOptionsDto);
-            if (surveyQuestionOptions == null)
+            if (surveyQuestionOptionsDto == null)
             {
                 throw new NotFoundException("No SurveyQuestionOptions exists with the provided identifier.");
             }
 
-            return await _surveyQuestionOptionsRepository.UpdateAsync(surveyQuestionOptions);
+            return await _surveyQuestionOptionsRepository.UpdateAsync(_mapper.Map<SurveyQuestionOptions>(surveyQuestionOptionsDto));
         }
     }
 }

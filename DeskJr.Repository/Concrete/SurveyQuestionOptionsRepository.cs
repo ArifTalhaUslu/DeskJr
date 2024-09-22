@@ -15,11 +15,10 @@ namespace DeskJr.Repository.Concrete
             _context = context;
         }
 
-        public async Task<List<SurveyQuestion>> GetSurveyQuestionOptionsBySurveyQuestionsAsync(Guid surveyQuestionsId)
+        public async Task<List<SurveyQuestionOptions>> GetSurveyQuestionOptionsBySurveyQuestionIdAsync(Guid surveyQuestionsId)
         {
-            return await _context.SurveyQuestionOptions.Where(x => x.SurveyQuestionId == surveyQuestionsId).Select(x => x.SurveyQuestion).ToListAsync(); 
+            return await _context.SurveyQuestionOptions.Where(x => x.SurveyQuestionId == surveyQuestionsId).ToListAsync();
         }
 
-
     }
-}
+} 

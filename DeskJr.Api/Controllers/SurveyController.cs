@@ -1,11 +1,13 @@
 ﻿using DeskJr.Service.Abstract;
-using DeskJr.Service.Concrete;
-using DeskJr.Service.Dto;
 using DeskJr.Service.Dto.SurveyDto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DeskJr.Api.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
+    [AllowAnonymous]
     public class SurveyController : ControllerBase
     {
         private readonly ISurveyService _surveyService;
@@ -16,14 +18,14 @@ namespace DeskJr.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> AddSurvey(CreateSurveyDto createSurveyDto)
+        public async Task<ActionResult> AddOrUpdateSurvey(AddOrUpdateSurveyDto surveyDto)
         {
-            var result = await _surveyService.AddSurveyAsync(createSurveyDto);
+            var result = await _surveyService.AddOrUpdateSurveyAsync(surveyDto);
 
             return Ok();
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteSurvey(Guid id)
         {
             var result = await _surveyService.DeleteSurveyAsync(id);
@@ -34,25 +36,17 @@ namespace DeskJr.Api.Controllers
         [HttpGet]
         public async Task<ActionResult> GetAllSurvey()
         {
-            var employees = await _surveyService.GetAllSurveyAsync();
-
-            return Ok(employees);
-        }
-
-        [HttpGet("{id}")]
-        public ActionResult GetEmployeeById(Guid id)
-        {
-            var survey = _surveyService.GetSurveyByIdAsync(id);
+            var survey = await _surveyService.GetAllSurveyAsync();
 
             return Ok(survey);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateSurvey(SurveyDto surveyDto)
+        [HttpGet("{id}")]
+        public async Task<ActionResult> GetSurveyById(Guid id)
         {
-            var result = await _surveyService.UpdateSurveyAsync(surveyDto);
+            var survey = await _surveyService.GetSurveyByIdAsync(id);
 
-            return Ok(result);
+            return Ok(survey);
         }
 
     }

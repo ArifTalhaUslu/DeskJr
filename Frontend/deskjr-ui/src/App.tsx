@@ -27,6 +27,7 @@ import EmployeeTitle from "./components/views/EmployeeTitle/EmployeeTitle";
 import LeaveType from "./components/views/LeaveType/LeaveType";
 import ChangePassword from "./components/views/ChangePassword/ChangePassword";
 import OrganizationCharts from "./components/views/OrganizationChart/OrganizationCharts";
+import Survey from "./components/views/Survey/Survey";
 
 const App: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<any>();
@@ -101,10 +102,15 @@ const App: React.FC = () => {
           ],
         },
         {
-          name:"Organization Chart",
-          to : "/organizationCharts",
-          visible : currentUser !== null,
+          name: "Organization Chart",
+          to: "/organizationCharts",
+          visible: currentUser !== null,
         },
+        {
+          name: "Surveys",
+          to: "/Surveys",
+          visible: currentUser !== null,
+        }
       ],
     };
   };
@@ -172,9 +178,10 @@ const App: React.FC = () => {
                 <Route path="/titles" element={<EmployeeTitle />} />
                 <Route path="*" element={<>Not Found</>} />
                 <Route path="/leaveTypes" element={<LeaveType />} />
-                <Route path="/organizationCharts" element={<OrganizationCharts currentUser={currentUser}/>}/>
+                <Route path="/organizationCharts" element={<OrganizationCharts currentUser={currentUser} />} />
+                <Route path="/Surveys" element={<Survey />} />
                 <Route path="/changePassword" element={<ChangePassword currentUser={currentUser} />} />
-                
+
               </>
             )}
             {currentUser && currentUser.employeeRole === Roles.Admin && (

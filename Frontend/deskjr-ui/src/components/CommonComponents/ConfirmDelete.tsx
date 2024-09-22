@@ -13,7 +13,7 @@ function ConfirmDelete({
   onClose,
 }: ConfirmDeleteProps) {
   return (
-    <div id="delete-confirm" className="modal fade" role="dialog">
+    <div id="delete-confirm" className="modal fade" role="dialog" style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
       <div className="modal-dialog" role="document">
         <div className="modal-content">
           <div className="modal-header">

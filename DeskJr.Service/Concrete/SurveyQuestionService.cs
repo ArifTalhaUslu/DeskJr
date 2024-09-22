@@ -10,16 +10,29 @@ namespace DeskJr.Service.Concrete
     public class SurveyQuestionService : ISurveyQuestionService
     {
         private readonly ISurveyQuestionRepository _surveyQuestionRepository;
+        private readonly ISurveyRepository _surveyRepository;
         private readonly IMapper _mapper;
 
-        public SurveyQuestionService(ISurveyQuestionRepository surveyQuestionRepository, IMapper mapper)
+        public SurveyQuestionService(ISurveyQuestionRepository surveyQuestionRepository, ISurveyRepository surveyRepository, IMapper mapper)
         {
             _surveyQuestionRepository = surveyQuestionRepository;
+            _surveyRepository = surveyRepository;
             _mapper = mapper;
         }
-        public async Task<bool> AddSurveyQuestionAsync(CreateServeyQuestionDto createSurveyQuestionDto)
+        public async Task<bool> AddOrUpdateSurveyQuestionAsync(AddOrUpdateServeyQuestionDto surveyQuestionDto)
         {
-             return await _surveyQuestionRepository.AddAsync(_mapper.Map<SurveyQuestion>(createSurveyQuestionDto));
+            if (surveyQuestionDto.Id == null)
+            {
+                if (string.IsNullOrEmpty(surveyQuestionDto.Text))
+                    throw new BadRequestException("Text is not null field!");
+
+                return await _surveyQuestionRepository.AddAsync(_mapper.Map<SurveyQuestion>(surveyQuestionDto));
+            }
+
+            var questionFromDb = await _surveyQuestionRepository.GetByIdAsync(surveyQuestionDto.Id.Value);
+            surveyQuestionDto.SurveyId = questionFromDb?.SurveyId;
+
+            return await _surveyQuestionRepository.UpdateAsync(_mapper.Map<SurveyQuestion>(surveyQuestionDto));
         }
 
         public async Task<bool> DeleteSurveyQuestionAsync(Guid id)
@@ -65,17 +78,6 @@ namespace DeskJr.Service.Concrete
             }
 
             return _mapper.Map<SurveyQuestionDto>(surveyQuestion); 
-        }
-
-        public async Task<bool> UpdateSurveyQuestionAsync(SurveyQuestionDto surveyQuestionDto)
-        {
-            var surveyQuestion = _mapper.Map<SurveyQuestion>(surveyQuestionDto);
-            if (surveyQuestion == null)
-            {
-                throw new NotFoundException("No SurveyQuestion exists with the provided identifier.");
-            }
-
-            return await _surveyQuestionRepository.UpdateAsync(surveyQuestion);
         }
     }
 }

@@ -303,7 +303,7 @@ namespace DeskJr.Data.Migrations
             modelBuilder.Entity("DeskJr.Entity.Models.SurveyQuestion", b =>
                 {
                     b.HasOne("DeskJr.Entity.Models.Survey", "Survey")
-                        .WithMany("SurveyQuestions")
+                        .WithMany()
                         .HasForeignKey("SurveyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -314,7 +314,7 @@ namespace DeskJr.Data.Migrations
             modelBuilder.Entity("DeskJr.Entity.Models.SurveyQuestionOptions", b =>
                 {
                     b.HasOne("DeskJr.Entity.Models.SurveyQuestion", "SurveyQuestion")
-                        .WithMany("SurveyQuestionOptions")
+                        .WithMany()
                         .HasForeignKey("SurveyQuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -336,16 +336,6 @@ namespace DeskJr.Data.Migrations
                     b.Navigation("Manager");
 
                     b.Navigation("UpTeam");
-                });
-
-            modelBuilder.Entity("DeskJr.Entity.Models.Survey", b =>
-                {
-                    b.Navigation("SurveyQuestions");
-                });
-
-            modelBuilder.Entity("DeskJr.Entity.Models.SurveyQuestion", b =>
-                {
-                    b.Navigation("SurveyQuestionOptions");
                 });
 #pragma warning restore 612, 618
         }

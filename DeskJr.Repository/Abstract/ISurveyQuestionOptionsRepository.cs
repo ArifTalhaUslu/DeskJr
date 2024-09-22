@@ -4,6 +4,6 @@ namespace DeskJr.Repository.Abstract
 {
     public interface ISurveyQuestionOptionsRepository : IGenericRepository<SurveyQuestionOptions>
     {
-        public Task<List<SurveyQuestion>> GetSurveyQuestionOptionsBySurveyQuestionsAsync(Guid surveyQuestionsId);
+        public Task<List<SurveyQuestionOptions>> GetSurveyQuestionOptionsBySurveyQuestionIdAsync(Guid surveyQuestionsId);
     }
 }

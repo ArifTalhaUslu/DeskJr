@@ -34,11 +34,11 @@ namespace DeskJr.Service.Mapping
             CreateMap<Holiday, AddOrUpdateHolidayDto>().ReverseMap();
             CreateMap<Setting, SettingDto>().ReverseMap();
             CreateMap<Survey, SurveyDto >().ReverseMap();
-            CreateMap<Survey, CreateSurveyDto >().ReverseMap();
+            CreateMap<Survey, AddOrUpdateSurveyDto >().ReverseMap();
             CreateMap<SurveyQuestion, SurveyQuestionDto>().ReverseMap();
-            CreateMap<SurveyQuestion, CreateServeyQuestionDto>().ReverseMap();
+            CreateMap<SurveyQuestion, AddOrUpdateServeyQuestionDto>().ReverseMap();
             CreateMap<SurveyQuestionOptions, SurveyQuestionOptionsDto>().ReverseMap();
-            CreateMap<SurveyQuestionOptions, CreateSurveyQuestionOptionsDto>().ReverseMap();
+            CreateMap<SurveyQuestionOptions, AddOrUpdateSurveyQuestionOptionsDto>().ReverseMap();
 
         }
     }

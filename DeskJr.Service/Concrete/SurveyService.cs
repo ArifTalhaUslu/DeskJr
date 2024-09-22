@@ -1,13 +1,9 @@
-﻿
-using AutoMapper;
+﻿using AutoMapper;
 using DeskJr.Common.Exceptions;
 using DeskJr.Entity.Models;
 using DeskJr.Repository.Abstract;
-using DeskJr.Repository.Concrete;
 using DeskJr.Service.Abstract;
-using DeskJr.Service.Dto;
 using DeskJr.Service.Dto.SurveyDto;
-using DeskJr.Service.Dto.SurveyQuestionDto;
 
 namespace DeskJr.Service.Concrete
 {
@@ -22,9 +18,17 @@ namespace DeskJr.Service.Concrete
             _mapper = mapper;
         }
 
-        public async Task<bool> AddSurveyAsync(CreateSurveyDto createSurveyDto)
+        public async Task<bool> AddOrUpdateSurveyAsync(AddOrUpdateSurveyDto surveyDto)
         {
-            return await _surveyRepository.AddAsync(_mapper.Map<Survey>(createSurveyDto));
+            if (surveyDto.Id == null)
+            {
+                if (string.IsNullOrEmpty(surveyDto.Name))
+                    throw new BadRequestException("Name is not null field!");
+
+                return await _surveyRepository.AddAsync(_mapper.Map<Survey>(surveyDto));
+            }
+
+            return await _surveyRepository.UpdateAsync(_mapper.Map<Survey>(surveyDto));
         }
 
         public async Task<bool> DeleteSurveyAsync(Guid id)
@@ -50,24 +54,13 @@ namespace DeskJr.Service.Concrete
 
         public async Task<SurveyDto> GetSurveyByIdAsync(Guid id)
         {
-            var survey= await _surveyRepository.GetByIdAsync(id);
+            var survey = await _surveyRepository.GetByIdAsync(id);
             if (id == null)
             {
                 throw new NotFoundException("No Survey exist with the provided identifier. ");
             }
 
             return _mapper.Map<SurveyDto>(survey);
-        }
-
-        public async Task<bool> UpdateSurveyAsync(SurveyDto surveyDto)
-        {
-            var survey = _mapper.Map<Survey>(surveyDto);
-            if (survey == null)
-            {
-                throw new NotFoundException("No Survey exists with the provided identifier.");
-            }
-
-            return await _surveyRepository.UpdateAsync(survey);
         }
     }
 }
