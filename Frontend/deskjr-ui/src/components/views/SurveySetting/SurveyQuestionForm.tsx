@@ -41,18 +41,20 @@ const SurveyQuestionForm = ({ selectedItemId, onClose }) => {
         setIsModalOpen(true);
     };
 
-    const onConfirmDelete = async () => {
+    const onConfirmDelete = async (e: any) => {
+        e.preventDefault();
         if (selectedQuestionId) {
             try {
                 await surveyQuestionService.deleteSurveyQuestion(selectedQuestionId);
                 showSuccessToast("Successful!");
-                getList(selectedItemId);
+                await getList(selectedItemId);
             } catch (err) {
                 showErrorToast(err);
             }
         }
         closeModal();
     };
+
 
     const closeModal = () => {
         setSelectedQuestionId("");
@@ -73,7 +75,6 @@ const SurveyQuestionForm = ({ selectedItemId, onClose }) => {
             />
         </div>
     );
-
 
     return (
         <div className="modal fade show d-block" id="questionFormModal" role="dialog" data-backdrop="static" style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>

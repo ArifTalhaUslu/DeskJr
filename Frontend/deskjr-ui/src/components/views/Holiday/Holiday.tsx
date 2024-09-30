@@ -15,6 +15,7 @@ const Holiday: any = () => {
   const [isTrigger, setIsTrigger] = useState(false);
   const [modalDataTarget] = useState("holidayAddModal");
   const [formToBeClosed, setFormToBeClosed] = useState("");
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   useEffect(() => {
     getList();
@@ -57,6 +58,7 @@ const Holiday: any = () => {
   const handleDelete = (holiday: any) => {
     setSelectedItemId(holiday.id);
     setFormToBeClosed("delete-form-closed");
+    setIsDeleteModalOpen(true);
   };
 
   const isEditable = (item: any) => true;
@@ -80,7 +82,7 @@ const Holiday: any = () => {
     const close_button = document.getElementById(formToBeClosed);
     close_button?.click();
     setFormToBeClosed("");
-    //window.location.reload(); //gecici cozum
+    setIsDeleteModalOpen(false);
   };
 
   const columnNames = {
@@ -120,11 +122,13 @@ const Holiday: any = () => {
         onClose={onModalClose}
       />
 
-      <ConfirmDelete
-        onConfirm={(e) => onConfirmDelete(e)}
-        selectedItemId={selectedItemId}
-        onClose={onModalClose}
-      />
+      {isDeleteModalOpen && (
+        <ConfirmDelete
+          onConfirm={(e) => onConfirmDelete(e)}
+          selectedItemId={selectedItemId}
+          onClose={onModalClose}
+        />
+      )}
     </>
   );
 };

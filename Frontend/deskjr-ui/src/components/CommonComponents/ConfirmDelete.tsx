@@ -13,7 +13,7 @@ function ConfirmDelete({
   onClose,
 }: ConfirmDeleteProps) {
   return (
-    <div id="delete-confirm" className="modal fade" role="dialog" style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
+    <div className="modal fade show d-block" role="dialog" style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
       <div className="modal-dialog" role="document">
         <div className="modal-content">
           <div className="modal-header">
@@ -21,24 +21,12 @@ function ConfirmDelete({
             <button
               type="button"
               className="close"
-              id="delete-form-closed"
-              data-dismiss="modal"
-              hidden
-            ></button>
-            <button
-              type="button"
-              className="close"
-              onClick={() => {
-                const close_button =
-                  document.getElementById("delete-form-closed");
-                close_button?.click();
-                onClose();
-              }}
+              onClick={onClose}
             >
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <form onSubmit={(e) => onConfirm(e)}>
+          <form onSubmit={(e) => { e.preventDefault(); onConfirm(e); }}>
             <div className="modal-body">
               <p>Are you sure you want to delete this item?</p>
             </div>
@@ -48,17 +36,12 @@ function ConfirmDelete({
                 type="button"
                 className="btn btn-secondary"
                 text="Cancel"
-                onClick={() => {
-                  const close_button =
-                    document.getElementById("delete-form-closed");
-                  close_button?.click();
-                }}
+                onClick={onClose}
               />
               <Button
                 type="submit"
                 className="btn btn-danger"
                 text="Delete"
-                onClick={onConfirm}
               />
             </div>
           </form>

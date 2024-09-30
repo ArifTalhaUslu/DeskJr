@@ -16,6 +16,7 @@ const Employee: any = (props: any) => {
   const [modalDataTarget] = useState("employeeAddModal");
   const [isTrigger, setIsTrigger] = useState(false);
   const [formToBeClosed, setFormToBeClosed] = useState("");
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   useEffect(() => {
     getList();
@@ -23,8 +24,8 @@ const Employee: any = (props: any) => {
 
   const getList = async () => {
     employeeService.getAllEmployee().then((data) => {
-        setItems(data);
-      })
+      setItems(data);
+    })
       .catch((err) => {
         showErrorToast(err);
       });
@@ -56,6 +57,7 @@ const Employee: any = (props: any) => {
   const handleDelete = (employee: any) => {
     setSelectedItemId(employee.id);
     setFormToBeClosed("delete-form-closed");
+    setIsDeleteModalOpen(true);
   };
 
   const isEditable = (item: any) => true;
@@ -67,10 +69,10 @@ const Employee: any = (props: any) => {
       return value === Roles.Employee
         ? "Employee"
         : value === Roles.Manager
-        ? "Manager"
-        : value === Roles.Admin
-        ? "Admin"
-        : value;
+          ? "Manager"
+          : value === Roles.Admin
+            ? "Admin"
+            : value;
     } else if (column === "gender") {
       return value === 0 ? "Male" : value === 1 ? "Female" : value;
     } else if (column === "dayOfBirth") {
@@ -78,7 +80,7 @@ const Employee: any = (props: any) => {
     } else if (column === "employeeTitle") {
       return value && value.titleName;
     } else if (column === "team") {
-       return value && value.name;
+      return value && value.name;
     }
     return value;
   };
@@ -91,6 +93,7 @@ const Employee: any = (props: any) => {
     const close_button = document.getElementById(formToBeClosed);
     close_button?.click();
     setFormToBeClosed("");
+    setIsDeleteModalOpen(false);
   };
 
   const columnNames = {
@@ -134,11 +137,14 @@ const Employee: any = (props: any) => {
         onClose={onModalClose}
         currentUser={props.currentUser}
       />
-      <ConfirmDelete
-        onConfirm={(e) => onConfirmDelete(e)}
-        selectedItemId={selectedItemId}
-        onClose={onModalClose}
-      />
+
+      {isDeleteModalOpen && (
+        <ConfirmDelete
+          onConfirm={(e) => onConfirmDelete(e)}
+          selectedItemId={selectedItemId}
+          onClose={onModalClose}
+        />
+      )}
     </>
   );
 };
