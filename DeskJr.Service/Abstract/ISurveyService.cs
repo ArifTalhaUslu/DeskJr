@@ -1,5 +1,5 @@
 ﻿
-using DeskJr.Service.Dto.SurveyDto;
+using DeskJr.Service.Dto;
 
 namespace DeskJr.Service.Abstract
 {
@@ -9,6 +9,7 @@ namespace DeskJr.Service.Abstract
         public Task<bool> DeleteSurveyAsync(Guid id);
         public Task<List<SurveyDto>> GetAllSurveyAsync();
         public Task<SurveyDto> GetSurveyByIdAsync(Guid id);
+        public Task<IEnumerable<SurveyDto>> GetAllElementSurveyAsync(Guid id);
 
     }
 }

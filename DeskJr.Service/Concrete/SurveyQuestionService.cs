@@ -3,7 +3,7 @@ using DeskJr.Common.Exceptions;
 using DeskJr.Entity.Models;
 using DeskJr.Repository.Abstract;
 using DeskJr.Service.Abstract;
-using DeskJr.Service.Dto.SurveyQuestionDto;
+using DeskJr.Service.Dto;
 
 namespace DeskJr.Service.Concrete
 {

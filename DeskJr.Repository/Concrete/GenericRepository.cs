@@ -1,5 +1,4 @@
 ﻿
-using DeskJr.Common.Exceptions;
 using DeskJr.Entity.Models;
 using DeskJr.Repository.Abstract;
 using Microsoft.EntityFrameworkCore;
@@ -57,5 +56,13 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         var entity = await _dbSet.FirstOrDefaultAsync(e => e.ID == id);
 
         return entity;
+    }
+
+    public async Task<bool> AddRangeAsync(List<T> entities)
+    {
+        _dbSet.AddRangeAsync(entities);
+        await _context.SaveChangesAsync();
+
+        return true;
     }
 }

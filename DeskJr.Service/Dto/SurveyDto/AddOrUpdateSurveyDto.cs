@@ -1,4 +1,4 @@
-﻿namespace DeskJr.Service.Dto.SurveyDto
+﻿namespace DeskJr.Service.Dto
 {
     public class AddOrUpdateSurveyDto
     {

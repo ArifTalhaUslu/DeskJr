@@ -1,5 +1,5 @@
 ﻿
-using DeskJr.Service.Dto.SurveyQuestionDto;
+using DeskJr.Service.Dto;
 
 namespace DeskJr.Service.Abstract
 {

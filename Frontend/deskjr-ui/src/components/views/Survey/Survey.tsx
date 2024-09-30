@@ -1,22 +1,34 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import surveyService from "../../../services/SurveyService";
+import { showErrorToast } from "../../../utils/toastHelper";
+import Button from "../../CommonComponents/Button";
 import Card from "../../CommonComponents/Card";
 import Board from "../../CommonComponents/Board";
-import ConfirmDelete from "../../CommonComponents/ConfirmDelete";
-import SurveyEditForm from "./SurveyEditForm";
-import { showErrorToast, showSuccessToast } from "../../../utils/toastHelper";
-import Button from "../../CommonComponents/Button";
-import SurveyQuestionForm from "./SurveyQuestionForm";
+import SurveyForm from "./SurveyForm";
+import employeeAnswersService from "../../../services/EmployeeAnswersService";
 
-const Survey = () => {
+const Survey = (props: any) => {
     const [items, setItems] = useState([]);
     const [selectedItemId, setSelectedItemId] = useState("");
-    const [modalMode, setModalMode] = useState("");
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedSurvey, setSelectedSurvey] = useState("");
+    const [modalModeName, setModalModeName] = useState("");
+    const [status, setStatus] = useState(false);
+    const [isTrigger, setIsTrigger] = useState(false);
+    const [modalDataTarget] = useState("survey-parcipation");
+    const [formToBeClosed, setFormToBeClosed] = useState("");
 
     useEffect(() => {
         getList();
-    }, []);
+    }, [isTrigger]);
+
+    const checked = async (userId: any, surveyId: any) => {
+        try {
+            const data = await employeeAnswersService.getEmployeeSurveyStatus(userId, surveyId);
+            setStatus(data);
+        } catch (err) {
+            showErrorToast(err);
+        }
+    };
 
     const getList = async () => {
         try {
@@ -27,98 +39,56 @@ const Survey = () => {
         }
     };
 
-    const onConfirmDelete = async (e) => {
-        if (selectedItemId) {
-            try {
-                await surveyService.deleteSurvey(selectedItemId);
-                showSuccessToast("Successful!");
-                getList();
-            } catch (err) {
-                showErrorToast(err);
-            }
-        }
-        closeModal();
-    };
-
-    const handleEdit = (survey) => {
-        setSelectedItemId(survey.id);
-        setModalMode("Update");
-        setIsModalOpen(true);
-    };
-
-    const handleDelete = (survey) => {
-        setSelectedItemId(survey.id);
-        setModalMode("Delete");
-        setIsModalOpen(true);
-    };
-
-    const closeModal = () => {
-        setSelectedItemId("");
-        setModalMode("");
-        setIsModalOpen(false);
-    };
-
-    const customColumnOfActions = (item) => (
+    const customColumn = (item: any) => (
         <div className="text-center">
             <Button
-                text="Questions"
+                text="Join Survey"
                 className="btn btn-info m-1 p-2"
-                onClick={() => {
+                onClick={async () => {
+                    await checked(props.currentUser?.id, item.id);
                     setSelectedItemId(item.id);
-                    setModalMode("Questions");
-                    setIsModalOpen(true);
+                    setModalModeName("Survey Parcipation");
+                    setFormToBeClosed("form-close-survey");
                 }}
+                isModalTrigger={true}
+                dataTarget={modalDataTarget}
             />
         </div>
     );
+
+    const onModalClose = () => {
+        setSelectedItemId("");
+        setSelectedSurvey("");
+        setModalModeName("");
+        setIsTrigger(false);
+        const close_button = document.getElementById(formToBeClosed);
+        close_button?.click();
+        setFormToBeClosed("");
+    };
 
     return (
         <>
             <Card title={"Surveys"}>
                 <Board
                     items={items}
-                    onEdit={handleEdit}
-                    onDelete={handleDelete}
-                    isEditable={() => true}
-                    isDeletable={() => true}
-                    hiddenColumns={["id"]}
+                    hiddenColumns={["id", "surveyQuestions"]}
                     renderColumn={(column, value) => value}
-                    customColumnOfActions={customColumnOfActions}
+                    customColumn={customColumn}
+                    hideActions="true"
+                    isCustomColumnExist="true"
                     columnNames={{
                         name: "Survey Name",
-                        customColumnName: "Manage Survey Questions"
-                    }}
-                    hasNewRecordButton={true}
-                    newRecordButtonOnClick={() => {
-                        setModalMode("Add");
-                        setIsModalOpen(true);
                     }}
                 />
             </Card>
 
-            {isModalOpen && (
-                <>
-                    {modalMode === "Add" || modalMode === "Update" ? (
-                        <SurveyEditForm
-                            selectedItemId={selectedItemId}
-                            modalModeName={modalMode}
-                            onClose={closeModal}
-                            getList={getList}
-                        />
-                    ) : modalMode === "Delete" ? (
-                        <ConfirmDelete
-                            onConfirm={onConfirmDelete}
-                            selectedItemId={selectedItemId}
-                            onClose={closeModal}
-                        />
-                    ) : modalMode === "Questions" ? (
-                        <SurveyQuestionForm
-                            selectedItemId={selectedItemId}
-                            onClose={closeModal}
-                        />
-                    ) : null}
-                </>
-            )}
+            <SurveyForm
+                selectedItemId={selectedItemId}
+                modalModeName={modalModeName}
+                onClose={onModalClose}
+                currentUser={props.currentUser}
+                status={status}
+            />
         </>
     );
 };

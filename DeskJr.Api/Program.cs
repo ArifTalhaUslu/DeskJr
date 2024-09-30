@@ -77,6 +77,8 @@ builder.Services.AddScoped<ISurveyQuestionRepository, SurveyQuestionRepository>(
 builder.Services.AddScoped<ISurveyQuestionService, SurveyQuestionService>();
 builder.Services.AddScoped<ISurveyQuestionOptionsRepository, SurveyQuestionOptionsRepository>();
 builder.Services.AddScoped<ISurveyQuestionsOptionsService, SurveyQuestionOptionsService>();
+builder.Services.AddScoped<IEmployeeOptionsRepository, EmployeeOptionsRepository>();
+builder.Services.AddScoped<IEmployeeOptionsService, EmployeeOptionsService>();
 builder.Services.AddScoped<EmailSender>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddTransient<IUserService, UserService>();

@@ -20,8 +20,8 @@ namespace DeskJr.Data
         public DbSet<Survey> Surveys { get; set; }
         public DbSet<SurveyQuestion> SurveyQuestions { get; set; }
         public DbSet<SurveyQuestionOptions> SurveyQuestionOptions { get; set; }
+        public DbSet<EmployeeOptions> EmployeeOptions { get; set; }
         
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Employee>().Property(d => d.Name).HasColumnType("VARCHAR").HasMaxLength(150).IsRequired();
@@ -52,17 +52,6 @@ namespace DeskJr.Data
                 .WithMany()
                 .HasForeignKey(l => l.ApprovedById);
 
-            //modelBuilder.Entity<SurveyQuestionOptions>()
-            //    .HasOne(m => m.SurveyQuestion)
-            //    .WithMany()
-            //    .HasForeignKey(m => m.SurveyQuestionId);
-            
-            //modelBuilder.Entity<SurveyQuestion>()
-            //    .HasOne(m => m.Survey)
-            //    .WithMany()
-            //    .HasForeignKey(m => m.SurveyId);
-
-            
         }
     }
 }

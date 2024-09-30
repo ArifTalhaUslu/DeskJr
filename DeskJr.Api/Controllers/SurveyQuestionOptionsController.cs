@@ -1,5 +1,5 @@
 ﻿using DeskJr.Service.Abstract;
-using DeskJr.Service.Dto.SurveyQuestionOptionsDto;
+using DeskJr.Service.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,7 +7,7 @@ namespace DeskJr.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [AllowAnonymous]
+    [Authorize]
     public class SurveyQuestionOptionsController : ControllerBase
     {
         private readonly ISurveyQuestionsOptionsService _surveyQuestionsOptionsService;

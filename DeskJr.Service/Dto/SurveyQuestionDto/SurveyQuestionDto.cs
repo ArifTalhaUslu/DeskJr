@@ -1,6 +1,6 @@
 ﻿using DeskJr.Entity.Models;
 
-namespace DeskJr.Service.Dto.SurveyQuestionDto
+namespace DeskJr.Service.Dto
 {
     public class SurveyQuestionDto
     {

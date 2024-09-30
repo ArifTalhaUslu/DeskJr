@@ -26,9 +26,9 @@ namespace DeskJr.Service.Concrete
             if (employeeTitleDto.ID == null)
             {
                 return await _employeeTitleRepository.AddAsync(_mapper.Map<EmployeeTitle>(employeeTitleDto));
-            }                
-            
-            return await _employeeTitleRepository.UpdateAsync(_mapper.Map<EmployeeTitle>(employeeTitleDto));  
+            }
+
+            return await _employeeTitleRepository.UpdateAsync(_mapper.Map<EmployeeTitle>(employeeTitleDto));
         }
 
         public async Task<bool> DeleteEmployeeTitleAsync(Guid id)

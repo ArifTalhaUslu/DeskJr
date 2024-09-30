@@ -12,8 +12,8 @@ const Holiday: any = () => {
   const [selectedItemId, setSelectedItemId] = useState("");
   const [selectedHoliday, setSelectedHoliday] = useState("");
   const [modalModeName, setModalModeName] = useState("");
-  const [modalDataTarget] = useState("holidayAddModal");
   const [isTrigger, setIsTrigger] = useState(false);
+  const [modalDataTarget] = useState("holidayAddModal");
   const [formToBeClosed, setFormToBeClosed] = useState("");
 
   useEffect(() => {
@@ -45,9 +45,6 @@ const Holiday: any = () => {
           showErrorToast(err);
         });
     }
-
-    // const close_button = document.getElementById("confirm-delete-close");
-    // close_button?.click();
     onModalClose();
   };
 

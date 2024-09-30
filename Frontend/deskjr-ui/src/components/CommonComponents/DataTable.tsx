@@ -14,7 +14,8 @@ interface DataTableProps {
   columnNames?: { [key: string]: string };
   hideActions?: string;
   customElementOfActions?: (item: any) => JSX.Element;
-  customColumnOfActions?: (item: any) => JSX.Element;
+  customColumn?: (item: any) => JSX.Element;
+  isCustomColumnExist?: string;
 }
 
 function DataTable({
@@ -30,7 +31,9 @@ function DataTable({
   columnNames = {},
   hideActions = "false",
   customElementOfActions,
-  customColumnOfActions,
+  customColumn,
+  isCustomColumnExist = "false"
+
 }: DataTableProps) {
   const [records, setRecords] = useState<any>([]);
   const [columns, setColumns] = useState<string[]>([]);
@@ -42,9 +45,20 @@ function DataTable({
     );
     setColumns([...newColumns]);
 
-    if (hideActions && hideActions === "false") {
-      setColumns([...newColumns, customColumnOfActions && columnNames["customColumnName"], "Actions"]);
+    if (hideActions && hideActions === "false" && isCustomColumnExist && isCustomColumnExist === "false") {
+      setColumns([...newColumns, "Actions"]);
     }
+    else if (hideActions && hideActions === "false" && isCustomColumnExist && isCustomColumnExist === "true") {
+      setColumns([...newColumns, customColumn && columnNames["customColumnName"], "Actions"]);
+    }
+    else if (hideActions && hideActions === "true" && isCustomColumnExist && isCustomColumnExist === "true") {
+      setColumns([...newColumns, customColumn && columnNames["customColumnName"]]);
+    }
+    else {
+      setColumns([...newColumns])
+    }
+
+
 
     const newRecords = items.map((record: any, index: any) => (
       <tr key={index}>
@@ -55,7 +69,7 @@ function DataTable({
               : record[column]}
           </td>
         ))}
-        {customColumnOfActions && <td>{customColumnOfActions(record)}</td>}
+        {customColumn && <td>{customColumn(record)}</td>}
         {hideActions && hideActions.toString() === "false" && (
           <td className="text-center align-top">
             {isEditable && isEditable(record) && onEdit && (

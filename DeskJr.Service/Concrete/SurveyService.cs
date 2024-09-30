@@ -3,7 +3,7 @@ using DeskJr.Common.Exceptions;
 using DeskJr.Entity.Models;
 using DeskJr.Repository.Abstract;
 using DeskJr.Service.Abstract;
-using DeskJr.Service.Dto.SurveyDto;
+using DeskJr.Service.Dto;
 
 namespace DeskJr.Service.Concrete
 {
@@ -50,6 +50,20 @@ namespace DeskJr.Service.Concrete
             }
 
             return _mapper.Map<List<SurveyDto>>(surveys);
+        }
+
+        public async Task<IEnumerable<SurveyDto>> GetAllElementSurveyAsync(Guid id)
+        {
+            if(id == null)
+            {
+                throw new NotFoundException("No Survey exists with the provided identifier.");
+            }
+
+            var survey = await _surveyRepository.GetAllElementSurveyAsync(id);
+
+            return _mapper.Map<IEnumerable<SurveyDto>>(survey);
+
+
         }
 
         public async Task<SurveyDto> GetSurveyByIdAsync(Guid id)

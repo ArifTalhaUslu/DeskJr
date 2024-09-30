@@ -9,6 +9,7 @@ namespace DeskJr.Entity.Models
 
         [JsonIgnore]
         public Survey Survey { get; set; }
+        public IEnumerable<SurveyQuestionOptions> SurveyQuestionOptions { get; set; }
 
     }
 }

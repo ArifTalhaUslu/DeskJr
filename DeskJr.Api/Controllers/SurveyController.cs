@@ -1,13 +1,13 @@
 ﻿using DeskJr.Service.Abstract;
-using DeskJr.Service.Dto.SurveyDto;
+using DeskJr.Service.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DeskJr.Api.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
-    [AllowAnonymous]
+    [Route("api/[controller]/[action]")]
+    [Authorize]
     public class SurveyController : ControllerBase
     {
         private readonly ISurveyService _surveyService;
@@ -45,6 +45,14 @@ namespace DeskJr.Api.Controllers
         public async Task<ActionResult> GetSurveyById(Guid id)
         {
             var survey = await _surveyService.GetSurveyByIdAsync(id);
+
+            return Ok(survey);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetSurveyAllElements(Guid id)
+        {
+            var survey = await _surveyService.GetAllElementSurveyAsync(id);
 
             return Ok(survey);
         }

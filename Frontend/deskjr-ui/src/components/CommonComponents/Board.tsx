@@ -16,9 +16,10 @@ interface BoardProps {
   newRecordModalDataTarget?: string;
   hideActions?: string;
   customElementOfActions?: (item: any) => JSX.Element;
-  customColumnOfActions?: (item: any) => JSX.Element;
+  customColumn?: (item: any) => JSX.Element;
   leftTopContent?: React.ReactNode;
   rightTopContent?: React.ReactNode;
+  isCustomColumnExist?: string,
 }
 
 function Board({
@@ -36,9 +37,10 @@ function Board({
   newRecordModalDataTarget,
   hideActions = "false",
   customElementOfActions,
-  customColumnOfActions,
+  customColumn,
   leftTopContent,
   rightTopContent,
+  isCustomColumnExist = "false"
 }: BoardProps) {
   const renderedItems = items ?? [];
 
@@ -64,7 +66,8 @@ function Board({
           columnNames={columnNames}
           hideActions={hideActions}
           customElementOfActions={customElementOfActions}
-          customColumnOfActions={customColumnOfActions}
+          customColumn={customColumn}
+          isCustomColumnExist={isCustomColumnExist}
         />
       ) : (
         []
