@@ -1,17 +1,10 @@
 ﻿using AutoMapper;
-using DeskJr.Common;
 using DeskJr.Common.Exceptions;
 using DeskJr.Entity.Models;
 using DeskJr.Repository.Abstract;
-using DeskJr.Repository.Concrete;
 using DeskJr.Service.Abstract;
 using DeskJr.Service.Dto;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Threading.Tasks;
+
 
 namespace DeskJr.Service.Concrete
 {
@@ -33,9 +26,9 @@ namespace DeskJr.Service.Concrete
             if (employeeTitleDto.ID == null)
             {
                 return await _employeeTitleRepository.AddAsync(_mapper.Map<EmployeeTitle>(employeeTitleDto));
-            }                
-            
-            return await _employeeTitleRepository.UpdateAsync(_mapper.Map<EmployeeTitle>(employeeTitleDto));  
+            }
+
+            return await _employeeTitleRepository.UpdateAsync(_mapper.Map<EmployeeTitle>(employeeTitleDto));
         }
 
         public async Task<bool> DeleteEmployeeTitleAsync(Guid id)

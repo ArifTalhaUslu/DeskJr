@@ -28,6 +28,9 @@ import LeaveType from "./components/views/LeaveType/LeaveType";
 import ChangePassword from "./components/views/ChangePassword/ChangePassword";
 import OrganizationCharts from "./components/views/OrganizationChart/OrganizationCharts";
 
+import SurveySetting from "./components/views/SurveySetting/SurveySetting";
+import Survey from "./components/views/Survey/Survey";
+
 const App: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<any>();
   const [loading, setLoading] = useState(true);
@@ -98,12 +101,22 @@ const App: React.FC = () => {
               to: "/advancedSetting",
               visible: currentUser?.employeeRole === Roles.Admin,
             },
+            {
+              name: "Survey Setting",
+              to: "/SurveySetting",
+              visible: currentUser?.employeeRole === Roles.Admin,
+            }
           ],
         },
         {
-          name:"Organization Chart",
-          to : "/organizationCharts",
-          visible : currentUser !== null,
+          name: "Organization Chart",
+          to: "/organizationCharts",
+          visible: currentUser !== null,
+        },
+        {
+          name: "Survey",
+          to: "/Survey",
+          visible: currentUser !== null,
         },
       ],
     };
@@ -172,19 +185,18 @@ const App: React.FC = () => {
                 <Route path="/titles" element={<EmployeeTitle />} />
                 <Route path="*" element={<>Not Found</>} />
                 <Route path="/leaveTypes" element={<LeaveType />} />
-                <Route path="/organizationCharts" element={<OrganizationCharts currentUser={currentUser}/>}/>
+                <Route path="/organizationCharts" element={<OrganizationCharts currentUser={currentUser} />} />
+                <Route path="/Survey" element={<Survey currentUser={currentUser} />} />
                 <Route path="/changePassword" element={<ChangePassword currentUser={currentUser} />} />
-                
+
               </>
             )}
             {currentUser && currentUser.employeeRole === Roles.Admin && (
               <>
-                <Route
-                  path="/employees"
-                  element={<Employee currentUser={currentUser} />}
-                />
+                <Route path="/employees" element={<Employee currentUser={currentUser} />} />
                 <Route path="/teams" element={<Team />} />
                 <Route path="advancedSetting" element={<AdvancedSetting />} />
+                <Route path="/SurveySetting" element={<SurveySetting currentUser={currentUser} />} />
               </>
             )}
             {currentUser && currentUser.employeeRole === Roles.Manager && (

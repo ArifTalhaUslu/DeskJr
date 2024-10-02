@@ -16,6 +16,7 @@ const EmployeeTitle: any = () => {
   const [isDelete, setIsDelete] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [formToBeClosed, setFormToBeClosed] = useState("");
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   useEffect(() => {
     getList();
@@ -56,6 +57,7 @@ const EmployeeTitle: any = () => {
     setSelectedItemId(employeeTitle.id);
     setIsDelete(true);
     setFormToBeClosed("delete-form-closed");
+    setIsDeleteModalOpen(true);
   };
 
   const isEditable = (item: any) => true;
@@ -74,6 +76,7 @@ const EmployeeTitle: any = () => {
     const close_button = document.getElementById(formToBeClosed);
     close_button?.click();
     setFormToBeClosed("");
+    setIsDeleteModalOpen(false);
   };
 
   const columnNames = {
@@ -110,11 +113,13 @@ const EmployeeTitle: any = () => {
         getList={getList}
         onClose={onModalClose}
       />
-      <ConfirmDelete
-        onConfirm={(e) => onConfirmDelete(e)}
-        selectedItemId={selectedItemId}
-        onClose={onModalClose}
-      />
+      {isDeleteModalOpen && (
+        <ConfirmDelete
+          onConfirm={(e) => onConfirmDelete(e)}
+          selectedItemId={selectedItemId}
+          onClose={onModalClose}
+        />
+      )}
     </>
   );
 };

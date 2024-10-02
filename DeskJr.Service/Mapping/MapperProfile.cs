@@ -30,7 +30,15 @@ namespace DeskJr.Service.Mapping
             CreateMap<Holiday, HolidayDto>().ReverseMap();
             CreateMap<Holiday, AddOrUpdateHolidayDto>().ReverseMap();
             CreateMap<Setting, SettingDto>().ReverseMap();
-            CreateMap<Setting, AddOrUpdateSettingDto>().ReverseMap();
+            CreateMap<Survey, SurveyDto >().ReverseMap();
+            CreateMap<Survey, AddOrUpdateSurveyDto >().ReverseMap();
+            CreateMap<SurveyQuestion, SurveyQuestionDto>().ReverseMap();
+            CreateMap<SurveyQuestion, AddOrUpdateServeyQuestionDto>().ReverseMap();
+            CreateMap<SurveyQuestionOptions, SurveyQuestionOptionsDto>().ReverseMap();
+            CreateMap<SurveyQuestionOptions, AddOrUpdateSurveyQuestionOptionsDto>().ReverseMap();
+            CreateMap<EmployeeOptions, EmployeeOptionsDto>().ReverseMap();
+            CreateMap<EmployeeOptions, CreateEmployeeOptionsDto>().ReverseMap();
+
         }
     }
 }

@@ -65,6 +65,23 @@ namespace DeskJr.Data.Migrations
                     b.ToTable("Employees");
                 });
 
+            modelBuilder.Entity("DeskJr.Entity.Models.EmployeeOptions", b =>
+                {
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("OptionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("EmployeeOptions");
+                });
+
             modelBuilder.Entity("DeskJr.Entity.Models.EmployeeTitle", b =>
                 {
                     b.Property<Guid>("ID")
@@ -179,6 +196,64 @@ namespace DeskJr.Data.Migrations
                     b.ToTable("Settings");
                 });
 
+            modelBuilder.Entity("DeskJr.Entity.Models.Survey", b =>
+                {
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Surveys");
+                });
+
+            modelBuilder.Entity("DeskJr.Entity.Models.SurveyQuestion", b =>
+                {
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SurveyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("SurveyId");
+
+                    b.ToTable("SurveyQuestions");
+                });
+
+            modelBuilder.Entity("DeskJr.Entity.Models.SurveyQuestionOptions", b =>
+                {
+                    b.Property<Guid>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SurveyQuestionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("SurveyQuestionId");
+
+                    b.ToTable("SurveyQuestionOptions");
+                });
+
             modelBuilder.Entity("DeskJr.Entity.Models.Team", b =>
                 {
                     b.Property<Guid>("ID")
@@ -245,6 +320,28 @@ namespace DeskJr.Data.Migrations
                     b.Navigation("RequestingEmployee");
                 });
 
+            modelBuilder.Entity("DeskJr.Entity.Models.SurveyQuestion", b =>
+                {
+                    b.HasOne("DeskJr.Entity.Models.Survey", "Survey")
+                        .WithMany("SurveyQuestions")
+                        .HasForeignKey("SurveyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Survey");
+                });
+
+            modelBuilder.Entity("DeskJr.Entity.Models.SurveyQuestionOptions", b =>
+                {
+                    b.HasOne("DeskJr.Entity.Models.SurveyQuestion", "SurveyQuestion")
+                        .WithMany("SurveyQuestionOptions")
+                        .HasForeignKey("SurveyQuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SurveyQuestion");
+                });
+
             modelBuilder.Entity("DeskJr.Entity.Models.Team", b =>
                 {
                     b.HasOne("DeskJr.Entity.Models.Employee", "Manager")
@@ -259,6 +356,16 @@ namespace DeskJr.Data.Migrations
                     b.Navigation("Manager");
 
                     b.Navigation("UpTeam");
+                });
+
+            modelBuilder.Entity("DeskJr.Entity.Models.Survey", b =>
+                {
+                    b.Navigation("SurveyQuestions");
+                });
+
+            modelBuilder.Entity("DeskJr.Entity.Models.SurveyQuestion", b =>
+                {
+                    b.Navigation("SurveyQuestionOptions");
                 });
 #pragma warning restore 612, 618
         }

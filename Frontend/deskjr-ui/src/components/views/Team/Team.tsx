@@ -14,33 +14,34 @@ const Team: any = () => {
   const [modalDataTarget] = useState("teamAddModal");
   const [isTrigger, setIsTrigger] = useState(false);
   const [formToBeClosed, setFormToBeClosed] = useState("");
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   useEffect(() => {
     getList();
   }, [isTrigger]);
 
   const getList = async () => {
-      teamService.getAllTeam().then((data) => {
-          setItems(data);
-      })
-          .catch((err) => {
-              showErrorToast(err);
-          });
+    teamService.getAllTeam().then((data) => {
+      setItems(data);
+    })
+      .catch((err) => {
+        showErrorToast(err);
+      });
   };
 
   const onConfirmDelete = async (e: any) => {
     e.preventDefault();
 
     if (selectedItemId) {
-        teamService
-            .deleteTeam(selectedItemId)
-            .then(() => {
-                showSuccessToast('Successful!');
-                setIsTrigger(true);
-            })
-            .catch((err) => {
-                showErrorToast(err);
-            });
+      teamService
+        .deleteTeam(selectedItemId)
+        .then(() => {
+          showSuccessToast('Successful!');
+          setIsTrigger(true);
+        })
+        .catch((err) => {
+          showErrorToast(err);
+        });
     }
     onModalClose();
   };
@@ -55,6 +56,7 @@ const Team: any = () => {
   const handleDelete = (team: any) => {
     setSelectedItemId(team.id);
     setFormToBeClosed("delete-form-closed");
+    setIsDeleteModalOpen(true);
   };
 
   const isEditable = (item: any) => true;
@@ -69,26 +71,27 @@ const Team: any = () => {
     const close_button = document.getElementById(formToBeClosed);
     close_button?.click();
     setFormToBeClosed("");
+    setIsDeleteModalOpen(false);
   };
-  
+
   const renderColumn = (column: string, value: any) => {
-  if (column === "manager") {
-    return value && value.name;
-  } else if (column === "upTeamId") {
-    if (value) {
-      const upTeam = items.find((team) => team.id === value);
-      console.log("UpTeam:", upTeam);
-      return upTeam ? upTeam.name : "No Up Team";
+    if (column === "manager") {
+      return value && value.name;
+    } else if (column === "upTeamId") {
+      if (value) {
+        const upTeam = items.find((team) => team.id === value);
+        console.log("UpTeam:", upTeam);
+        return upTeam ? upTeam.name : "No Up Team";
+      }
+      return "No Up Team";
     }
-    return "No Up Team";
-  }
-  return value;
-};
+    return value;
+  };
 
   const columnNames = {
     name: "Team Name",
     manager: "Manager Name",
-    upTeamId:"Up Team",
+    upTeamId: "Up Team",
   };
 
   return (
@@ -100,7 +103,7 @@ const Team: any = () => {
           onDelete={handleDelete}
           isEditable={isEditable}
           isDeletable={isDeletable}
-          hiddenColumns={["id","managerId"]}
+          hiddenColumns={["id", "managerId"]}
           renderColumn={renderColumn}
           columnNames={columnNames}
           hasNewRecordButton={true}
@@ -122,11 +125,13 @@ const Team: any = () => {
         onClose={onModalClose}
       />
 
-      <ConfirmDelete
-        onConfirm={(e) => onConfirmDelete(e)}
-        selectedItemId={selectedItemId}
-        onClose={onModalClose}
-      />
+      {isDeleteModalOpen && (
+        <ConfirmDelete
+          onConfirm={(e) => onConfirmDelete(e)}
+          selectedItemId={selectedItemId}
+          onClose={onModalClose}
+        />
+      )}
     </>
   );
 };

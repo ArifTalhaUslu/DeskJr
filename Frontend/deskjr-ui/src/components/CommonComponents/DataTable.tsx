@@ -14,6 +14,8 @@ interface DataTableProps {
   columnNames?: { [key: string]: string };
   hideActions?: string;
   customElementOfActions?: (item: any) => JSX.Element;
+  customColumn?: (item: any) => JSX.Element;
+  isCustomColumnExist?: string;
 }
 
 function DataTable({
@@ -29,6 +31,9 @@ function DataTable({
   columnNames = {},
   hideActions = "false",
   customElementOfActions,
+  customColumn,
+  isCustomColumnExist = "false"
+
 }: DataTableProps) {
   const [records, setRecords] = useState<any>([]);
   const [columns, setColumns] = useState<string[]>([]);
@@ -40,8 +45,17 @@ function DataTable({
     );
     setColumns([...newColumns]);
 
-    if (hideActions && hideActions === "false") {
+    if (hideActions && hideActions === "false" && isCustomColumnExist && isCustomColumnExist === "false") {
       setColumns([...newColumns, "Actions"]);
+    }
+    else if (hideActions && hideActions === "false" && isCustomColumnExist && isCustomColumnExist === "true") {
+      setColumns([...newColumns, customColumn && columnNames["customColumnName"], "Actions"]);
+    }
+    else if (hideActions && hideActions === "true" && isCustomColumnExist && isCustomColumnExist === "true") {
+      setColumns([...newColumns, customColumn && columnNames["customColumnName"]]);
+    }
+    else {
+      setColumns([...newColumns])
     }
 
     const newRecords = items.map((record: any, index: any) => (
@@ -53,8 +67,9 @@ function DataTable({
               : record[column]}
           </td>
         ))}
+        {customColumn && <td>{customColumn(record)}</td>}
         {hideActions && hideActions.toString() === "false" && (
-          <td className="text-center align-top">
+          <td className="text-center align-top d-flex justify-content-center">
             {isEditable && isEditable(record) && onEdit && (
               <Button
                 text="Edit"
@@ -62,22 +77,23 @@ function DataTable({
                 onClick={() => onEdit(record)}
                 isModalTrigger={true}
                 dataTarget={dataTarget}
-              ></Button>
+              />
             )}
             {isDeletable && isDeletable(record) && onDelete && (
               <Button
                 text="Delete"
-                className={"btn btn-danger"}
+                className={"btn btn-danger mr-2"}
                 onClick={() => onDelete(record)}
                 isModalTrigger={true}
                 dataTarget={"delete-confirm"}
-              ></Button>
+              />
             )}
             {customElementOfActions && customElementOfActions(record)}
           </td>
         )}
       </tr>
     ));
+
     if (newRecords && newRecords.length > 0) {
       setRecords([...newRecords]);
     } else {

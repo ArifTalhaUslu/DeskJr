@@ -19,7 +19,7 @@ function TopContents(props: TopContentProps) {
         {props.hasNewRecordButton && (
           <div className="text-right">
             <Button
-              className={"btn btn-success mb-2 mr-5"}
+              className={"btn btn-success mb-2 mr-5 m-3"}
               text={"Add New"}
               isModalTrigger={true}
               dataTarget={props.dataTarget}
