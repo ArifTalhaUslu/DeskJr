@@ -10,6 +10,7 @@ namespace DeskJr.Service.Abstract
         public Task<EmployeeOptionsDto?> GetEmployeeOptionsByIdAsync(Guid id);
         public Task<bool> AddRangeAsync(List<CreateEmployeeOptionsDto> createEmployeeOptionsDtos);
         public Task<bool> EmployeeSurveyStatus(Guid userId, Guid surveyId);
+        public Task<SurveyResultDto?> GetSurveyResultsAsync(Guid surveyId);
 
     }
 }

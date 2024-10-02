@@ -8,6 +8,7 @@ const SurveyEditForm = ({ selectedItemId, modalModeName, onClose, getList }) => 
     const [selectedSurvey, setSelectedSurvey] = useState({
         id: "",
         name: "",
+        endDate: "",
     });
 
     useEffect(() => {
@@ -20,6 +21,7 @@ const SurveyEditForm = ({ selectedItemId, modalModeName, onClose, getList }) => 
             setSelectedSurvey({
                 id: "",
                 name: "",
+                endDate: ""
             });
         }
     }, [selectedItemId, modalModeName]);
@@ -35,7 +37,7 @@ const SurveyEditForm = ({ selectedItemId, modalModeName, onClose, getList }) => 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const surveyData = modalModeName === "Add" ? { name: selectedSurvey.name } : selectedSurvey;
+            const surveyData = modalModeName === "Add" ? { name: selectedSurvey.name, endDate: selectedSurvey.endDate } : selectedSurvey;
             await surveyService.addOrUpdateSurvey(surveyData);
             showSuccessToast("Successful!");
             getList();
@@ -43,6 +45,15 @@ const SurveyEditForm = ({ selectedItemId, modalModeName, onClose, getList }) => 
         } catch (err) {
             showErrorToast(err);
         }
+    };
+
+    const formatDate = (date: string | Date | undefined): string => {
+        if (!date) return "";
+        const dateObj = typeof date === "string" ? new Date(date) : date;
+        const year = dateObj.getFullYear();
+        const month = (dateObj.getMonth() + 1).toString().padStart(2, "0");
+        const day = dateObj.getDate().toString().padStart(2, "0");
+        return `${year}-${month}-${day}`;
     };
 
     return (
@@ -71,6 +82,17 @@ const SurveyEditForm = ({ selectedItemId, modalModeName, onClose, getList }) => 
                                     name="name"
                                     value={selectedSurvey.name}
                                     onChange={handleChange}
+                                    required
+                                />
+                                <label className="col-form-label">End Date:</label>
+                                <Input
+                                    type="date"
+                                    name="endDate"
+                                    value={
+                                        selectedSurvey &&
+                                        formatDate(selectedSurvey.endDate)
+                                    }
+                                    onChange={(e: any) => handleChange(e)}
                                     required
                                 />
                             </div>

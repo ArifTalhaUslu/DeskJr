@@ -33,5 +33,10 @@ class EmployeeOptionsService {
         return response.data;
     }
 
+    public async getSurveyResults(id: any) {
+        const response = await api.get(`${baseUrl}/GetSurveyResults/${id}`);
+        return response.data;
+    }
+
 }
 export default new EmployeeOptionsService();

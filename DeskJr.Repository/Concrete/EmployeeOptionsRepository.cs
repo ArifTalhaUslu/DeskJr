@@ -23,5 +23,12 @@ namespace DeskJr.Repository.Concrete
                                                && sq.SurveyQuestionOptions
                                                    .Any(sqo => sqo.ID == eo.OptionId)));
         }
+
+        public async Task<List<EmployeeOptions>> GetByOptionId(Guid optionId) 
+        {
+            return await _context.EmployeeOptions
+                .Where(eo => eo.OptionId == optionId)
+                .ToListAsync();
+        }
     }
 }

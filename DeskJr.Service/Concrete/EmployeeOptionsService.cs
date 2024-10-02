@@ -5,16 +5,23 @@ using DeskJr.Repository.Abstract;
 using DeskJr.Repository.Concrete;
 using DeskJr.Service.Abstract;
 using DeskJr.Service.Dto;
+using Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal;
 
 namespace DeskJr.Service.Concrete
 {
     public class EmployeeOptionsService : IEmployeeOptionsService
     {
         private readonly IEmployeeOptionsRepository _employeeOptionRepository;
+        private readonly ISurveyRepository _surveyRepository;
+        private readonly ISurveyQuestionRepository _surveyQuestionRepository;
+        private readonly ISurveyQuestionOptionsRepository _surveyQuestionOptionsRepository;
         private readonly IMapper _mapper;
-        public EmployeeOptionsService(IEmployeeOptionsRepository employeeOptionsRepository, IMapper mapper)
+        public EmployeeOptionsService(IEmployeeOptionsRepository employeeOptionsRepository, ISurveyRepository surveyRepository, ISurveyQuestionRepository surveyQuestionRepository, ISurveyQuestionOptionsRepository surveyQuestionOptionsRepository, IMapper mapper)
         {
             _employeeOptionRepository = employeeOptionsRepository;
+            _surveyRepository = surveyRepository;
+            _surveyQuestionRepository = surveyQuestionRepository;
+            _surveyQuestionOptionsRepository = surveyQuestionOptionsRepository;
             _mapper = mapper;
         }
         public async Task<bool> AddOrUpdateEmployeeOptionsAsync(CreateEmployeeOptionsDto employeeOptions)
@@ -45,12 +52,12 @@ namespace DeskJr.Service.Concrete
 
         public async Task<bool> EmployeeSurveyStatus(Guid userId, Guid surveyId)
         {
-            if(userId == null && surveyId == null)
+            if (userId == null && surveyId == null)
             {
                 throw new NotFoundException("No record exists with the provided identifier.");
             }
 
-            return await _employeeOptionRepository.EmployeeSurveyStatusAsync(userId,surveyId);
+            return await _employeeOptionRepository.EmployeeSurveyStatusAsync(userId, surveyId);
         }
 
         public async Task<IEnumerable<EmployeeOptionsDto>> GetAllEmployeeOptionsAsync()
@@ -73,6 +80,34 @@ namespace DeskJr.Service.Concrete
             }
 
             return _mapper.Map<EmployeeOptionsDto>(employeeOptions);
+        }
+
+        public async Task<SurveyResultDto?> GetSurveyResultsAsync(Guid surveyId)
+        {
+            var survey = await _surveyRepository.GetByIdWithInclude(surveyId);
+
+            if (survey is null)
+            {
+                return null;
+            }
+
+            var resultDto = new SurveyResultDto();
+            resultDto.Id = survey.ID;
+            resultDto.Name = survey.Name;
+
+            foreach (var question in survey.SurveyQuestions)
+            {
+                var optionlist = new List<OptionResultDto>();
+                foreach (var option in question.SurveyQuestionOptions)
+                {
+                    var employeeOptions = await _employeeOptionRepository.GetByOptionId(option.ID);
+                    var optionSelectCount = employeeOptions.Count;
+                    optionlist.Add(new OptionResultDto() { AnswerCount = optionSelectCount, Id = option.ID, Text = option.Text });
+                }
+                resultDto.Questions.Add(new QuestionResultDto() { Options = optionlist, Text = question.Text, });
+            }
+
+            return resultDto;
         }
     }
 }

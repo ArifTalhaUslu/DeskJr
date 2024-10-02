@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DeskJr.Repository.Concrete
 {
-    public class SurveyRepository : GenericRepository<Survey> , ISurveyRepository
+    public class SurveyRepository : GenericRepository<Survey>, ISurveyRepository
     {
-        private readonly AppDbContext _context; 
+        private readonly AppDbContext _context;
         public SurveyRepository(AppDbContext context) : base(context)
         {
             _context = context;
@@ -21,5 +21,14 @@ namespace DeskJr.Repository.Concrete
                 .ThenInclude(x => x.SurveyQuestionOptions)
                 .ToListAsync();
         }
+
+        public async Task<Survey?> GetByIdWithInclude(Guid id)
+        {
+            return await _context.Surveys
+                .Include(x => x.SurveyQuestions)
+                .ThenInclude(x => x.SurveyQuestionOptions)
+                .FirstOrDefaultAsync(x => x.ID == id);
+        }
     }
 }
+

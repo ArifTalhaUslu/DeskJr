@@ -7,12 +7,16 @@ import SurveyEditForm from "./SurveyEditForm";
 import { showErrorToast, showSuccessToast } from "../../../utils/toastHelper";
 import Button from "../../CommonComponents/Button";
 import SurveyQuestionForm from "./SurveyQuestionForm";
+import { formatDate } from "date-fns";
+import SurveyResultDetails from "./SurveyResultDetails";
+import { Dropdown } from "primereact/dropdown";
 
 const SurveySetting = (props: any) => {
     const [items, setItems] = useState([]);
     const [selectedItemId, setSelectedItemId] = useState("");
     const [modalMode, setModalMode] = useState("");
     const [isModalOpen, setIsModalOpen] = useState(false);
+
 
     useEffect(() => {
         getList();
@@ -58,7 +62,7 @@ const SurveySetting = (props: any) => {
         setIsModalOpen(false);
     };
 
-    const customColumn = (item) => (
+    const customColumnManageQuestions = (item) => (
         <div className="text-center">
             <Button
                 text="Questions"
@@ -72,6 +76,28 @@ const SurveySetting = (props: any) => {
         </div>
     );
 
+    const customColumnSurveyDetails = (item) => (
+        <div className="text-center">
+            <Button
+                text="Results"
+                className="btn btn-secondary p-2"
+                style={{ width: '100%', height: '100%' }}
+                onClick={() => {
+                    setSelectedItemId(item.id);
+                    setModalMode("ResultDetails");
+                    setIsModalOpen(true);
+                }}
+            />
+        </div>
+    );
+
+    const renderColumn = (column: string, value: any) => {
+        if (column === "endDate") {
+            return formatDate(new Date(value), "dd/MM/yyyy");
+        }
+        return value;
+    };
+
     return (
         <>
             <Card title={"Surveys"}>
@@ -82,11 +108,12 @@ const SurveySetting = (props: any) => {
                     isEditable={() => true}
                     isDeletable={() => true}
                     hiddenColumns={["id", "surveyQuestions"]}
-                    renderColumn={(column, value) => value}
-                    customColumn={customColumn}
+                    renderColumn={renderColumn}
+                    customColumn={customColumnManageQuestions}
                     isCustomColumnExist={"true"}
                     columnNames={{
                         name: "Survey Name",
+                        endDate: "End Date",
                         customColumnName: "Manage Survey Questions"
                     }}
                     hasNewRecordButton={true}
@@ -94,6 +121,7 @@ const SurveySetting = (props: any) => {
                         setModalMode("Add");
                         setIsModalOpen(true);
                     }}
+                    customElementOfActions={customColumnSurveyDetails}
                 />
             </Card>
 
@@ -114,6 +142,11 @@ const SurveySetting = (props: any) => {
                         />
                     ) : modalMode === "Questions" ? (
                         <SurveyQuestionForm
+                            selectedItemId={selectedItemId}
+                            onClose={closeModal}
+                        />
+                    ) : modalMode === "ResultDetails" ? (
+                        <SurveyResultDetails
                             selectedItemId={selectedItemId}
                             onClose={closeModal}
                         />

@@ -6,6 +6,7 @@ import Card from "../../CommonComponents/Card";
 import Board from "../../CommonComponents/Board";
 import SurveyForm from "./SurveyForm";
 import employeeAnswersService from "../../../services/EmployeeAnswersService";
+import { formatDate } from "date-fns/format";
 
 const Survey = (props: any) => {
     const [items, setItems] = useState([]);
@@ -39,22 +40,31 @@ const Survey = (props: any) => {
         }
     };
 
-    const customColumn = (item: any) => (
-        <div className="text-center">
-            <Button
-                text="Join Survey"
-                className="btn btn-info m-1 p-2"
-                onClick={async () => {
-                    await checked(props.currentUser?.id, item.id);
-                    setSelectedItemId(item.id);
-                    setModalModeName("Survey Parcipation");
-                    setFormToBeClosed("form-close-survey");
-                }}
-                isModalTrigger={true}
-                dataTarget={modalDataTarget}
-            />
-        </div>
-    );
+    const customColumn = (item: any) => {
+        const currentDate = new Date();
+        const surveyEndDate = new Date(item.endDate);
+
+        if (surveyEndDate < currentDate) {
+            return null;
+        }
+
+        return (
+            <div className="text-center">
+                <Button
+                    text="Join Survey"
+                    className="btn btn-info m-1 p-2"
+                    onClick={async () => {
+                        await checked(props.currentUser?.id, item.id);
+                        setSelectedItemId(item.id);
+                        setModalModeName("Survey Participation");
+                        setFormToBeClosed("form-close-survey");
+                    }}
+                    isModalTrigger={true}
+                    dataTarget={modalDataTarget}
+                />
+            </div>
+        );
+    };
 
     const onModalClose = () => {
         setSelectedItemId("");
@@ -66,18 +76,26 @@ const Survey = (props: any) => {
         setFormToBeClosed("");
     };
 
+    const renderColumn = (column: string, value: any) => {
+        if (column === "endDate") {
+            return formatDate(new Date(value), "dd/MM/yyyy");
+        }
+        return value;
+    };
+
     return (
         <>
             <Card title={"Surveys"}>
                 <Board
                     items={items}
                     hiddenColumns={["id", "surveyQuestions"]}
-                    renderColumn={(column, value) => value}
+                    renderColumn={renderColumn}
                     customColumn={customColumn}
                     hideActions="true"
                     isCustomColumnExist="true"
                     columnNames={{
                         name: "Survey Name",
+                        endDate: "End Date"
                     }}
                 />
             </Card>

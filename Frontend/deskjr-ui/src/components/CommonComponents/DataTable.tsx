@@ -58,8 +58,6 @@ function DataTable({
       setColumns([...newColumns])
     }
 
-
-
     const newRecords = items.map((record: any, index: any) => (
       <tr key={index}>
         {newColumns.map((column) => (
@@ -71,7 +69,7 @@ function DataTable({
         ))}
         {customColumn && <td>{customColumn(record)}</td>}
         {hideActions && hideActions.toString() === "false" && (
-          <td className="text-center align-top">
+          <td className="text-center align-top d-flex justify-content-center">
             {isEditable && isEditable(record) && onEdit && (
               <Button
                 text="Edit"
@@ -79,16 +77,16 @@ function DataTable({
                 onClick={() => onEdit(record)}
                 isModalTrigger={true}
                 dataTarget={dataTarget}
-              ></Button>
+              />
             )}
             {isDeletable && isDeletable(record) && onDelete && (
               <Button
                 text="Delete"
-                className={"btn btn-danger"}
+                className={"btn btn-danger mr-2"}
                 onClick={() => onDelete(record)}
                 isModalTrigger={true}
                 dataTarget={"delete-confirm"}
-              ></Button>
+              />
             )}
             {customElementOfActions && customElementOfActions(record)}
           </td>

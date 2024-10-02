@@ -66,5 +66,12 @@ namespace DeskJr.Api.Controllers
             return Ok(employeeOptions);
         }
 
+        [HttpGet("{surveyId}")]
+        public async Task<IActionResult> GetSurveyResults(Guid surveyId)
+        {
+            var results = await _employeeOptionsService.GetSurveyResultsAsync(surveyId);
+            return Ok(results);
+        }
+
     }
 }
