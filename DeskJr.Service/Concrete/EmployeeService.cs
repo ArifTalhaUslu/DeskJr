@@ -23,7 +23,7 @@ namespace DeskJr.Service.Concrete
         }
 
         public async Task<bool> AddOrUpdateEmployeeAsync(AddOrUpdateEmployeeDto employeeDto)
-        {
+      {
             var currentUser = _userService.GetCurrentUser();
 
             if (currentUser.Role != EnumRole.Administrator && currentUser.Role != EnumRole.Manager)
@@ -36,11 +36,8 @@ namespace DeskJr.Service.Concrete
             if (employeeDto.ID == null && currentUser.Role == EnumRole.Administrator)
             {
                 employee.Password = Encrypter.EncryptString(employeeDto.Password);
-                employee.Base64Image = employeeDto.Base64Image;
                 return await _employeeRepository.AddAsync(employee);
             }
-
-            employee.Base64Image = employeeDto.Base64Image;
 
             return await _employeeRepository.UpdateAsync(employee);
         }

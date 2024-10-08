@@ -87,10 +87,10 @@ const Home = (props: any) => {
       return value === 2
         ? "Employee"
         : value === 1
-        ? "Manager"
-        : value === 0
-        ? "Admin"
-        : value;
+          ? "Manager"
+          : value === 0
+            ? "Admin"
+            : value;
     } else if (column === "gender") {
       return value === 0 ? "Male" : value === 1 ? "Female" : value;
     } else if (column === "dayOfBirth") {
@@ -99,6 +99,14 @@ const Home = (props: any) => {
       return value && value.titleName;
     } else if (column === "team") {
       return value && value.name;
+    } else if (column === "base64Image") {
+      return (
+        <img
+          src={value}
+          alt="Profile"
+          style={{ width: "50px", height: "50px", borderRadius: "50%" }}
+        />
+      );
     }
     return value;
   };
@@ -107,7 +115,13 @@ const Home = (props: any) => {
     <div className="container">
       <div className="row">
         <div className="col-12">
-          <div className="p-3 my-3 bg-primary text-white card">
+          <div className="p-3 my-3 bg-primary text-white card text-center">
+            <div className="text-center">
+              <img
+                src={props.currentUser?.base64Image}
+                alt="Profile"
+                style={{ width: "130px", height: "130px", borderRadius: "50%" }} />
+            </div>
             <h1 className="mt-4" style={{ textTransform: "capitalize" }}>
               {props.currentUser?.name}{" "}
               <span className="text-sm">
@@ -189,6 +203,7 @@ const Home = (props: any) => {
                 "employeeTitle",
                 "team",
                 "email",
+                "base64Image",
               ]}
               renderColumn={renderColumnEmployee}
               columnNames={columnNamesBirthday}

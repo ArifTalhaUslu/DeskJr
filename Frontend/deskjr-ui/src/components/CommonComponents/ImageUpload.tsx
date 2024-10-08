@@ -1,12 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface ImageUploadProps {
-  onUpload: (base64Image: string) => void;
+  onUpload?: (base64Image: string) => void;
   imageBase64?: string;
 }
 
 const ImageUpload: React.FC<ImageUploadProps> = ({ onUpload, imageBase64 }) => {
-  const [file, setFile] = useState<File | null>(null);
+  const [localBase64, setLocalBase64] = useState<string | undefined>(imageBase64);
+
+  useEffect(() => {
+    setLocalBase64(imageBase64);
+  }, [imageBase64]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
@@ -14,24 +18,34 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onUpload, imageBase64 }) => {
       const reader = new FileReader();
       reader.onloadend = () => {
         const base64Image = reader.result as string;
-        setFile(selectedFile);
-        onUpload(base64Image);
+        setLocalBase64(base64Image);
+
+        if (onUpload) {
+          onUpload(base64Image);
+        }
       };
       reader.readAsDataURL(selectedFile);
     }
   };
+
   return (
     <div>
-      {imageBase64 ? (
+      {localBase64 && (
         <img
-          src={imageBase64}
+          src={localBase64}
           alt="Uploaded"
           style={{ width: "50px", height: "50px", borderRadius: "50%" }}
         />
-      ) : (
-        <input type="file" accept="image/*" onChange={handleFileChange} />
       )}
+      <input
+        className="m-2"
+        type="file"
+        accept="image/*"
+        onChange={handleFileChange}
+      />
     </div>
   );
 };
+
+
 export default ImageUpload;

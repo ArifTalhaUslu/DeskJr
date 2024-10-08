@@ -10,11 +10,10 @@ import ImageUpload from "../../CommonComponents/ImageUpload";
 const EmployeeEditForm: any = (props: any) => {
   const [teams, setTeams] = useState([]);
   const [titles, setTitles] = useState([]);
-  const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [imageBase64, setImageBase64] = useState(null);
 
-  const handleImageUpload = (imageBase64: string) => {
-    setImageBase64(imageBase64);
+  const handleImageUpload = (base64Image: string) => {
+    setImageBase64(base64Image);
   };
   const [genderOptions] = useState([
     { value: "" },
@@ -40,8 +39,8 @@ const EmployeeEditForm: any = (props: any) => {
         .catch((err) => {
           showErrorToast(err);
         });
-    } else if (props.selectedEmployee && props.selectedEmployee.image) {
-      setImageBase64(props.selectedEmployee.image);
+    } else if (props.selectedEmployee && props.selectedEmployee.base64Image) {
+      setImageBase64(props.selectedEmployee.base64Image);
     }
     teamService.getAllTeam().then((data) => {
       setTeams(data);
