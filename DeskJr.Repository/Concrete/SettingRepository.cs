@@ -2,6 +2,7 @@
 using DeskJr.Entity.Models;
 using DeskJr.Repositories.Concrete;
 using DeskJr.Repository.Abstract;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,9 @@ namespace DeskJr.Repository.Concrete
             _context = context;
         }
 
-
+        public async Task<Setting> GetAccuredDay()
+        {
+            return await _context.Settings.FirstOrDefaultAsync(x => x.Key == "Accrued Day");
+        }
     }
 }

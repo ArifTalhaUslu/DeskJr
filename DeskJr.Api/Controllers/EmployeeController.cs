@@ -63,5 +63,19 @@ namespace DeskJr.Api.Controllers
 
             return Ok(employees);
         }
+        [HttpGet("calculateLeaves/{employeeId}")]
+        public async Task<IActionResult> CalculateLeaves(Guid employeeId)
+        {
+            var leaves = await _employeeService.CalculateLeaves(employeeId);
+            return Ok(leaves);
+        }
+
+        [HttpGet("employeeLeavesInfo/{employeeId}")]
+        public async Task<IActionResult> GetEmployeeLeavesInfo(Guid employeeId)
+        {
+            var info = await _employeeService.GetEmployeeLeavesInfo(employeeId);
+            return Ok(info);
+        }
+
     }
 }

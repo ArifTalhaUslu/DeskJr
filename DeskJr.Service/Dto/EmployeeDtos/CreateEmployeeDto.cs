@@ -7,6 +7,7 @@ namespace DeskJr.Service.Dto
     {
         public string Name { get; set; }
         public DateTime DayOfBirth { get; set; }
+        public DateTime HireDate { get; set; } = DateTime.Now;
         public EnumGender Gender { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }

@@ -10,6 +10,19 @@ namespace DeskJr.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "EmployeeOptions",
+                columns: table => new
+                {
+                    ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    OptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EmployeeOptions", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "EmployeeTitles",
                 columns: table => new
                 {
@@ -65,7 +78,8 @@ namespace DeskJr.Data.Migrations
                 columns: table => new
                 {
                     ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -117,6 +131,7 @@ namespace DeskJr.Data.Migrations
                     ID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "VARCHAR(150)", maxLength: 150, nullable: false),
                     DayOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    HireDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EmployeeRole = table.Column<int>(type: "int", nullable: false),
                     Gender = table.Column<int>(type: "int", nullable: false),
                     EmployeeTitleId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -264,6 +279,9 @@ namespace DeskJr.Data.Migrations
             migrationBuilder.DropForeignKey(
                 name: "FK_Employees_Teams_TeamId",
                 table: "Employees");
+
+            migrationBuilder.DropTable(
+                name: "EmployeeOptions");
 
             migrationBuilder.DropTable(
                 name: "Holidays");

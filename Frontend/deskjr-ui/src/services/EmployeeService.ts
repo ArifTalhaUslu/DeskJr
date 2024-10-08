@@ -49,6 +49,20 @@ class EmployeeService {
     );
     return response.data;
   }
+
+  public async calculateLeaves(employeeId: any) {
+    const response = await api.get(`${baseUrl}/calculateLeaves/${employeeId}`, {
+      data: { id: employeeId },
+    });
+    return response.data;
+  }
+
+  public async employeeLeavesInfo(employeeId: any) {
+    const response = await api.get(`${baseUrl}/employeeLeavesInfo/${employeeId}`, {
+      data: { id: employeeId },
+    });
+    return response.data;
+  }
 }
 
 export default new EmployeeService();
