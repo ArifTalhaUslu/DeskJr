@@ -24,6 +24,8 @@ namespace DeskJr.Entity.Models
 
         public string Email { get; set; }
         public string Password { get; set; }
+        public string Base64Image { get; set; }
+
 
         public Employee()
         {

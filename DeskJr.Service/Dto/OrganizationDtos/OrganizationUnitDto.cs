@@ -21,6 +21,7 @@ namespace DeskJr.Service.Dto
     public class PersonDataDto
     {
         public string Name { get; set; }
+        public string Base64Image { get; set; }
         public List<SimplifiedEmployeeDto> Employees { get; set; } = new();
 
     }
@@ -28,5 +29,6 @@ namespace DeskJr.Service.Dto
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
+        public string Base64Image { get; set; }
     }
 }

@@ -18,6 +18,7 @@ export interface User {
     password: string;
     team: any;
     employeeTitle: any;
+    base64Image: any;
 }
 
 export interface CurrentSession {

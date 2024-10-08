@@ -70,5 +70,6 @@ namespace DeskJr.Repository.Concrete
            .Where(e => e.TeamId == teamId)
            .ToListAsync();
         }
+
     }
 }

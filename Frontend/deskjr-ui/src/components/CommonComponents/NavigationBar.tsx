@@ -30,7 +30,7 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
 
 
     const handleLogout = () => {
-        setCurrentUser(null); 
+        setCurrentUser(null);
         Cookies.remove("id");
         Cookies.remove("token");
         window.location.reload(); // geçici çözüm
@@ -128,7 +128,9 @@ const NavigationBar: React.FC<NavigationBarProps> = ({
                                     textTransform: "capitalize",
                                 }}
                             >
-                                <i className="bi bi-person "></i>{" "}
+                                <img src={currentUser.base64Image} alt="Profile"
+                                    style={{ width: "45px", height: "45px", borderRadius: "50%" }} />
+                                <i className="bi bi-person m-1 "></i>{" "}
                                 {currentUser
                                     ? currentUser.name
                                     : "Unauthorized"}

@@ -16,6 +16,7 @@ import "./styles.css";
 function OrganizationCharts(props: any) {
   const [data, setData] = useState([]);
   const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
+  const [imageBase64, setImageBase64] = useState<string | null>(null);
 
   useEffect(() => {
     const loadData = async () => {
@@ -25,11 +26,19 @@ function OrganizationCharts(props: any) {
         })
         .catch((err) => {
           console.error("Error loading organization units", err);
+          console.log(data);
         });
     };
 
     loadData();
   }, []);
+  const handleImageUpload = (imageBase64: string) => {
+    setImageBase64(imageBase64);
+    props.setSelectedEmployee((prev: any) => ({
+      ...prev,
+      base64Image: imageBase64,
+    }));
+  };
 
   const toggleTeam = (teamName: string) => {
     setSelectedTeam((prevTeam) => (prevTeam === teamName ? null : teamName));
@@ -54,6 +63,32 @@ function OrganizationCharts(props: any) {
                     className={`employee ${employee.type}`}
                     style={{ marginBottom: "5px" }}
                   >
+                    {employee.base64Image ? (
+                      <img
+                        src={employee.base64Image}
+                        alt="Profile"
+                        style={{
+                          width: "70px",
+                          height: "70px",
+                          borderRadius: "50%",
+                          marginRight: "10px",
+                          objectFit: "cover",
+                        }} // Görsel stil
+                      />
+                    ) : (
+                      <div
+                        style={{
+                          width: "70px",
+                          height: "70px",
+                          borderRadius: "50%",
+                          backgroundColor: "#ddd",
+                          marginRight: "10px",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      />
+                    )}
                     {employee.name}
                   </div>
                 ))}

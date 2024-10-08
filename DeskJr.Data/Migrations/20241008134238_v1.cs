@@ -137,7 +137,8 @@ namespace DeskJr.Data.Migrations
                     EmployeeTitleId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     TeamId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Base64Image = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {

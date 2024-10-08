@@ -53,8 +53,9 @@ namespace DeskJr.Service.Concrete
                 Data = new PersonDataDto
                 {
                     Name = team.Manager is not null ? team.Manager.Name : "-",
+                    Base64Image = team.Manager?.Base64Image,
                     Employees = employees.Where(e => e.TeamId == team.ID)
-                                            .Select(e => new SimplifiedEmployeeDto { Id = e.ID, Name = e.Name })
+                                            .Select(e => new SimplifiedEmployeeDto { Id = e.ID, Name = e.Name , Base64Image = e.Base64Image })
                                             .ToList()
                 },
                 Children = new List<OrganizationUnitDto>()
