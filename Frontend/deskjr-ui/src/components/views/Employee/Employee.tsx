@@ -17,7 +17,9 @@ const Employee: any = (props: any) => {
   const [modalDataTarget] = useState("employeeAddModal");
   const [isTrigger, setIsTrigger] = useState(false);
   const [formToBeClosed, setFormToBeClosed] = useState("");
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [imageBase64, setImageBase64] = useState<string | null>(null);
+
   useEffect(() => {
     getList();
   }, [isTrigger]);
@@ -99,6 +101,8 @@ const Employee: any = (props: any) => {
           style={{ width: "50px", height: "50px", borderRadius: "50%" }}
         />
       );
+    } else if (column === "hireDate") {
+      return formatDate(new Date(value), "dd/MM/yyyy");
     }
 
     return value;
@@ -125,6 +129,7 @@ const Employee: any = (props: any) => {
     team: "Team Name",
     email: "E-mail",
     base64Image: "Profile Picture",
+    hireDate: "Hire Date"
   };
 
   return (

@@ -238,7 +238,7 @@ const Home = (props: any) => {
                 "employeeTitle",
                 "team",
                 "email",
-                "hireDate"
+                "hireDate",
                 "base64Image",
               ]}
               renderColumn={renderColumnEmployee}
