@@ -1,4 +1,5 @@
 import api from "../utils/axiosConfig";
+
 const baseUrl = "/api/Holiday";
 
 class HolidayService {
@@ -19,11 +20,6 @@ class HolidayService {
 
   public async addOrUpdateHoliday(holiday: any) {
     const response = await api.post(baseUrl, holiday);
-    return response.data;
-  }
-
-  public async updateHoliday(holiday: any) {
-    const response = await api.put(baseUrl, holiday);
     return response.data;
   }
 

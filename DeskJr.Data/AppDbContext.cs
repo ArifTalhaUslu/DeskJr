@@ -17,7 +17,11 @@ namespace DeskJr.Data
         public DbSet<LeaveType> LeaveTypes { get; set; }
         public DbSet<Holiday> Holidays { get; set; }
         public DbSet<Setting> Settings { get; set; }
-
+        public DbSet<Survey> Surveys { get; set; }
+        public DbSet<SurveyQuestion> SurveyQuestions { get; set; }
+        public DbSet<SurveyQuestionOptions> SurveyQuestionOptions { get; set; }
+        public DbSet<EmployeeOptions> EmployeeOptions { get; set; }
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Employee>().Property(d => d.Name).HasColumnType("VARCHAR").HasMaxLength(150).IsRequired();

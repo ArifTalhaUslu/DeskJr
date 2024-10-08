@@ -71,9 +71,18 @@ builder.Services.AddScoped<IHolidayService, HolidayService>();
 builder.Services.AddScoped<IHolidayRepository, HolidayRepository>();
 builder.Services.AddScoped<ISettingRepository, SettingRepository>();
 builder.Services.AddScoped<ISettingService, SettingService>();
+builder.Services.AddScoped<ISurveyRepository, SurveyRepository>();
+builder.Services.AddScoped<ISurveyService, SurveyService>();
+builder.Services.AddScoped<ISurveyQuestionRepository, SurveyQuestionRepository>();
+builder.Services.AddScoped<ISurveyQuestionService, SurveyQuestionService>();
+builder.Services.AddScoped<ISurveyQuestionOptionsRepository, SurveyQuestionOptionsRepository>();
+builder.Services.AddScoped<ISurveyQuestionsOptionsService, SurveyQuestionOptionsService>();
+builder.Services.AddScoped<IEmployeeOptionsRepository, EmployeeOptionsRepository>();
+builder.Services.AddScoped<IEmployeeOptionsService, EmployeeOptionsService>();
 builder.Services.AddScoped<EmailSender>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddTransient<IUserService, UserService>();
+
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

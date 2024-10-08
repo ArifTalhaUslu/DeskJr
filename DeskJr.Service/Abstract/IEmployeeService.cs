@@ -12,6 +12,9 @@ namespace DeskJr.Service.Abstract
         public Task<EmployeeDto?> GetEmployeeByEmailAsync(string email);
         public Task<bool> ChangePasswordAsync(ChangePasswordRequestDTO changePasswordRequest);
         public Task<IEnumerable<EmployeeDto>> GetUpcomingBirthdaysAsync();
+        public Task<IEnumerable<EmployeeLeavesByDateDto>> CalculateLeaves(Guid id);
+        public Task<EmployeeLeavesInfoDto> GetEmployeeLeavesInfo(Guid id);
+
 
     }   
 }

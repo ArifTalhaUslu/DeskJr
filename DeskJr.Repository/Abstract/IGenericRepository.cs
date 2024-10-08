@@ -10,6 +10,7 @@ namespace DeskJr.Repository.Abstract
         public Task<bool> DeleteAsync(Guid id);
         public Task<List<T>> GetAllAsync();
         public Task<T?> GetByIdAsync(Guid id);
+        public Task<bool> AddRangeAsync(List<T> entities);
     }
 }
 

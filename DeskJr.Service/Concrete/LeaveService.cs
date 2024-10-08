@@ -177,8 +177,6 @@ namespace DeskJr.Services.Concrete
             var validLeaves = await _leaveRepository.GetValidLeaves();
             return _mapper.Map<List<LeaveDTO>>(validLeaves);
         }
-
-
         private async Task SendLeaveRequestNotificationAsync(string toEmail, string teamLeaderName, string employeeName, DateTime startDate, DateTime endDate, string requestComments)
         {
             string template = EmailTemplates.LeaveRequestNotificationTemplate;

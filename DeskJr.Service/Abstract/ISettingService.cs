@@ -14,5 +14,7 @@ namespace DeskJr.Service.Abstract
         public Task<bool> DeleteSettingAsync(Guid id);
         public Task<IEnumerable<SettingDto>> GetAllSettingAsync();
         public Task<SettingDto?> GetSettingByIdAsync(Guid id);
+        public Task<SettingDto?> GetAccuredDayAsync();
+
     }
 }

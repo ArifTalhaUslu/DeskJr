@@ -17,9 +17,6 @@ namespace DeskJr.Service.Dto
         public EnumStatusOfLeave StatusOfLeave { get; set; }
         public Guid? ApprovedById { get; set; }
         public EmployeeDto ApprovedBy { get; set; }
-
-
-
     }
 }
 

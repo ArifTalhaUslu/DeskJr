@@ -11,6 +11,7 @@ const Home = (props: any) => {
   const [holidays, setHolidays] = useState<any[]>([]);
   const [upcomingBirthdays, setUpcomingBirthdays] = useState<any[]>([]);
   const [recentValidLeaves, setRecentValidLeaves] = useState<any[]>([]);
+  const [userLeaveInfo, setUserLeaveInfo] = useState<any>({});
 
   const fetchRecentValidLeaves = () => {
     LeaveService.getRecentValidLeaves()
@@ -42,10 +43,21 @@ const Home = (props: any) => {
       });
   };
 
+  const fetchLeaveInfo = async (userId: any) => {
+    await EmployeeService.employeeLeavesInfo(userId)
+      .then((data: any) => {
+        setUserLeaveInfo(data);
+      })
+      .catch((err: any) => {
+        showErrorToast(err);
+      });
+  }
+
   useEffect(() => {
     fetchAllHolidays();
     fetchRecentValidLeaves();
     fetchUpcomingBirthdays();
+    fetchLeaveInfo(props.currentUser.id)
   }, []);
 
   const columnNamesEmployeeLeaves = {
@@ -133,6 +145,29 @@ const Home = (props: any) => {
           </div>
         </div>
 
+        <div className="col-12">
+          <div className="card-group">
+            <div className="card text-white m-1" style={{ backgroundColor: "#81AC5B" }}>
+              <div className="card-body">
+                <h5 className="card-title">Deserved Day</h5>
+                <h4 className="card-text">{userLeaveInfo.deservedDay}</h4>
+              </div>
+            </div>
+            <div className="card text-white m-1" style={{ backgroundColor: "#BB3242" }} >
+              <div className="card-body">
+                <h5 className="card-title">Used Day</h5>
+                <h4 className="card-text">{userLeaveInfo.usedDay}</h4>
+              </div>
+            </div>
+            <div className="card text-white m-1" style={{ backgroundColor: "#F8CD4F" }}>
+              <div className="card-body">
+                <h5 className="card-title">Remaning Day</h5>
+                <h4 className="card-text">{userLeaveInfo.remainingDay}</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="col-sm-6">
           <Card title="Employees On Leaves">
             <Board
@@ -203,6 +238,7 @@ const Home = (props: any) => {
                 "employeeTitle",
                 "team",
                 "email",
+                "hireDate"
                 "base64Image",
               ]}
               renderColumn={renderColumnEmployee}
@@ -212,7 +248,7 @@ const Home = (props: any) => {
           </Card>
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

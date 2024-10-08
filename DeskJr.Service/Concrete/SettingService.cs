@@ -41,6 +41,11 @@ namespace DeskJr.Service.Concrete
             return await _settingRepository.DeleteAsync(id);
         }
 
+        public async Task<SettingDto?> GetAccuredDayAsync()
+        {
+            var accuredDay = await _settingRepository.GetAccuredDay();
+            return _mapper.Map<SettingDto>(accuredDay);
+        }
 
         public async Task<IEnumerable<SettingDto>> GetAllSettingAsync()
         {

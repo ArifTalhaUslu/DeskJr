@@ -17,6 +17,7 @@ const Leave: any = (props: any) => {
   const [modalDataTarget] = useState("leaveAddModal");
   const [isTrigger, setIsTrigger] = useState(false);
   const [formToBeClosed, setFormToBeClosed] = useState("");
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   useEffect(() => {
     getList();
@@ -64,6 +65,7 @@ const Leave: any = (props: any) => {
   const handleDelete = (leave: any) => {
     setSelectedItemId(leave.id);
     setFormToBeClosed("delete-form-closed");
+    setIsDeleteModalOpen(true);
   };
 
   const isEditable = (item: any) => {
@@ -88,6 +90,7 @@ const Leave: any = (props: any) => {
     const close_button = document.getElementById(formToBeClosed);
     close_button?.click();
     setFormToBeClosed("");
+    setIsDeleteModalOpen(false);
   };
 
   const renderColumn = (column: string, value: any) => {
@@ -157,11 +160,13 @@ const Leave: any = (props: any) => {
         onClose={onModalClose}
       />
 
-      <ConfirmDelete
-        onConfirm={(e) => onConfirmDelete(e)}
-        selectedItemId={selectedItemId}
-        onClose={onModalClose}
-      />
+      {isDeleteModalOpen && (
+        <ConfirmDelete
+          onConfirm={(e) => onConfirmDelete(e)}
+          selectedItemId={selectedItemId}
+          onClose={onModalClose}
+        />
+      )}
     </>
   );
 };
