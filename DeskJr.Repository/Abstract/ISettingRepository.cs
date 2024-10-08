@@ -9,6 +9,6 @@ namespace DeskJr.Repository.Abstract
 {
     public interface ISettingRepository : IGenericRepository<Setting>
     {
-
+        public Task<Setting> GetAccuredDay();
     }
 }

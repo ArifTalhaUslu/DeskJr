@@ -81,7 +81,10 @@ const Employee: any = (props: any) => {
       return value && value.titleName;
     } else if (column === "team") {
       return value && value.name;
+    } else if (column === "hireDate") {
+      return formatDate(new Date(value), "dd/MM/yyyy");
     }
+
     return value;
   };
 
@@ -104,6 +107,7 @@ const Employee: any = (props: any) => {
     employeeTitle: "Title Name",
     team: "Team Name",
     email: "E-mail",
+    hireDate: "Hire Date"
   };
 
   return (

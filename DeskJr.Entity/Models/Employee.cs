@@ -8,6 +8,7 @@ namespace DeskJr.Entity.Models
     {
         public string Name { get; set; }
         public DateTime DayOfBirth { get; set; }
+        public DateTime HireDate { get; set; } = DateTime.Now;
         public EnumRole EmployeeRole { get; set; }
         public EnumGender Gender { get; set; }
 

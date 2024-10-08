@@ -9,7 +9,6 @@ import Button from "../../CommonComponents/Button";
 import SurveyQuestionForm from "./SurveyQuestionForm";
 import { formatDate } from "date-fns";
 import SurveyResultDetails from "./SurveyResultDetails";
-import { Dropdown } from "primereact/dropdown";
 
 const SurveySetting = (props: any) => {
     const [items, setItems] = useState([]);
@@ -31,7 +30,7 @@ const SurveySetting = (props: any) => {
         }
     }
 
-    const onConfirmDelete = async (e) => {
+    const onConfirmDelete = async () => {
         if (selectedItemId) {
             try {
                 await surveyService.deleteSurvey(selectedItemId);

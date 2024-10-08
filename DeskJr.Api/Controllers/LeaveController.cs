@@ -91,6 +91,7 @@ namespace DeskJr.Api.Controllers
             var leaves = await _leaveService.GetLeavesByManagerId();
             return Ok(leaves);
         }
+
     }
 }
 

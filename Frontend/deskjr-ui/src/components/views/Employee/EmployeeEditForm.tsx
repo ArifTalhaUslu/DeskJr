@@ -149,6 +149,18 @@ const EmployeeEditForm: any = (props: any) => {
                     required
                   />
 
+                  <label className="col-form-label">Hire Date:</label>
+                  <Input
+                    type="date"
+                    name="hireDate"
+                    value={
+                      props.selectedEmployee &&
+                      formatDate(props.selectedEmployee.hireDate)
+                    }
+                    onChange={(e: any) => handleChange(e)}
+                    required
+                  />
+
                   <label className="col-form-label">Gender:</label>
                   <select
                     required
