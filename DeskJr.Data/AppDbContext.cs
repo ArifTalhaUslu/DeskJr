@@ -1,5 +1,6 @@
 ﻿using DeskJr.Entity.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace DeskJr.Data
 {
@@ -21,7 +22,9 @@ namespace DeskJr.Data
         public DbSet<SurveyQuestion> SurveyQuestions { get; set; }
         public DbSet<SurveyQuestionOptions> SurveyQuestionOptions { get; set; }
         public DbSet<EmployeeOptions> EmployeeOptions { get; set; }
-        
+        public DbSet<Log> Logs { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Employee>().Property(d => d.Name).HasColumnType("VARCHAR").HasMaxLength(150).IsRequired();
@@ -51,6 +54,12 @@ namespace DeskJr.Data
                 .HasOne(l => l.ApprovedBy)
                 .WithMany()
                 .HasForeignKey(l => l.ApprovedById);
+
+            // Log tablosunu EF migration'larına dahil etmemek için:
+            modelBuilder.Entity<Log>().ToTable("Logs", t => t.ExcludeFromMigrations());
+
+            // Bu tabloya sadece okuma izni verebilirsin, EF'in tabloya veri yazmasını engellemek için:
+            modelBuilder.Entity<Log>().HasNoKey();  // Eğer bir primary key yoksa
 
         }
     }

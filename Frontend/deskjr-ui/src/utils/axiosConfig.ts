@@ -13,7 +13,7 @@ const api = axios.create({
 api.interceptors.request.use(
     (config) => {
         const token = Cookies.get('token');
-        if(token){
+        if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
         return config;
@@ -34,7 +34,7 @@ api.interceptors.response.use(
             StatusCodes: 0,
             Message: '',
             Details: '',
-        }; 
+        };
         if (error.response) {
             const { status, data } = error.response;
             console.log(data)
@@ -43,11 +43,11 @@ api.interceptors.response.use(
             customError.Message = data.Message;
             customError.Details = data.Details;
         }
-    //      else if (error.request){
-    //      customError.Message = 'No response from server';
-    //        customError.Details = error.message;
-    //    }
-        else{
+        //      else if (error.request){
+        //      customError.Message = 'No response from server';
+        //        customError.Details = error.message;
+        //    }
+        else {
             customError.Message = error.message;
             customError.Details = error.details;
         }

@@ -30,6 +30,7 @@ import OrganizationCharts from "./components/views/OrganizationChart/Organizatio
 
 import SurveySetting from "./components/views/SurveySetting/SurveySetting";
 import Survey from "./components/views/Survey/Survey";
+import Log from "./components/views/Log/Log";
 
 const App: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<any>();
@@ -118,6 +119,11 @@ const App: React.FC = () => {
           to: "/Survey",
           visible: currentUser !== null,
         },
+        {
+          name: "Log",
+          to: "/Log",
+          visible: currentUser?.employeeRole === Roles.Admin,
+        },
       ],
     };
   };
@@ -187,6 +193,7 @@ const App: React.FC = () => {
                 <Route path="/leaveTypes" element={<LeaveType />} />
                 <Route path="/organizationCharts" element={<OrganizationCharts currentUser={currentUser} />} />
                 <Route path="/Survey" element={<Survey currentUser={currentUser} />} />
+                <Route path="/Log" element={<Log currentUser={currentUser} />} />
                 <Route path="/changePassword" element={<ChangePassword currentUser={currentUser} />} />
 
               </>
@@ -196,6 +203,7 @@ const App: React.FC = () => {
                 <Route path="/employees" element={<Employee currentUser={currentUser} />} />
                 <Route path="/teams" element={<Team />} />
                 <Route path="advancedSetting" element={<AdvancedSetting />} />
+                <Route path="/Log" element={<Log currentUser={currentUser} />} />
                 <Route path="/SurveySetting" element={<SurveySetting currentUser={currentUser} />} />
               </>
             )}

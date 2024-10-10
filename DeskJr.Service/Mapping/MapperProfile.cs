@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DeskJr.Entity.Models;
 using DeskJr.Service.Dto;
+using DeskJr.Service.Dto.LoggerDtos;
 
 
 namespace DeskJr.Service.Mapping
@@ -38,6 +39,8 @@ namespace DeskJr.Service.Mapping
             CreateMap<SurveyQuestionOptions, AddOrUpdateSurveyQuestionOptionsDto>().ReverseMap();
             CreateMap<EmployeeOptions, EmployeeOptionsDto>().ReverseMap();
             CreateMap<EmployeeOptions, CreateEmployeeOptionsDto>().ReverseMap();
+            CreateMap<Log, LogDto>().ReverseMap();
+
 
         }
     }
