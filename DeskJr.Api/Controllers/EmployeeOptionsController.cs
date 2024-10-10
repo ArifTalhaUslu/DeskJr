@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace DeskJr.Api.Controllers
 {
 
+    [AllowAnonymous]
     [Route("api/[controller]/[action]")]
     [ApiController]
-    [AllowAnonymous]
     public class EmployeeOptionsController : ControllerBase
     {
         private readonly IEmployeeOptionsService _employeeOptionsService;

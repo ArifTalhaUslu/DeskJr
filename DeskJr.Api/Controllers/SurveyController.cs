@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DeskJr.Api.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]/[action]")]
-    [Authorize]
     public class SurveyController : ControllerBase
     {
         private readonly ISurveyService _surveyService;
