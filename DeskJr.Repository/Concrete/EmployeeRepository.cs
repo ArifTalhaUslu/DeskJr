@@ -15,6 +15,7 @@ namespace DeskJr.Repository.Concrete
             _context = context;
         }
 
+
         public async Task<IEnumerable<Employee?>> GetEmployeesByManagerIdAsync(Guid managerId)
         {
            return await _context.Employees

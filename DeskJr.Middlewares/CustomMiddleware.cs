@@ -43,6 +43,7 @@ namespace DeskJr.Middlewares
             }
         }
 
+
         private static Task HandleExceptionAsync(HttpContext context, Exception ex)
         {
             context.Response.ContentType = "application/json";
@@ -96,11 +97,23 @@ namespace DeskJr.Middlewares
         
         private async Task LogAndReturnResponseAsync(HttpContext context, string requestBody, MemoryStream responseBody, Stream originalBodyStream)
         {
-            var responseBodyText = await ReadStreamAsync(responseBody);
-            var maskedResponseBody = MaskSensitiveData(responseBodyText);
+            var responseBodyText = "";
+            var maskedResponseBody = "";
+
+            if(context.Request.Path == "/api/Log")
+            {
+                maskedResponseBody = "Logging endpoint reached.";
+            }
+            else
+            {
+                responseBodyText = await ReadStreamAsync(responseBody);
+                maskedResponseBody = MaskSensitiveData(responseBodyText);
+            }
+
             var ipAddress = context.Request.Headers["X-Forwarded-For"].FirstOrDefault()
                      ?? context.Connection.RemoteIpAddress?.ToString();
 
+            
             var logDetail = new
             {
                 RequestMethod = context.Request.Method,
