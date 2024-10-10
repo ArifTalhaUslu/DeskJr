@@ -2,10 +2,8 @@
 using DeskJr.Common.Exceptions;
 using DeskJr.Entity.Models;
 using DeskJr.Repository.Abstract;
-using DeskJr.Repository.Concrete;
 using DeskJr.Service.Abstract;
 using DeskJr.Service.Dto;
-using Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal;
 
 namespace DeskJr.Service.Concrete
 {
