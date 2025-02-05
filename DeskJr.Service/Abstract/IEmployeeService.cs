@@ -14,7 +14,7 @@ namespace DeskJr.Service.Abstract
         public Task<IEnumerable<EmployeeDto>> GetUpcomingBirthdaysAsync();
         public Task<IEnumerable<EmployeeLeavesByDateDto>> CalculateLeaves(Guid id);
         public Task<EmployeeLeavesInfoDto> GetEmployeeLeavesInfo(Guid id);
-
-
+        public Task<EmployeeDto?> AuthenticationControlAsync(LoginRequestDTO loginRequest);
+        
     }   
 }

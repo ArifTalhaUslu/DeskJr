@@ -20,20 +20,18 @@ namespace DeskJr.Api.Controllers
     {
         private readonly JwtSettings _jwtSettings;
         private readonly IEmployeeService _employeeService;
-        private readonly IMapper _mapper;
 
         public LoginController(IOptions<JwtSettings> jwtSettings, IEmployeeService employeeService, IMapper mapper)
         {
             _jwtSettings = jwtSettings.Value;
             _employeeService = employeeService;
-            _mapper = mapper;
         }
 
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] LoginRequestDTO loginRequest)
         {
-            var employee = await AuthenticationControlAsync(loginRequest);
+            var employee = await _employeeService.AuthenticationControlAsync(loginRequest);
             if (employee == null) return Unauthorized();
 
             var token = CreateToken(employee);
@@ -81,16 +79,5 @@ namespace DeskJr.Api.Controllers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        private async Task<EmployeeDto?> AuthenticationControlAsync(LoginRequestDTO loginRequest)
-        {
-            var employee = await _employeeService.GetEmployeeByEmailAsync(loginRequest.Email);
-
-            if (employee == null || employee.Password != Encrypter.EncryptString(loginRequest.Password))
-            {
-                throw new UnauthorizedException("Authentication Failed.");
-            }
-
-            return employee;
-        }
     }
 }

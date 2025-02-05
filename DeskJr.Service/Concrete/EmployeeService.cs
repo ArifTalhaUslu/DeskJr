@@ -28,6 +28,24 @@ namespace DeskJr.Service.Concrete
             _settingService = settingService;
         }
 
+
+        public async Task<EmployeeDto?> AuthenticationControlAsync(LoginRequestDTO loginRequest)
+        {
+            var employee = await _employeeRepository.GetEmployeeByEmailAsync(loginRequest.Email);
+
+            if (employee == null || employee.Password != Encrypter.EncryptString(loginRequest.Password))
+            {
+                throw new UnauthorizedException("Authentication Failed.");
+            }
+            if (employee.HireDate > DateTime.Today)
+            {
+                throw new UnauthorizedException("You are not authorized yet.");
+            }
+
+            return _mapper.Map<Employee, EmployeeDto>(employee);
+        }
+
+
         public async Task<IEnumerable<EmployeeLeavesByDateDto>> CalculateLeaves(Guid id)
         {
             if (id == Guid.Empty)
@@ -114,14 +132,14 @@ namespace DeskJr.Service.Concrete
 
 
         public async Task<bool> AddOrUpdateEmployeeAsync(AddOrUpdateEmployeeDto employeeDto)
-      {
+        {
             var currentUser = _userService.GetCurrentUser();
 
             if (currentUser.Role != EnumRole.Administrator && currentUser.Role != EnumRole.Manager)
             {
                 throw new UnauthorizedAccessException("You do not have permission to perform this action.");
             }
-          
+
             var employee = _mapper.Map<Employee>(employeeDto);
 
             if (employeeDto.ID == null && currentUser.Role == EnumRole.Administrator)
@@ -231,7 +249,5 @@ namespace DeskJr.Service.Concrete
             var employees = await _employeeRepository.GetUpcomingBirthdaysAsync();
             return _mapper.Map<IEnumerable<EmployeeDto>>(employees);
         }
-
     }
 }
-
