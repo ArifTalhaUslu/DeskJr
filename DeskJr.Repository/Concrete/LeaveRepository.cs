@@ -26,7 +26,6 @@ namespace DeskJr.Repository.Concrete
                .OrderByDescending(x => x.StartDate).ThenByDescending(x=>x.EndDate)
                .ToListAsync();
         }
-
         public async Task<IEnumerable<Leave>> GetLeavesByEmployeeIdAsync(Guid employeeId)
         {
             return await _context.Leaves

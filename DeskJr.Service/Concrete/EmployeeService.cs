@@ -93,7 +93,7 @@ namespace DeskJr.Service.Concrete
                 endDate = startDate.AddYears(1);
             }
 
-            return employeeLeavesList;
+            return employeeLeavesList.OrderByDescending(x=>x.StartDate);
         }
         public async Task<EmployeeLeavesInfoDto> GetEmployeeLeavesInfo(Guid id)
         {
