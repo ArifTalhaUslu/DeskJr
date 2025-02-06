@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 namespace DeskJr.Repository.Concrete
 {
     public class LeaveRepository : GenericRepository<Leave>, ILeaveRepository
-
     {
         private readonly AppDbContext _context;
 
@@ -16,8 +15,6 @@ namespace DeskJr.Repository.Concrete
         {
             _context = context;
         }
-
-
 
         public async Task<List<Leave>> GetLeavesByDateRangeAsync(DateTime startDate, DateTime endDate)
         {
@@ -63,6 +60,7 @@ namespace DeskJr.Repository.Concrete
                 .OrderByDescending(x => x.StartDate).ThenByDescending(x => x.EndDate)
                 .ToListAsync();
         }
+
         public async Task<IEnumerable<Leave>> GetValidLeaves()
         {
             var now = DateTime.Now;

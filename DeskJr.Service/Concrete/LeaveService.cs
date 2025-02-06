@@ -119,17 +119,20 @@ namespace DeskJr.Services.Concrete
 
             return await _leaveRepository.UpdateAsync(leave);
         }
+
         public async Task<IEnumerable<LeaveDTO>> GetLeavesByEmployeeIdAsync()
         {
             var employeeId = _userService.GetCurrentUser().UserId;
             var leaves = await _leaveRepository.GetLeavesByEmployeeIdAsync(employeeId);
+
             if (leaves == null)
             {
-                throw new NotFoundException("No leaves exists with the provided employee identifier.");
+                throw new NotFoundException("No leaves exist with the provided employee identifier.");
             }
 
             return _mapper.Map<IEnumerable<LeaveDTO>>(leaves);
         }
+
         public async Task<IEnumerable<LeaveDTO>> GetPendingLeavesForApproverEmployeeByEmployeeId()
         {
             var currentUser = _userService.GetCurrentUser();
