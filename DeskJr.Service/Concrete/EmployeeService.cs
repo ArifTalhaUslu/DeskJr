@@ -95,6 +95,7 @@ namespace DeskJr.Service.Concrete
 
             return employeeLeavesList.OrderByDescending(x=>x.StartDate);
         }
+
         public async Task<EmployeeLeavesInfoDto> GetEmployeeLeavesInfo(Guid id)
         {
             if (id == Guid.Empty)
