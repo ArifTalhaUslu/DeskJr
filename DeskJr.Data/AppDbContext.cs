@@ -43,7 +43,7 @@ namespace DeskJr.Data
                         .HasOne(e => e.Team)
                         .WithMany() // Eğer Team ile birden fazla Employee ilişkisi varsa WithMany
                         .HasForeignKey(e => e.TeamId)
-                        .OnDelete(DeleteBehavior.Restrict); // Silme davranışını belirlemek önemli
+                        .OnDelete(DeleteBehavior.NoAction); // Silme davranışını belirlemek önemli
             
             modelBuilder.Entity<Leave>()
                 .HasOne(l => l.RequestingEmployee)
