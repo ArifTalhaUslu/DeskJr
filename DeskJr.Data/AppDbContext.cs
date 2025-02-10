@@ -23,7 +23,7 @@ namespace DeskJr.Data
         public DbSet<SurveyQuestionOptions> SurveyQuestionOptions { get; set; }
         public DbSet<EmployeeOptions> EmployeeOptions { get; set; }
         public DbSet<Log> Logs { get; set; }
-
+      
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -37,7 +37,7 @@ namespace DeskJr.Data
                        .HasOne(t => t.Manager)
                        .WithMany()
                        .HasForeignKey(t => t.ManagerId)
-                       .OnDelete(DeleteBehavior.Restrict); // Silme davranışını belirlemek önemli
+                       .OnDelete(DeleteBehavior.NoAction); // Silme davranışını belirlemek önemli
 
                 modelBuilder.Entity<Employee>()
                         .HasOne(e => e.Team)
@@ -48,12 +48,14 @@ namespace DeskJr.Data
             modelBuilder.Entity<Leave>()
                 .HasOne(l => l.RequestingEmployee)
                 .WithMany()
-                .HasForeignKey(l => l.RequestingEmployeeId);
-
-            modelBuilder.Entity<Leave>()
+                .HasForeignKey(l => l.RequestingEmployeeId)
+                .OnDelete(DeleteBehavior.NoAction);
+         
+              modelBuilder.Entity<Leave>()
                 .HasOne(l => l.ApprovedBy)
                 .WithMany()
-                .HasForeignKey(l => l.ApprovedById);
+                .HasForeignKey(l => l.ApprovedById)
+                .OnDelete(DeleteBehavior.NoAction);
 
             // Log tablosunu EF migration'larına dahil etmemek için:
             modelBuilder.Entity<Log>().ToTable("Logs", t => t.ExcludeFromMigrations());

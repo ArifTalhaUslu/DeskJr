@@ -89,5 +89,10 @@ namespace DeskJr.Repository.Concrete
                 .OrderByDescending(x => x.StartDate).ThenByDescending(x => x.EndDate)
                 .ToListAsync();
         }
+
+        public Task<int> GetLeaveCountByType(Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
