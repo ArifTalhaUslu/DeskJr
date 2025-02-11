@@ -33,12 +33,14 @@ namespace DeskJr.Service.Concrete
         public async Task<bool> DeleteLeaveTypeAsync(Guid id)
         {
             var leaveType = await _leaveTypeRepository.GetByIdAsync(id);
+            var leaves = await _leaveRepository.GetAllAsync();
+            if (leaveType == null)
+                throw new NotFoundException("No Leave type exists with the provided identifier.");
 
-            if (leaveType == null) throw new NotFoundException("No Leave type exists with the provided identifier.");
+            bool hasRelatedRecords = await _leaveTypeRepository.HasRelatedLeavesAsync(id);
 
-            var leaveCount = await _leaveRepository.GetLeaveCountByType(id);
-
-            if (leaveCount > 0) throw new InvalidOperationException("You can not delete.There are related records");
+            if (hasRelatedRecords)
+                throw new InvalidOperationException("You cannot delete. There are related records.");
 
             return await _leaveTypeRepository.DeleteAsync(id);
         }
