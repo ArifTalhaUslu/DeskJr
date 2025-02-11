@@ -34,7 +34,7 @@ namespace DeskJr.Repository.Concrete
                                  .ToListAsync();
         }
 
-        public async Task<IEnumerable<Leave>> GetPendingLeavesForApproverEmployeeByEmployeeId(Guid currentUserId , int role)
+        public async Task<IEnumerable<Leave>> GetPendingLeavesForApproverEmployeeByEmployeeId(Guid currentUserId, int role)
         {
             if (role == (int)EnumRole.Administrator)
             {
@@ -47,15 +47,15 @@ namespace DeskJr.Repository.Concrete
                     .OrderByDescending(x => x.StartDate).ThenByDescending(x => x.EndDate)
                     .ToListAsync();
             }
-            
+
             return await _context.Leaves
                 .Include(x => x.RequestingEmployee)
                 .ThenInclude(x => x.Team)
                 .Include(x => x.LeaveType)
-                .Where(x => 
-                    x.StatusOfLeave == (int)EnumStatusOfLeave.Pending && 
-                    x.RequestingEmployeeId != currentUserId && 
-                    x.RequestingEmployee.Team != null && 
+                .Where(x =>
+                    x.StatusOfLeave == (int)EnumStatusOfLeave.Pending &&
+                    x.RequestingEmployeeId != currentUserId &&
+                    x.RequestingEmployee.Team != null &&
                     x.RequestingEmployee.Team.ManagerId == currentUserId)
                 .OrderByDescending(x => x.StartDate).ThenByDescending(x => x.EndDate)
                 .ToListAsync();
@@ -75,7 +75,7 @@ namespace DeskJr.Repository.Concrete
                 .OrderBy(x => x.StartDate).ThenBy(x => x.EndDate)
                 .ToListAsync();
         }
-        
+
         public async Task<IEnumerable<Leave>> GetLeavesWithIncludeByManagerId(Guid currentUserId)
         {
             return await _context.Leaves
@@ -89,5 +89,7 @@ namespace DeskJr.Repository.Concrete
                 .OrderByDescending(x => x.StartDate).ThenByDescending(x => x.EndDate)
                 .ToListAsync();
         }
+
     }
 }
+           

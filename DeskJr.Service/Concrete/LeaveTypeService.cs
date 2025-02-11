@@ -11,11 +11,13 @@ namespace DeskJr.Service.Concrete
     public class LeaveTypeService : ILeaveTypeService
     {
         private readonly ILeaveTypeRepository _leaveTypeRepository;
+        private readonly ILeaveRepository _leaveRepository;
         private readonly IMapper _mapper;
 
-        public LeaveTypeService(ILeaveTypeRepository leaveTypeRepository, IMapper mapper)
+        public LeaveTypeService(ILeaveTypeRepository leaveTypeRepository, ILeaveRepository leaveRepository, IMapper mapper)
         {
             _leaveTypeRepository = leaveTypeRepository;
+            _leaveRepository = leaveRepository;
             _mapper = mapper;
         }
         public async Task<bool> AddOrUpdateLeaveTypeAsync(LeaveTypeUpdateDTO LeaveTypeUpdateDto)
@@ -30,10 +32,15 @@ namespace DeskJr.Service.Concrete
 
         public async Task<bool> DeleteLeaveTypeAsync(Guid id)
         {
-            if (id == null)
-            {
+            var leaveType = await _leaveTypeRepository.GetByIdAsync(id);
+            var leaves = await _leaveRepository.GetAllAsync();
+            if (leaveType == null)
                 throw new NotFoundException("No Leave type exists with the provided identifier.");
-            }
+
+            bool hasRelatedRecords = await _leaveTypeRepository.HasRelatedLeavesAsync(id);
+
+            if (hasRelatedRecords)
+                throw new InvalidOperationException("You cannot delete. There are related records.");
 
             return await _leaveTypeRepository.DeleteAsync(id);
         }
