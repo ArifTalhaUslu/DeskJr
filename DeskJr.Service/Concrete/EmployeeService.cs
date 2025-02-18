@@ -141,6 +141,12 @@ namespace DeskJr.Service.Concrete
                 throw new UnauthorizedAccessException("You do not have permission to perform this action.");
             }
 
+            var existingEmployee = await _employeeRepository.GetEmployeeByEmailAsync(employeeDto.Email);
+            if (existingEmployee != null && (employeeDto.ID == null || existingEmployee.ID != employeeDto.ID))
+            {
+                throw new InvalidOperationException("An employee with the same email already exists.");
+            }
+
             var employee = _mapper.Map<Employee>(employeeDto);
 
             if (employeeDto.ID == null && currentUser.Role == EnumRole.Administrator)
@@ -151,7 +157,6 @@ namespace DeskJr.Service.Concrete
 
             return await _employeeRepository.UpdateAsync(employee);
         }
-
 
         public async Task<bool> DeleteEmployeeAsync(Guid id)
         {
