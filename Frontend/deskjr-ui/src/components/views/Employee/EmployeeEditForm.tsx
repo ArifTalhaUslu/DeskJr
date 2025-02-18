@@ -28,7 +28,25 @@ const EmployeeEditForm: any = (props: any) => {
     { value: Roles.Admin, label: Roles[Roles.Admin] },
   ]);
 
+  // Formu sıfırlama fonksiyonu
+  const resetForm = () => {
+    props.setSelectedEmployee({
+      ...props.selectedEmployee,
+      name: "",
+      email: "",
+      gender: "",
+      teamId: "",
+      employeeTitleId: "",
+      hireDate: "",
+      dayOfBirth: "",
+      base64Image: null,
+      password: "",
+    });
+    setImageBase64(null);
+  };
+
   useEffect(() => {
+    resetForm();
     if (props.selectedItemId) {
       employeeService
         .getEmployeeById(props.selectedItemId)
